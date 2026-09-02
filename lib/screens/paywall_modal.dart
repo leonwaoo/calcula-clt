@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
 
+import '../services/pro_access_service.dart';
+
 class PaywallModal extends StatelessWidget {
-  final VoidCallback onPurchaseSuccess;
+  final ProAccessService proAccess;
 
-  const PaywallModal({super.key, required this.onPurchaseSuccess});
+  const PaywallModal({super.key, required this.proAccess});
 
-  static Future<bool?> show(BuildContext context) {
-    return showModalBottomSheet<bool>(
+  static Future<void> show(BuildContext context, ProAccessService proAccess) {
+    return showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => PaywallModal(
-        onPurchaseSuccess: () {
-          Navigator.of(context).pop(true);
-        },
-      ),
+      builder: (context) => PaywallModal(proAccess: proAccess),
     );
   }
 
@@ -39,7 +37,10 @@ class PaywallModal extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: const Color(0xFFFEF3C7),
                       borderRadius: BorderRadius.circular(12),
@@ -136,7 +137,10 @@ class PaywallModal extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 3,
+                          ),
                           decoration: BoxDecoration(
                             color: const Color(0xFF10B981),
                             borderRadius: BorderRadius.circular(12),
@@ -184,28 +188,51 @@ class PaywallModal extends StatelessWidget {
               const SizedBox(height: 20),
 
               // Botão de Ação CTA
-              ElevatedButton(
-                onPressed: () {
-                  // Simulação de compra com sucesso
-                  onPurchaseSuccess();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('🎉 Versão PRO desbloqueada com sucesso!'),
-                      backgroundColor: Color(0xFF059669),
+              StreamBuilder<ProAccessStatus>(
+                stream: proAccess.status,
+                initialData: proAccess.isPro
+                    ? ProAccessStatus.pro
+                    : ProAccessStatus.free,
+                builder: (context, snapshot) {
+                  final status = snapshot.data ?? ProAccessStatus.free;
+                  final loading = status == ProAccessStatus.loading;
+                  return ElevatedButton(
+                    onPressed: loading || proAccess.isPro
+                        ? null
+                        : () async {
+                            final started = await proAccess.buyLifetimeAccess();
+                            if (!started && context.mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                    'Produto indisponível. Confira a configuração no Google Play Console.',
+                                  ),
+                                ),
+                              );
+                            }
+                          },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF059669),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      elevation: 2,
+                    ),
+                    child: Text(
+                      loading
+                          ? 'VALIDANDO COMPRA...'
+                          : proAccess.isPro
+                          ? 'VERSÃO PRO ATIVA'
+                          : 'COMPRAR ACESSO VITALÍCIO',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
                     ),
                   );
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF059669),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  elevation: 2,
-                ),
-                child: const Text(
-                  'DESBLOQUEAR RELATÓRIO AGORA',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
-                ),
               ),
 
               const SizedBox(height: 12),
@@ -213,11 +240,7 @@ class PaywallModal extends StatelessWidget {
               // Botão Restaurar Compras
               Center(
                 child: TextButton(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Compras restauradas com sucesso!')),
-                    );
-                  },
+                  onPressed: proAccess.restorePurchases,
                   child: const Text(
                     'Já comprou? Restaurar Compras',
                     style: TextStyle(color: Color(0xFF64748B), fontSize: 12),
@@ -265,7 +288,10 @@ class PaywallModal extends StatelessWidget {
                 const SizedBox(height: 2),
                 Text(
                   subtitle,
-                  style: const TextStyle(fontSize: 11, color: Color(0xFF64748B)),
+                  style: const TextStyle(
+                    fontSize: 11,
+                    color: Color(0xFF64748B),
+                  ),
                 ),
               ],
             ),

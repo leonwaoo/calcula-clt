@@ -84,13 +84,20 @@ class CltResult {
       constitutionalThird;
 
   double get totalDeductions =>
-      inssSalary + inss13th + irrfSalary + irrf13th + noticePenalty + customDeductions;
+      inssSalary +
+      inss13th +
+      irrfSalary +
+      irrf13th +
+      noticePenalty +
+      customDeductions;
 
-  double get netTerminationValue =>
-      (totalGrossEarnings - totalDeductions) > 0 ? (totalGrossEarnings - totalDeductions) : 0.0;
+  double get netTerminationValue => (totalGrossEarnings - totalDeductions) > 0
+      ? (totalGrossEarnings - totalDeductions)
+      : 0.0;
 
-  double get totalUnemploymentBenefit =>
-      isEligibleUnemployment ? (unemploymentInstallments * unemploymentInstallmentValue) : 0.0;
+  double get totalUnemploymentBenefit => isEligibleUnemployment
+      ? (unemploymentInstallments * unemploymentInstallmentValue)
+      : 0.0;
 
   double get grandTotalFinancialPackage =>
       netTerminationValue + fgtsWithdrawableAmount + totalUnemploymentBenefit;

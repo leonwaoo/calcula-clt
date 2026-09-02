@@ -1,41 +1,67 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../models/clt_input.dart';
 import '../models/clt_result.dart';
 import '../services/pdf_generator_service.dart';
+import '../services/pro_access_service.dart';
 import 'paywall_modal.dart';
 
 class ResultScreen extends StatefulWidget {
   final CltInput input;
   final CltResult result;
 
-  const ResultScreen({
-    super.key,
-    required this.input,
-    required this.result,
-  });
+  const ResultScreen({super.key, required this.input, required this.result});
 
   @override
   State<ResultScreen> createState() => _ResultScreenState();
 }
 
 class _ResultScreenState extends State<ResultScreen> {
-  final _currencyFormat =
-      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2);
+  final _currencyFormat = NumberFormat.currency(
+    locale: 'pt_BR',
+    symbol: 'R\$',
+    decimalDigits: 2,
+  );
   final _dateFormat = DateFormat('dd/MM/yyyy');
 
   bool _isProUser = false;
   bool _isGeneratingPdf = false;
+  late final ProAccessService _proAccess;
+  StreamSubscription<ProAccessStatus>? _proSubscription;
+
+  @override
+  void initState() {
+    super.initState();
+    _proAccess = ProAccessService();
+    _proSubscription = _proAccess.status.listen((status) {
+      if (!mounted) return;
+      setState(() => _isProUser = status == ProAccessStatus.pro);
+      if (status == ProAccessStatus.error) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Não foi possível validar a compra. Tente restaurar suas compras.',
+            ),
+          ),
+        );
+      }
+    });
+    _proAccess.initialize();
+  }
+
+  @override
+  void dispose() {
+    _proSubscription?.cancel();
+    _proAccess.dispose();
+    super.dispose();
+  }
 
   void _onExportPdfPressed() async {
     if (!_isProUser) {
-      final purchased = await PaywallModal.show(context);
-      if (purchased == true) {
-        setState(() {
-          _isProUser = true;
-        });
-        _generateAndSharePdf();
-      }
+      await PaywallModal.show(context, _proAccess);
     } else {
       _generateAndSharePdf();
     }
@@ -51,9 +77,8 @@ class _ResultScreenState extends State<ResultScreen> {
       );
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Erro ao gerar PDF: $e')),
-        );
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Erro ao gerar PDF: $e')));
       }
     } finally {
       if (mounted) {
@@ -82,8 +107,7 @@ class _ResultScreenState extends State<ResultScreen> {
           if (!_isProUser)
             TextButton.icon(
               onPressed: () async {
-                final purchased = await PaywallModal.show(context);
-                if (purchased == true) setState(() => _isProUser = true);
+                await PaywallModal.show(context, _proAccess);
               },
               icon: const Icon(Icons.star, color: Color(0xFFF59E0B), size: 18),
               label: const Text(
@@ -111,7 +135,11 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.badge_outlined, color: Color(0xFF3B82F6), size: 28),
+                  const Icon(
+                    Icons.badge_outlined,
+                    color: Color(0xFF3B82F6),
+                    size: 28,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
@@ -119,12 +147,18 @@ class _ResultScreenState extends State<ResultScreen> {
                       children: [
                         Text(
                           input.terminationType.label,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           '${_dateFormat.format(input.admissionDate)} até ${_dateFormat.format(input.dismissalDate)} (${result.totalTenureYears}a ${(result.totalTenureDays % 365) ~/ 30}m)',
-                          style: const TextStyle(fontSize: 11, color: Color(0xFF64748B)),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: Color(0xFF64748B),
+                          ),
                         ),
                       ],
                     ),
@@ -169,14 +203,21 @@ class _ResultScreenState extends State<ResultScreen> {
                         ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 3,
+                        ),
                         decoration: BoxDecoration(
                           color: Colors.white.withOpacity(0.2),
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: const Text(
                           'Na Conta',
-                          style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ],
@@ -196,11 +237,17 @@ class _ResultScreenState extends State<ResultScreen> {
                     children: [
                       Text(
                         'Bruto: ${_currencyFormat.format(result.totalGrossEarnings)}',
-                        style: const TextStyle(color: Colors.white70, fontSize: 12),
+                        style: const TextStyle(
+                          color: Colors.white70,
+                          fontSize: 12,
+                        ),
                       ),
                       Text(
                         'Descontos: -${_currencyFormat.format(result.totalDeductions)}',
-                        style: const TextStyle(color: Color(0xFFFECACA), fontSize: 12),
+                        style: const TextStyle(
+                          color: Color(0xFFFECACA),
+                          fontSize: 12,
+                        ),
                       ),
                     ],
                   ),
@@ -227,12 +274,19 @@ class _ResultScreenState extends State<ResultScreen> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.account_balance_wallet_outlined,
-                                size: 16, color: Color(0xFF2563EB)),
+                            const Icon(
+                              Icons.account_balance_wallet_outlined,
+                              size: 16,
+                              color: Color(0xFF2563EB),
+                            ),
                             const SizedBox(width: 4),
                             Text(
                               'FGTS + Multa ${(result.fgtsPenaltyRate * 100).toInt()}%',
-                              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF64748B)),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF64748B),
+                              ),
                             ),
                           ],
                         ),
@@ -249,8 +303,13 @@ class _ResultScreenState extends State<ResultScreen> {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          result.fgtsWithdrawableAmount > 0 ? 'Disponível p/ Saque' : 'Sem direito a saque',
-                          style: const TextStyle(fontSize: 10, color: Color(0xFF64748B)),
+                          result.fgtsWithdrawableAmount > 0
+                              ? 'Disponível p/ Saque'
+                              : 'Sem direito a saque',
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF64748B),
+                          ),
                         ),
                       ],
                     ),
@@ -271,12 +330,19 @@ class _ResultScreenState extends State<ResultScreen> {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.shield_outlined,
-                                size: 16, color: Color(0xFF7C3AED)),
+                            const Icon(
+                              Icons.shield_outlined,
+                              size: 16,
+                              color: Color(0xFF7C3AED),
+                            ),
                             const SizedBox(width: 4),
                             const Text(
                               'Seguro-Desemprego',
-                              style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: Color(0xFF64748B)),
+                              style: TextStyle(
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFF64748B),
+                              ),
                             ),
                           ],
                         ),
@@ -298,7 +364,10 @@ class _ResultScreenState extends State<ResultScreen> {
                           result.isEligibleUnemployment
                               ? 'Total: ${_currencyFormat.format(result.totalUnemploymentBenefit)}'
                               : 'Sem direito',
-                          style: const TextStyle(fontSize: 10, color: Color(0xFF64748B)),
+                          style: const TextStyle(
+                            fontSize: 10,
+                            color: Color(0xFF64748B),
+                          ),
                         ),
                       ],
                     ),
@@ -333,7 +402,10 @@ class _ResultScreenState extends State<ResultScreen> {
                       ),
                       Text(
                         'Rescisão + FGTS Saque + Seguro',
-                        style: TextStyle(fontSize: 10, color: Color(0xFF3B82F6)),
+                        style: TextStyle(
+                          fontSize: 10,
+                          color: Color(0xFF3B82F6),
+                        ),
                       ),
                     ],
                   ),
@@ -351,63 +423,108 @@ class _ResultScreenState extends State<ResultScreen> {
 
             const SizedBox(height: 20),
 
-            // EXTRATO DETALHADO
-            Text(
-              'Extrato Detalhado de Verbas',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1E293B),
+            if (_isProUser) ...[
+              Text(
+                'Análise detalhada de verbas',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF1E293B),
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-
-            // Card de Proventos
-            _buildSectionCard(
-              title: 'Verbas Rescisórias (Proventos)',
-              total: result.totalGrossEarnings,
-              color: const Color(0xFF059669),
-              items: [
-                _buildRowItem('Saldo de Salário (${result.salaryBalanceDays} dias)', result.salaryBalance),
-                if (result.noticeValue > 0)
-                  _buildRowItem('Aviso Prévio Indenizado (${result.noticeDays} dias)', result.noticeValue),
-                if (result.proportional13th > 0)
-                  _buildRowItem('13º Salário Proporcional (${result.proportional13thMonths}/12)', result.proportional13th),
-                if (result.indemnified13th > 0)
-                  _buildRowItem('13º s/ Aviso Indenizado (${result.indemnified13thMonths}/12)', result.indemnified13th),
-                if (result.overdueVacations > 0)
-                  _buildRowItem('Férias Vencidas Integrais', result.overdueVacations),
-                if (result.proportionalVacations > 0)
-                  _buildRowItem('Férias Proporcionais (${result.proportionalVacationMonths}/12)', result.proportionalVacations),
-                if (result.indemnifiedVacations > 0)
-                  _buildRowItem('Férias s/ Aviso Indenizado (${result.indemnifiedVacationMonths}/12)', result.indemnifiedVacations),
-                if (result.constitutionalThird > 0)
-                  _buildRowItem('1/3 Constitucional de Férias', result.constitutionalThird),
-              ],
-            ),
-
-            const SizedBox(height: 12),
-
-            // Card de Descontos
-            _buildSectionCard(
-              title: 'Descontos Oficiais',
-              total: result.totalDeductions,
-              color: const Color(0xFFDC2626),
-              isDeduction: true,
-              items: [
-                if (result.inssSalary > 0)
-                  _buildRowItem('INSS sobre Saldo de Salário', result.inssSalary, isDeduction: true),
-                if (result.inss13th > 0)
-                  _buildRowItem('INSS sobre 13º Salário', result.inss13th, isDeduction: true),
-                if (result.irrfSalary > 0)
-                  _buildRowItem('IRRF sobre Saldo de Salário', result.irrfSalary, isDeduction: true),
-                if (result.irrf13th > 0)
-                  _buildRowItem('IRRF sobre 13º Salário', result.irrf13th, isDeduction: true),
-                if (result.noticePenalty > 0)
-                  _buildRowItem('Desconto de Aviso Não Cumprido', result.noticePenalty, isDeduction: true),
-                if (result.customDeductions > 0)
-                  _buildRowItem('Outros Descontos/Adiantamentos', result.customDeductions, isDeduction: true),
-              ],
-            ),
+              const SizedBox(height: 8),
+              _buildSectionCard(
+                title: 'Verbas Rescisórias (Proventos)',
+                total: result.totalGrossEarnings,
+                color: const Color(0xFF059669),
+                items: [
+                  _buildRowItem(
+                    'Saldo de Salário (${result.salaryBalanceDays} dias)',
+                    result.salaryBalance,
+                  ),
+                  if (result.noticeValue > 0)
+                    _buildRowItem(
+                      'Aviso Prévio Indenizado (${result.noticeDays} dias)',
+                      result.noticeValue,
+                    ),
+                  if (result.proportional13th > 0)
+                    _buildRowItem(
+                      '13º Salário Proporcional (${result.proportional13thMonths}/12)',
+                      result.proportional13th,
+                    ),
+                  if (result.indemnified13th > 0)
+                    _buildRowItem(
+                      '13º s/ Aviso Indenizado (${result.indemnified13thMonths}/12)',
+                      result.indemnified13th,
+                    ),
+                  if (result.overdueVacations > 0)
+                    _buildRowItem(
+                      'Férias Vencidas Integrais',
+                      result.overdueVacations,
+                    ),
+                  if (result.proportionalVacations > 0)
+                    _buildRowItem(
+                      'Férias Proporcionais (${result.proportionalVacationMonths}/12)',
+                      result.proportionalVacations,
+                    ),
+                  if (result.indemnifiedVacations > 0)
+                    _buildRowItem(
+                      'Férias s/ Aviso Indenizado (${result.indemnifiedVacationMonths}/12)',
+                      result.indemnifiedVacations,
+                    ),
+                  if (result.constitutionalThird > 0)
+                    _buildRowItem(
+                      '1/3 Constitucional de Férias',
+                      result.constitutionalThird,
+                    ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _buildSectionCard(
+                title: 'Descontos Oficiais',
+                total: result.totalDeductions,
+                color: const Color(0xFFDC2626),
+                isDeduction: true,
+                items: [
+                  if (result.inssSalary > 0)
+                    _buildRowItem(
+                      'INSS sobre Saldo de Salário',
+                      result.inssSalary,
+                      isDeduction: true,
+                    ),
+                  if (result.inss13th > 0)
+                    _buildRowItem(
+                      'INSS sobre 13º Salário',
+                      result.inss13th,
+                      isDeduction: true,
+                    ),
+                  if (result.irrfSalary > 0)
+                    _buildRowItem(
+                      'IRRF sobre Saldo de Salário',
+                      result.irrfSalary,
+                      isDeduction: true,
+                    ),
+                  if (result.irrf13th > 0)
+                    _buildRowItem(
+                      'IRRF sobre 13º Salário',
+                      result.irrf13th,
+                      isDeduction: true,
+                    ),
+                  if (result.noticePenalty > 0)
+                    _buildRowItem(
+                      'Desconto de Aviso Não Cumprido',
+                      result.noticePenalty,
+                      isDeduction: true,
+                    ),
+                  if (result.customDeductions > 0)
+                    _buildRowItem(
+                      'Outros Descontos/Adiantamentos',
+                      result.customDeductions,
+                      isDeduction: true,
+                    ),
+                ],
+              ),
+            ] else
+              _buildProAnalysisCard(),
 
             const SizedBox(height: 24),
 
@@ -418,18 +535,28 @@ class _ResultScreenState extends State<ResultScreen> {
                   ? const SizedBox(
                       width: 18,
                       height: 18,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        color: Colors.white,
+                      ),
                     )
                   : const Icon(Icons.picture_as_pdf_rounded, size: 20),
               label: Text(
-                _isGeneratingPdf ? 'Gerando Relatório...' : 'EXPORTAR RELATÓRIO EM PDF',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                _isGeneratingPdf
+                    ? 'Gerando Relatório...'
+                    : 'EXPORTAR RELATÓRIO EM PDF',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: const Color(0xFF1E3A8A),
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
                 elevation: 3,
               ),
             ),
@@ -445,7 +572,11 @@ class _ResultScreenState extends State<ResultScreen> {
               ),
               child: const Row(
                 children: [
-                  Icon(Icons.thumb_up_alt_outlined, color: Color(0xFFB45309), size: 20),
+                  Icon(
+                    Icons.thumb_up_alt_outlined,
+                    color: Color(0xFFB45309),
+                    size: 20,
+                  ),
                   SizedBox(width: 10),
                   Expanded(
                     child: Text(
@@ -483,18 +614,28 @@ class _ResultScreenState extends State<ResultScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             decoration: BoxDecoration(
               color: color.withOpacity(0.08),
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(14)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(14),
+              ),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
                   title,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: color),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                    color: color,
+                  ),
                 ),
                 Text(
                   '${isDeduction ? '-' : ''}${_currencyFormat.format(total)}',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: color),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 13,
+                    color: color,
+                  ),
                 ),
               ],
             ),
@@ -502,6 +643,46 @@ class _ResultScreenState extends State<ResultScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             child: Column(children: items),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProAnalysisCard() {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFAF5FF),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: const Color(0xFFE9D5FF)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              Icon(Icons.auto_awesome, color: Color(0xFF7E22CE)),
+              SizedBox(width: 8),
+              Text(
+                'Análise detalhada é Pro',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF581C87),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'Desbloqueie a memória de cálculo, rubricas, descontos, fundamentos legais e o relatório PDF compartilhável.',
+            style: TextStyle(fontSize: 12, color: Color(0xFF6B21A8)),
+          ),
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            onPressed: () => PaywallModal.show(context, _proAccess),
+            icon: const Icon(Icons.lock_open),
+            label: const Text('DESBLOQUEAR ANÁLISE PRO'),
           ),
         ],
       ),
@@ -525,7 +706,9 @@ class _ResultScreenState extends State<ResultScreen> {
             style: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w600,
-              color: isDeduction ? const Color(0xFFDC2626) : const Color(0xFF0F172A),
+              color: isDeduction
+                  ? const Color(0xFFDC2626)
+                  : const Color(0xFF0F172A),
             ),
           ),
         ],

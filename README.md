@@ -1,6 +1,8 @@
 # CalculaCLT 📱⚖️
 ### Calculadora de Rescisão e Direitos Trabalhistas CLT com Relatórios em PDF
 
+> Produto Flutter nativo para Android: o cálculo-resumo é gratuito; a análise detalhada e a exportação de PDF exigem o acesso vitalício Pro, comprado na Google Play e validado no servidor. Veja [a operação do Pro](docs/GOOGLE_PLAY_PRO.md).
+
 Aplicativo mobile multiplataforma (iOS e Android) de alta precisão para cálculo de verbas rescisórias da CLT, projeção de aviso prévio, FGTS com multas (40% ou 20%), tabelas progressivas de INSS e IRPF, estimativa de seguro-desemprego e emissão de demonstrativos formais em PDF.
 
 ---

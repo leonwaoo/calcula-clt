@@ -65,8 +65,10 @@ class CltInput {
   final NoticeType noticeType;
   final int overdueVacationPeriods; // Quantidade de férias vencidas integrais (0, 1, 2...)
   final int dependentsCount; // Número de dependentes para IRRF
-  final double fgtsBalance; // Saldo do FGTS para fins rescisórios (opcional/estimável)
-  final double customDeductions; // Descontos adicionais (faltas, adiantamentos, etc.)
+  final double
+  fgtsBalance; // Saldo do FGTS para fins rescisórios (opcional/estimável)
+  final double
+  customDeductions; // Descontos adicionais (faltas, adiantamentos, etc.)
   final int unemploymentRequestsCount; // 0 para primeira vez, 1 para segunda, 2+ para terceira
 
   const CltInput({

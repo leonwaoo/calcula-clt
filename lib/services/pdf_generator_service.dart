@@ -1,14 +1,19 @@
 import 'dart:typed_data';
+
 import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+
 import '../models/clt_input.dart';
 import '../models/clt_result.dart';
 
 class PdfGeneratorService {
-  static final _currencyFormat =
-      NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$', decimalDigits: 2);
+  static final _currencyFormat = NumberFormat.currency(
+    locale: 'pt_BR',
+    symbol: 'R\$',
+    decimalDigits: 2,
+  );
   static final _dateFormat = DateFormat('dd/MM/yyyy');
 
   /// Gera os bytes do documento PDF completo
@@ -75,7 +80,10 @@ class PdfGeneratorService {
                     ),
                     pw.Text(
                       _dateFormat.format(DateTime.now()),
-                      style: const pw.TextStyle(color: PdfColors.white, fontSize: 8),
+                      style: const pw.TextStyle(
+                        color: PdfColors.white,
+                        fontSize: 8,
+                      ),
                     ),
                   ],
                 ),
@@ -104,7 +112,11 @@ class PdfGeneratorService {
           // Dados do Contrato
           pw.Text(
             '1. DADOS DO CONTRATO DE TRABALHO',
-            style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: primaryColor),
+            style: pw.TextStyle(
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+              color: primaryColor,
+            ),
           ),
           pw.SizedBox(height: 6),
           pw.Container(
@@ -115,7 +127,12 @@ class PdfGeneratorService {
             ),
             child: pw.Column(
               children: [
-                _buildDataRow('Colaborador(a):', workerName, 'Empregador:', companyName),
+                _buildDataRow(
+                  'Colaborador(a):',
+                  workerName,
+                  'Empregador:',
+                  companyName,
+                ),
                 pw.SizedBox(height: 4),
                 _buildDataRow(
                   'Data de Admissão:',
@@ -146,26 +163,62 @@ class PdfGeneratorService {
           // Tabela de Proventos
           pw.Text(
             '2. VERBAS RESCISÓRIAS (PROVENTOS)',
-            style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: secondaryColor),
+            style: pw.TextStyle(
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+              color: secondaryColor,
+            ),
           ),
           pw.SizedBox(height: 6),
           _buildItemTable(
             items: [
-              _TableItem('Saldo de Salário', '${result.salaryBalanceDays} dias trabalhados', result.salaryBalance),
+              _TableItem(
+                'Saldo de Salário',
+                '${result.salaryBalanceDays} dias trabalhados',
+                result.salaryBalance,
+              ),
               if (result.noticeValue > 0)
-                _TableItem('Aviso Prévio Indenizado', 'Lei nº 12.506/2011 (${result.noticeDays} dias)', result.noticeValue),
+                _TableItem(
+                  'Aviso Prévio Indenizado',
+                  'Lei nº 12.506/2011 (${result.noticeDays} dias)',
+                  result.noticeValue,
+                ),
               if (result.proportional13th > 0)
-                _TableItem('13º Salário Proporcional', '${result.proportional13thMonths}/12 avos', result.proportional13th),
+                _TableItem(
+                  '13º Salário Proporcional',
+                  '${result.proportional13thMonths}/12 avos',
+                  result.proportional13th,
+                ),
               if (result.indemnified13th > 0)
-                _TableItem('13º Salário s/ Aviso Indenizado', '${result.indemnified13thMonths}/12 avos projetados', result.indemnified13th),
+                _TableItem(
+                  '13º Salário s/ Aviso Indenizado',
+                  '${result.indemnified13thMonths}/12 avos projetados',
+                  result.indemnified13th,
+                ),
               if (result.overdueVacations > 0)
-                _TableItem('Férias Vencidas Integrais', '${input.overdueVacationPeriods} período(s)', result.overdueVacations),
+                _TableItem(
+                  'Férias Vencidas Integrais',
+                  '${input.overdueVacationPeriods} período(s)',
+                  result.overdueVacations,
+                ),
               if (result.proportionalVacations > 0)
-                _TableItem('Férias Proporcionais', '${result.proportionalVacationMonths}/12 avos', result.proportionalVacations),
+                _TableItem(
+                  'Férias Proporcionais',
+                  '${result.proportionalVacationMonths}/12 avos',
+                  result.proportionalVacations,
+                ),
               if (result.indemnifiedVacations > 0)
-                _TableItem('Férias s/ Aviso Indenizado', '${result.indemnifiedVacationMonths}/12 avos projetados', result.indemnifiedVacations),
+                _TableItem(
+                  'Férias s/ Aviso Indenizado',
+                  '${result.indemnifiedVacationMonths}/12 avos projetados',
+                  result.indemnifiedVacations,
+                ),
               if (result.constitutionalThird > 0)
-                _TableItem('1/3 Constitucional de Férias', 'Art. 7º, XVII da CF/88', result.constitutionalThird),
+                _TableItem(
+                  '1/3 Constitucional de Férias',
+                  'Art. 7º, XVII da CF/88',
+                  result.constitutionalThird,
+                ),
             ],
             totalLabel: 'TOTAL DE PROVENTOS BRUTOS:',
             totalValue: result.totalGrossEarnings,
@@ -177,23 +230,51 @@ class PdfGeneratorService {
           // Tabela de Descontos
           pw.Text(
             '3. DESCONTOS LEGAIS',
-            style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold, color: dangerColor),
+            style: pw.TextStyle(
+              fontSize: 11,
+              fontWeight: pw.FontWeight.bold,
+              color: dangerColor,
+            ),
           ),
           pw.SizedBox(height: 6),
           _buildItemTable(
             items: [
               if (result.inssSalary > 0)
-                _TableItem('INSS sobre Saldo de Salário', 'Tabela Progressiva Oficial', result.inssSalary),
+                _TableItem(
+                  'INSS sobre Saldo de Salário',
+                  'Tabela Progressiva Oficial',
+                  result.inssSalary,
+                ),
               if (result.inss13th > 0)
-                _TableItem('INSS sobre 13º Salário', 'Tabela Progressiva Oficial', result.inss13th),
+                _TableItem(
+                  'INSS sobre 13º Salário',
+                  'Tabela Progressiva Oficial',
+                  result.inss13th,
+                ),
               if (result.irrfSalary > 0)
-                _TableItem('IRRF sobre Saldo de Salário', 'Com dedução de dependentes', result.irrfSalary),
+                _TableItem(
+                  'IRRF sobre Saldo de Salário',
+                  'Com dedução de dependentes',
+                  result.irrfSalary,
+                ),
               if (result.irrf13th > 0)
-                _TableItem('IRRF sobre 13º Salário', 'Tributação exclusiva na fonte', result.irrf13th),
+                _TableItem(
+                  'IRRF sobre 13º Salário',
+                  'Tributação exclusiva na fonte',
+                  result.irrf13th,
+                ),
               if (result.noticePenalty > 0)
-                _TableItem('Aviso Prévio Não Cumprido', 'Desconto legal de 1 mês', result.noticePenalty),
+                _TableItem(
+                  'Aviso Prévio Não Cumprido',
+                  'Desconto legal de 1 mês',
+                  result.noticePenalty,
+                ),
               if (result.customDeductions > 0)
-                _TableItem('Outros Descontos/Adiantamentos', 'Informado pelo usuário', result.customDeductions),
+                _TableItem(
+                  'Outros Descontos/Adiantamentos',
+                  'Informado pelo usuário',
+                  result.customDeductions,
+                ),
             ],
             totalLabel: 'TOTAL DE DESCONTOS:',
             totalValue: result.totalDeductions,
@@ -204,7 +285,10 @@ class PdfGeneratorService {
 
           // Destaque do Valor Líquido
           pw.Container(
-            padding: const pw.EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            padding: const pw.EdgeInsets.symmetric(
+              horizontal: 16,
+              vertical: 12,
+            ),
             decoration: pw.BoxDecoration(
               color: PdfColor.fromHex('#ECFDF5'),
               border: pw.Border.all(color: secondaryColor, width: 2),
@@ -215,11 +299,19 @@ class PdfGeneratorService {
               children: [
                 pw.Text(
                   'VALOR LÍQUIDO A RECEBER NA RESCISÃO:',
-                  style: pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold, color: primaryColor),
+                  style: pw.TextStyle(
+                    fontSize: 12,
+                    fontWeight: pw.FontWeight.bold,
+                    color: primaryColor,
+                  ),
                 ),
                 pw.Text(
                   _currencyFormat.format(result.netTerminationValue),
-                  style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold, color: secondaryColor),
+                  style: pw.TextStyle(
+                    fontSize: 16,
+                    fontWeight: pw.FontWeight.bold,
+                    color: secondaryColor,
+                  ),
                 ),
               ],
             ),
@@ -237,17 +329,30 @@ class PdfGeneratorService {
                   padding: const pw.EdgeInsets.all(10),
                   decoration: pw.BoxDecoration(
                     border: pw.Border.all(color: PdfColors.grey300),
-                    borderRadius: const pw.BorderRadius.all(pw.Radius.circular(6)),
+                    borderRadius: const pw.BorderRadius.all(
+                      pw.Radius.circular(6),
+                    ),
                   ),
                   child: pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('4. FGTS & MULTA',
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10, color: primaryColor)),
+                      pw.Text(
+                        '4. FGTS & MULTA',
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,
+                          fontSize: 10,
+                          color: primaryColor,
+                        ),
+                      ),
                       pw.SizedBox(height: 4),
-                      _buildSimpleRow('Saldo Base:', _currencyFormat.format(result.fgtsEstimatedBalance)),
-                      _buildSimpleRow('Multa Rescisória (${(result.fgtsPenaltyRate * 100).toInt()}%):',
-                          _currencyFormat.format(result.fgtsPenalty)),
+                      _buildSimpleRow(
+                        'Saldo Base:',
+                        _currencyFormat.format(result.fgtsEstimatedBalance),
+                      ),
+                      _buildSimpleRow(
+                        'Multa Rescisória (${(result.fgtsPenaltyRate * 100).toInt()}%):',
+                        _currencyFormat.format(result.fgtsPenalty),
+                      ),
                       pw.Divider(thickness: 0.5),
                       _buildSimpleRow(
                         'Total Disponível Saque:',
@@ -265,29 +370,53 @@ class PdfGeneratorService {
                   padding: const pw.EdgeInsets.all(10),
                   decoration: pw.BoxDecoration(
                     border: pw.Border.all(color: PdfColors.grey300),
-                    borderRadius: const pw.BorderRadius.all(pw.Radius.circular(6)),
+                    borderRadius: const pw.BorderRadius.all(
+                      pw.Radius.circular(6),
+                    ),
                   ),
                   child: pw.Column(
                     crossAxisAlignment: pw.CrossAxisAlignment.start,
                     children: [
-                      pw.Text('5. SEGURO-DESEMPREGO',
-                          style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10, color: primaryColor)),
+                      pw.Text(
+                        '5. SEGURO-DESEMPREGO',
+                        style: pw.TextStyle(
+                          fontWeight: pw.FontWeight.bold,
+                          fontSize: 10,
+                          color: primaryColor,
+                        ),
+                      ),
                       pw.SizedBox(height: 4),
-                      _buildSimpleRow('Elegibilidade:', result.isEligibleUnemployment ? 'SIM (Apto)' : 'NÃO'),
+                      _buildSimpleRow(
+                        'Elegibilidade:',
+                        result.isEligibleUnemployment ? 'SIM (Apto)' : 'NÃO',
+                      ),
                       if (result.isEligibleUnemployment) ...[
-                        _buildSimpleRow('Parcelas Estimadas:', '${result.unemploymentInstallments} parcelas'),
-                        _buildSimpleRow('Valor por Parcela:', _currencyFormat.format(result.unemploymentInstallmentValue)),
+                        _buildSimpleRow(
+                          'Parcelas Estimadas:',
+                          '${result.unemploymentInstallments} parcelas',
+                        ),
+                        _buildSimpleRow(
+                          'Valor por Parcela:',
+                          _currencyFormat.format(
+                            result.unemploymentInstallmentValue,
+                          ),
+                        ),
                         pw.Divider(thickness: 0.5),
                         _buildSimpleRow(
                           'Benefício Total:',
-                          _currencyFormat.format(result.totalUnemploymentBenefit),
+                          _currencyFormat.format(
+                            result.totalUnemploymentBenefit,
+                          ),
                           isBold: true,
                         ),
                       ] else ...[
                         pw.SizedBox(height: 8),
                         pw.Text(
                           'Modalidade de rescisão ou tempo de carência não conferem direito ao benefício.',
-                          style: const pw.TextStyle(fontSize: 8, color: PdfColors.grey600),
+                          style: const pw.TextStyle(
+                            fontSize: 8,
+                            color: PdfColors.grey600,
+                          ),
                         ),
                       ],
                     ],
@@ -333,18 +462,30 @@ class PdfGeneratorService {
 
     await Printing.sharePdf(
       bytes: pdfBytes,
-      filename: 'Rescisao_CLT_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
+      filename:
+          'Rescisao_CLT_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
     );
   }
 
-  static pw.Widget _buildDataRow(String label1, String val1, String label2, String val2) {
+  static pw.Widget _buildDataRow(
+    String label1,
+    String val1,
+    String label2,
+    String val2,
+  ) {
     return pw.Row(
       children: [
         pw.Expanded(
           child: pw.RichText(
             text: pw.TextSpan(
               children: [
-                pw.TextSpan(text: '$label1 ', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8)),
+                pw.TextSpan(
+                  text: '$label1 ',
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 8,
+                  ),
+                ),
                 pw.TextSpan(text: val1, style: const pw.TextStyle(fontSize: 8)),
               ],
             ),
@@ -354,7 +495,13 @@ class PdfGeneratorService {
           child: pw.RichText(
             text: pw.TextSpan(
               children: [
-                pw.TextSpan(text: '$label2 ', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8)),
+                pw.TextSpan(
+                  text: '$label2 ',
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 8,
+                  ),
+                ),
                 pw.TextSpan(text: val2, style: const pw.TextStyle(fontSize: 8)),
               ],
             ),
@@ -364,16 +511,30 @@ class PdfGeneratorService {
     );
   }
 
-  static pw.Widget _buildSimpleRow(String label, String val, {bool isBold = false}) {
+  static pw.Widget _buildSimpleRow(
+    String label,
+    String val, {
+    bool isBold = false,
+  }) {
     return pw.Padding(
       padding: const pw.EdgeInsets.symmetric(vertical: 2),
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
         children: [
-          pw.Text(label,
-              style: pw.TextStyle(fontSize: 8, fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal)),
-          pw.Text(val,
-              style: pw.TextStyle(fontSize: 8, fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal)),
+          pw.Text(
+            label,
+            style: pw.TextStyle(
+              fontSize: 8,
+              fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
+            ),
+          ),
+          pw.Text(
+            val,
+            style: pw.TextStyle(
+              fontSize: 8,
+              fontWeight: isBold ? pw.FontWeight.bold : pw.FontWeight.normal,
+            ),
+          ),
         ],
       ),
     );
@@ -392,40 +553,101 @@ class PdfGeneratorService {
           color: PdfColors.grey200,
           child: pw.Row(
             children: [
-              pw.Expanded(flex: 3, child: pw.Text('Rubrica / Descrição', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8))),
-              pw.Expanded(flex: 3, child: pw.Text('Referência Legal / Base', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8))),
-              pw.Expanded(flex: 2, child: pw.Text('Valor (R\$)', textAlign: pw.TextAlign.right, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 8))),
+              pw.Expanded(
+                flex: 3,
+                child: pw.Text(
+                  'Rubrica / Descrição',
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 8,
+                  ),
+                ),
+              ),
+              pw.Expanded(
+                flex: 3,
+                child: pw.Text(
+                  'Referência Legal / Base',
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 8,
+                  ),
+                ),
+              ),
+              pw.Expanded(
+                flex: 2,
+                child: pw.Text(
+                  'Valor (R\$)',
+                  textAlign: pw.TextAlign.right,
+                  style: pw.TextStyle(
+                    fontWeight: pw.FontWeight.bold,
+                    fontSize: 8,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-        ...items.map((item) => pw.Container(
-              padding: const pw.EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              decoration: const pw.BoxDecoration(
-                border: pw.Border(bottom: pw.BorderSide(color: PdfColors.grey200, width: 0.5)),
+        ...items.map(
+          (item) => pw.Container(
+            padding: const pw.EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            decoration: const pw.BoxDecoration(
+              border: pw.Border(
+                bottom: pw.BorderSide(color: PdfColors.grey200, width: 0.5),
               ),
-              child: pw.Row(
-                children: [
-                  pw.Expanded(flex: 3, child: pw.Text(item.name, style: const pw.TextStyle(fontSize: 8))),
-                  pw.Expanded(flex: 3, child: pw.Text(item.reference, style: const pw.TextStyle(fontSize: 7, color: PdfColors.grey700))),
-                  pw.Expanded(
-                    flex: 2,
-                    child: pw.Text(
-                      _currencyFormat.format(item.value),
-                      textAlign: pw.TextAlign.right,
-                      style: const pw.TextStyle(fontSize: 8),
+            ),
+            child: pw.Row(
+              children: [
+                pw.Expanded(
+                  flex: 3,
+                  child: pw.Text(
+                    item.name,
+                    style: const pw.TextStyle(fontSize: 8),
+                  ),
+                ),
+                pw.Expanded(
+                  flex: 3,
+                  child: pw.Text(
+                    item.reference,
+                    style: const pw.TextStyle(
+                      fontSize: 7,
+                      color: PdfColors.grey700,
                     ),
                   ),
-                ],
-              ),
-            )),
+                ),
+                pw.Expanded(
+                  flex: 2,
+                  child: pw.Text(
+                    _currencyFormat.format(item.value),
+                    textAlign: pw.TextAlign.right,
+                    style: const pw.TextStyle(fontSize: 8),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
         pw.Container(
           padding: const pw.EdgeInsets.symmetric(horizontal: 8, vertical: 6),
           color: PdfColor.fromHex('#F9FAFB'),
           child: pw.Row(
             mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
             children: [
-              pw.Text(totalLabel, style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 9, color: totalColor)),
-              pw.Text(_currencyFormat.format(totalValue), style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 10, color: totalColor)),
+              pw.Text(
+                totalLabel,
+                style: pw.TextStyle(
+                  fontWeight: pw.FontWeight.bold,
+                  fontSize: 9,
+                  color: totalColor,
+                ),
+              ),
+              pw.Text(
+                _currencyFormat.format(totalValue),
+                style: pw.TextStyle(
+                  fontWeight: pw.FontWeight.bold,
+                  fontSize: 10,
+                  color: totalColor,
+                ),
+              ),
             ],
           ),
         ),

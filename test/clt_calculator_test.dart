@@ -1,45 +1,55 @@
 import 'package:test/test.dart';
+
 import '../lib/models/clt_input.dart';
 import '../lib/services/clt_calculator_service.dart';
 
 void main() {
   group('Testes do Motor de Cálculo CLT (CalculaCLT)', () {
-    test('1. Demissão sem Justa Causa com 2 anos de serviço e aviso indenizado', () {
-      final input = CltInput(
-        baseSalary: 3000.0,
-        admissionDate: DateTime(2024, 1, 1),
-        dismissalDate: DateTime(2026, 3, 15),
-        terminationType: TerminationType.semJustaCausa,
-        noticeType: NoticeType.indenizado,
-        fgtsBalance: 5000.0,
-      );
+    test(
+      '1. Demissão sem Justa Causa com 2 anos de serviço e aviso indenizado',
+      () {
+        final input = CltInput(
+          baseSalary: 3000.0,
+          admissionDate: DateTime(2024, 1, 1),
+          dismissalDate: DateTime(2026, 3, 15),
+          terminationType: TerminationType.semJustaCausa,
+          noticeType: NoticeType.indenizado,
+          fgtsBalance: 5000.0,
+        );
 
-      final result = CltCalculatorService.calculate(input);
+        final result = CltCalculatorService.calculate(input);
 
-      // 2 anos de casa -> 30 + (2 * 3) = 36 dias de aviso prévio
-      expect(result.noticeDays, equals(36));
-      expect(result.noticeValue, equals(3600.0)); // (3000/30) * 36
+        // 2 anos de casa -> 30 + (2 * 3) = 36 dias de aviso prévio
+        expect(result.noticeDays, equals(36));
+        expect(result.noticeValue, equals(3600.0)); // (3000/30) * 36
 
-      // Saldo de salário: 15 dias em março
-      expect(result.salaryBalanceDays, equals(15));
-      expect(result.salaryBalance, equals(1500.0));
+        // Saldo de salário: 15 dias em março
+        expect(result.salaryBalanceDays, equals(15));
+        expect(result.salaryBalance, equals(1500.0));
 
-      // INSS sobre R$ 1.500 (faixa 1: 7,5%)
-      expect(result.inssSalary, closeTo(112.50, 0.01));
+        // INSS sobre R$ 1.500 (faixa 1: 7,5%)
+        expect(result.inssSalary, closeTo(112.50, 0.01));
 
-      // FGTS: Multa de 40% e direito a saque
-      expect(result.fgtsPenaltyRate, equals(0.40));
-      expect(result.fgtsWithdrawableAmount, greaterThan(result.fgtsEstimatedBalance));
+        // FGTS: Multa de 40% e direito a saque
+        expect(result.fgtsPenaltyRate, equals(0.40));
+        expect(
+          result.fgtsWithdrawableAmount,
+          greaterThan(result.fgtsEstimatedBalance),
+        );
 
-      // Seguro-Desemprego: Elegível
-      expect(result.isEligibleUnemployment, isTrue);
-      expect(result.unemploymentInstallments, equals(5));
-      expect(result.unemploymentInstallmentValue, greaterThan(0));
+        // Seguro-Desemprego: Elegível
+        expect(result.isEligibleUnemployment, isTrue);
+        expect(result.unemploymentInstallments, equals(5));
+        expect(result.unemploymentInstallmentValue, greaterThan(0));
 
-      // Verificação do total líquido positivo
-      expect(result.netTerminationValue, greaterThan(0));
-      expect(result.grandTotalFinancialPackage, greaterThan(result.netTerminationValue));
-    });
+        // Verificação do total líquido positivo
+        expect(result.netTerminationValue, greaterThan(0));
+        expect(
+          result.grandTotalFinancialPackage,
+          greaterThan(result.netTerminationValue),
+        );
+      },
+    );
 
     test('2. Pedido de Demissão com aviso prévio não cumprido', () {
       final input = CltInput(

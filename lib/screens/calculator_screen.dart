@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import '../models/clt_input.dart';
 import '../services/clt_calculator_service.dart';
 import 'result_screen.dart';
@@ -22,7 +23,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   final _customDeductionsController = TextEditingController();
 
   // Estados
-  DateTime _admissionDate = DateTime.now().subtract(const Duration(days: 730)); // 2 anos atrás
+  DateTime _admissionDate = DateTime.now().subtract(
+    const Duration(days: 730),
+  ); // 2 anos atrás
   DateTime _dismissalDate = DateTime.now();
   TerminationType _terminationType = TerminationType.semJustaCausa;
   NoticeType _noticeType = NoticeType.indenizado;
@@ -56,7 +59,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     if (_dismissalDate.isBefore(_admissionDate)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('A data de demissão não pode ser anterior à data de admissão.'),
+          content: Text(
+            'A data de demissão não pode ser anterior à data de admissão.',
+          ),
           backgroundColor: Colors.red,
         ),
       );
@@ -174,30 +179,42 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   children: [
                     TextFormField(
                       controller: _salaryController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Salário Base Bruto (R\$)',
                         hintText: 'Ex: 3.500,00',
                         prefixText: 'R\$ ',
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                       ),
                       validator: (val) {
-                        if (val == null || val.trim().isEmpty) return 'Informe o salário base.';
-                        if (_parseCurrency(val) <= 0) return 'O salário deve ser maior que zero.';
+                        if (val == null || val.trim().isEmpty)
+                          return 'Informe o salário base.';
+                        if (_parseCurrency(val) <= 0)
+                          return 'O salário deve ser maior que zero.';
                         return null;
                       },
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _additionalsController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Média de Horas Extras / Adicionais (R\$) [Opcional]',
                         hintText: '0,00',
                         prefixText: 'R\$ ',
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                       ),
                     ),
                   ],
@@ -217,7 +234,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             onTap: () => _selectDate(isAdmission: true),
                             borderRadius: BorderRadius.circular(8),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey.shade400),
                                 borderRadius: BorderRadius.circular(8),
@@ -225,11 +245,20 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Data Admissão', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                                  const Text(
+                                    'Data Admissão',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                   const SizedBox(height: 4),
                                   Text(
                                     _dateFormat.format(_admissionDate),
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -242,7 +271,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             onTap: () => _selectDate(isAdmission: false),
                             borderRadius: BorderRadius.circular(8),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
                               decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey.shade400),
                                 borderRadius: BorderRadius.circular(8),
@@ -250,11 +282,20 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('Data Afastamento', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                                  const Text(
+                                    'Data Afastamento',
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
                                   const SizedBox(height: 4),
                                   Text(
                                     _dateFormat.format(_dismissalDate),
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                    ),
                                   ),
                                 ],
                               ),
@@ -279,13 +320,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Tipo de Rescisão',
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
                       ),
                       items: TerminationType.values
-                          .map((type) => DropdownMenuItem(
-                                value: type,
-                                child: Text(type.label, style: const TextStyle(fontSize: 13)),
-                              ))
+                          .map(
+                            (type) => DropdownMenuItem(
+                              value: type,
+                              child: Text(
+                                type.label,
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                            ),
+                          )
                           .toList(),
                       onChanged: (val) {
                         if (val != null) {
@@ -301,7 +350,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     const SizedBox(height: 8),
                     Text(
                       _terminationType.description,
-                      style: const TextStyle(fontSize: 11, color: Color(0xFF64748B)),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        color: Color(0xFF64748B),
+                      ),
                     ),
                     const SizedBox(height: 14),
                     DropdownButtonFormField<NoticeType>(
@@ -310,13 +362,21 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       decoration: const InputDecoration(
                         labelText: 'Aviso Prévio',
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 10,
+                        ),
                       ),
                       items: NoticeType.values
-                          .map((notice) => DropdownMenuItem(
-                                value: notice,
-                                child: Text(notice.label, style: const TextStyle(fontSize: 13)),
-                              ))
+                          .map(
+                            (notice) => DropdownMenuItem(
+                              value: notice,
+                              child: Text(
+                                notice.label,
+                                style: const TextStyle(fontSize: 13),
+                              ),
+                            ),
+                          )
                           .toList(),
                       onChanged: (val) {
                         if (val != null) setState(() => _noticeType = val);
@@ -337,23 +397,31 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       children: [
                         const Text(
                           'Períodos de Férias Vencidas:',
-                          style: TextStyle(fontSize: 13, color: Color(0xFF334155)),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF334155),
+                          ),
                         ),
                         Row(
                           children: [
                             IconButton(
                               icon: const Icon(Icons.remove_circle_outline),
                               onPressed: _overdueVacationsCount > 0
-                                  ? () => setState(() => _overdueVacationsCount--)
+                                  ? () =>
+                                        setState(() => _overdueVacationsCount--)
                                   : null,
                             ),
                             Text(
                               '$_overdueVacationsCount',
-                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             IconButton(
                               icon: const Icon(Icons.add_circle_outline),
-                              onPressed: () => setState(() => _overdueVacationsCount++),
+                              onPressed: () =>
+                                  setState(() => _overdueVacationsCount++),
                             ),
                           ],
                         ),
@@ -365,7 +433,10 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                       children: [
                         const Text(
                           'Dependentes (Dedução IRRF):',
-                          style: TextStyle(fontSize: 13, color: Color(0xFF334155)),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFF334155),
+                          ),
                         ),
                         Row(
                           children: [
@@ -377,11 +448,15 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                             ),
                             Text(
                               '$_dependentsCount',
-                              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                              style: const TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                             IconButton(
                               icon: const Icon(Icons.add_circle_outline),
-                              onPressed: () => setState(() => _dependentsCount++),
+                              onPressed: () =>
+                                  setState(() => _dependentsCount++),
                             ),
                           ],
                         ),
@@ -399,25 +474,35 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                   children: [
                     TextFormField(
                       controller: _fgtsBalanceController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Saldo Atual do FGTS (R\$)',
                         hintText: 'Se vazio, estimaremos pelo tempo',
                         prefixText: 'R\$ ',
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
                       controller: _customDeductionsController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: const InputDecoration(
                         labelText: 'Outros Descontos / Faltas / Vales (R\$)',
                         hintText: '0,00',
                         prefixText: 'R\$ ',
                         border: OutlineInputBorder(),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 12,
+                        ),
                       ),
                     ),
                   ],
@@ -437,7 +522,9 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
                     backgroundColor: const Color(0xFF059669),
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 18),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
                     elevation: 3,
                   ),
                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+
 import 'screens/calculator_screen.dart';
 
 void main() {
@@ -16,10 +17,7 @@ class CalculaCltApp extends StatelessWidget {
       title: 'CalculaCLT',
       debugShowCheckedModeBanner: false,
       locale: const Locale('pt', 'BR'),
-      supportedLocales: const [
-        Locale('pt', 'BR'),
-        Locale('en', 'US'),
-      ],
+      supportedLocales: const [Locale('pt', 'BR'), Locale('en', 'US')],
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

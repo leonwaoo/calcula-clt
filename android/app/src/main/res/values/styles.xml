@@ -1,9 +1,9 @@
 <resources>
-    <style name="Theme.CalculaCLT" parent="Theme.AppCompat.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:statusBarColor">@color/statusBarColor</item>
-        <item name="android:navigationBarColor">@color/navigationBarColor</item>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
     </style>
 </resources>

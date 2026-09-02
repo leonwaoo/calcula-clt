@@ -1,27 +1,26 @@
 import 'dart:math';
+
+import '../config/legal_tables.dart';
 import '../models/clt_input.dart';
 import '../models/clt_result.dart';
 
 class CltCalculatorService {
-  // Constantes Oficiais da Legislação Trabalhista Brasileira
-  static const double minimumWage = 1518.00;
-  static const double inssCeiling = 8157.41;
-  static const double maxInssContribution = 951.63;
-  static const double irrfPerDependentDeduction = 189.59;
-  static const double irrfSimplifiedDeduction = 564.80;
-
   /// Executa o cálculo completo da rescisão CLT
   static CltResult calculate(CltInput input) {
     final admission = input.admissionDate;
     final dismissal = input.dismissalDate;
     final salary = input.grossRemuneration;
+    final tables = LegalTables.forDate(dismissal);
 
     // 1. Tempo de serviço
     final totalDays = dismissal.difference(admission).inDays;
     final totalYears = totalDays ~/ 365;
 
     // 2. Dias de Aviso Prévio (Lei nº 12.506/2011)
-    final int noticeDays = _calculateNoticeDays(input.terminationType, totalYears);
+    final int noticeDays = _calculateNoticeDays(
+      input.terminationType,
+      totalYears,
+    );
 
     // 3. Projeção da data final com o aviso indenizado
     final bool isIndemnifiedNotice =
@@ -68,7 +67,10 @@ class CltCalculatorService {
       prop13th = (salary / 12.0) * prop13thMonths;
 
       if (isIndemnifiedNotice) {
-        final totalWithNoticeMonths = _calculate13thMonths(admission, projectedDismissal);
+        final totalWithNoticeMonths = _calculate13thMonths(
+          admission,
+          projectedDismissal,
+        );
         ind13thMonths = max(0, totalWithNoticeMonths - prop13thMonths);
         ind13th = (salary / 12.0) * ind13thMonths;
       }
@@ -91,8 +93,14 @@ class CltCalculatorService {
       propVacations = (salary / 12.0) * propVacationMonths;
 
       if (isIndemnifiedNotice) {
-        final totalWithNoticeVacMonths = _calculateVacationMonths(admission, projectedDismissal);
-        indVacationMonths = max(0, totalWithNoticeVacMonths - propVacationMonths);
+        final totalWithNoticeVacMonths = _calculateVacationMonths(
+          admission,
+          projectedDismissal,
+        );
+        indVacationMonths = max(
+          0,
+          totalWithNoticeVacMonths - propVacationMonths,
+        );
         indVacations = (salary / 12.0) * indVacationMonths;
       }
     }
@@ -102,20 +110,24 @@ class CltCalculatorService {
     final double constitutionalThird = totalVacations / 3.0;
 
     // 8. Descontos Oficiais: INSS
-    final double inssSalary = _calculateProgressiveInss(salaryBalance);
-    final double inss13th = (prop13th > 0) ? _calculateProgressiveInss(prop13th) : 0.0;
+    final double inssSalary = _calculateProgressiveInss(salaryBalance, tables);
+    final double inss13th = (prop13th > 0)
+        ? _calculateProgressiveInss(prop13th, tables)
+        : 0.0;
 
     // 9. Descontos Oficiais: IRRF
     final double irrfSalary = _calculateIrrf(
       taxableAmount: salaryBalance,
       inssPaid: inssSalary,
       dependentsCount: input.dependentsCount,
+      tables: tables,
     );
     final double irrf13th = (prop13th > 0)
         ? _calculateIrrf(
             taxableAmount: prop13th,
             inssPaid: inss13th,
             dependentsCount: input.dependentsCount,
+            tables: tables,
           )
         : 0.0;
 
@@ -125,7 +137,8 @@ class CltCalculatorService {
         : (salary * 0.08 * max(1, totalDays ~/ 30));
 
     // Depósito rescisório: 8% sobre saldo de salário e 13º
-    final double terminationDeposit = (salaryBalance + prop13th + noticeValue) * 0.08;
+    final double terminationDeposit =
+        (salaryBalance + prop13th + noticeValue) * 0.08;
     final double totalFgtsBase = estimatedPriorFgts + terminationDeposit;
 
     double fgtsPenaltyRate = 0.0;
@@ -147,12 +160,16 @@ class CltCalculatorService {
     final double fgtsPenalty = totalFgtsBase * fgtsPenaltyRate;
 
     // 11. Seguro-Desemprego
-    final (bool isEligible, int installments, double installmentValue) =
-        _calculateUnemploymentBenefit(
+    final (
+      bool isEligible,
+      int installments,
+      double installmentValue,
+    ) = _calculateUnemploymentBenefit(
       terminationType: input.terminationType,
       tenureMonths: totalDays ~/ 30,
       averageSalary: salary,
       requestCount: input.unemploymentRequestsCount,
+      tables: tables,
     );
 
     return CltResult(
@@ -202,18 +219,22 @@ class CltCalculatorService {
   /// Calcula meses de direito a 13º salário no ano corrente
   static int _calculate13thMonths(DateTime admission, DateTime dismissal) {
     final startOfYear = DateTime(dismissal.year, 1, 1);
-    final effectiveStart = admission.isAfter(startOfYear) ? admission : startOfYear;
+    final effectiveStart = admission.isAfter(startOfYear)
+        ? admission
+        : startOfYear;
 
     int months = 0;
     DateTime current = DateTime(effectiveStart.year, effectiveStart.month, 1);
 
     while (current.year == dismissal.year && current.month <= dismissal.month) {
       int daysWorkedInMonth;
-      if (current.year == effectiveStart.year && current.month == effectiveStart.month) {
+      if (current.year == effectiveStart.year &&
+          current.month == effectiveStart.month) {
         // Primeiro mês considerado
         final lastDayOfMonth = DateTime(current.year, current.month + 1, 0).day;
         daysWorkedInMonth = (lastDayOfMonth - effectiveStart.day) + 1;
-      } else if (current.year == dismissal.year && current.month == dismissal.month) {
+      } else if (current.year == dismissal.year &&
+          current.month == dismissal.month) {
         // Mês da saída
         daysWorkedInMonth = dismissal.day;
       } else {
@@ -235,11 +256,19 @@ class CltCalculatorService {
   static int _calculateVacationMonths(DateTime admission, DateTime dismissal) {
     // Encontrar o último aniversário de admissão
     int anniversaryYear = dismissal.year;
-    DateTime lastAnniversary = DateTime(anniversaryYear, admission.month, admission.day);
+    DateTime lastAnniversary = DateTime(
+      anniversaryYear,
+      admission.month,
+      admission.day,
+    );
 
     if (lastAnniversary.isAfter(dismissal)) {
       anniversaryYear--;
-      lastAnniversary = DateTime(anniversaryYear, admission.month, admission.day);
+      lastAnniversary = DateTime(
+        anniversaryYear,
+        admission.month,
+        admission.day,
+      );
     }
 
     final daysInPeriod = dismissal.difference(lastAnniversary).inDays;
@@ -255,19 +284,17 @@ class CltCalculatorService {
   }
 
   /// Tabela Progressiva Oficial do INSS
-  static double _calculateProgressiveInss(double base) {
+  static double _calculateProgressiveInss(double base, LegalTables tables) {
     if (base <= 0) return 0.0;
-    if (base > inssCeiling) return maxInssContribution;
-
-    if (base <= 1518.00) {
-      return base * 0.075;
-    } else if (base <= 2793.88) {
-      return (base * 0.09) - 22.77;
-    } else if (base <= 4190.83) {
-      return (base * 0.12) - 106.59;
-    } else {
-      return min(maxInssContribution, (base * 0.14) - 190.40);
+    var previousCeiling = 0.0;
+    var contribution = 0.0;
+    for (final band in tables.inssBands) {
+      final taxableSlice = min(base, band.ceiling) - previousCeiling;
+      if (taxableSlice > 0) contribution += taxableSlice * band.rate;
+      if (base <= band.ceiling) break;
+      previousCeiling = band.ceiling;
     }
+    return contribution;
   }
 
   /// Tabela Progressiva Oficial do IRRF com comparação do Desconto Simplificado
@@ -275,30 +302,30 @@ class CltCalculatorService {
     required double taxableAmount,
     required double inssPaid,
     required int dependentsCount,
+    required LegalTables tables,
   }) {
     if (taxableAmount <= 0) return 0.0;
 
     // Opção 1: Dedução legal tradicional (INSS + dependentes)
-    final double legalDeductions = inssPaid + (dependentsCount * irrfPerDependentDeduction);
+    final double legalDeductions =
+        inssPaid + (dependentsCount * tables.irrfDependentDeduction);
     final double baseLegal = max(0.0, taxableAmount - legalDeductions);
 
     // Opção 2: Desconto simplificado mensal
-    final double baseSimplified = max(0.0, taxableAmount - irrfSimplifiedDeduction);
+    final double baseSimplified = max(
+      0.0,
+      taxableAmount - tables.irrfSimplifiedDeduction,
+    );
 
     // Usa a base mais benéfica para o trabalhador (a menor base de cálculo)
     final double chosenBase = min(baseLegal, baseSimplified);
 
-    if (chosenBase <= 2259.20) {
-      return 0.0;
-    } else if (chosenBase <= 2826.65) {
-      return (chosenBase * 0.075) - 169.44;
-    } else if (chosenBase <= 3751.05) {
-      return (chosenBase * 0.15) - 381.44;
-    } else if (chosenBase <= 4664.68) {
-      return (chosenBase * 0.225) - 662.77;
-    } else {
-      return (chosenBase * 0.275) - 896.00;
+    for (final band in tables.irrfBands) {
+      if (chosenBase <= band.ceiling) {
+        return max(0, (chosenBase * band.rate) - band.deduction);
+      }
     }
+    return 0;
   }
 
   /// Regras de Elegibilidade e Cálculo do Seguro-Desemprego
@@ -307,6 +334,7 @@ class CltCalculatorService {
     required int tenureMonths,
     required double averageSalary,
     required int requestCount,
+    required LegalTables tables,
   }) {
     if (terminationType != TerminationType.semJustaCausa) {
       return (false, 0, 0.0);
@@ -355,16 +383,19 @@ class CltCalculatorService {
 
     // Valor da parcela (Regras oficiais CODEFAT / MTE)
     double installmentValue;
-    if (averageSalary <= 2041.39) {
-      installmentValue = averageSalary * 0.8;
-    } else if (averageSalary <= 3402.65) {
-      installmentValue = 1633.10 + ((averageSalary - 2041.39) * 0.5);
+    if (averageSalary <= tables.unemployment.firstLimit) {
+      installmentValue = averageSalary * tables.unemployment.firstRate;
+    } else if (averageSalary <= tables.unemployment.secondLimit) {
+      installmentValue =
+          tables.unemployment.secondBase +
+          ((averageSalary - tables.unemployment.firstLimit) *
+              tables.unemployment.secondRate);
     } else {
-      installmentValue = 2313.74; // Teto
+      installmentValue = tables.unemployment.cap;
     }
 
     // O valor não pode ser inferior ao salário mínimo
-    installmentValue = max(minimumWage, installmentValue);
+    installmentValue = max(tables.minimumWage, installmentValue);
 
     return (true, installments, installmentValue);
   }
