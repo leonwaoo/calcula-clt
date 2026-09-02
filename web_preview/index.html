@@ -1760,10 +1760,17 @@
             </div>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
+        <!-- AVISO LEGAL E ISENÇÃO DE RESPONSABILIDADE -->
+        <div style="margin-top: 20px; padding: 14px 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 12px; font-size: 11.5px; color: #64748B; line-height: 1.5;">
+          <div style="font-weight: 800; color: #334155; text-transform: uppercase; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            Aviso Legal e Isenção de Responsabilidade
+          </div>
+          O <strong>CalculaCLT</strong> é uma ferramenta independente de simulação informativa baseada nas regras gerais da CLT e tabelas de 2026. Os demonstrativos e cálculos constituem estimativas preliminares e <strong>não possuem valor de homologação judicial, não substituem o TRCT oficial e não configuram consultoria jurídica ou contábil</strong>. O desenvolvedor e a plataforma isentam-se integralmente de qualquer responsabilidade por decisões, divergências em folhas de pagamento ou acordos firmados com base nestes dados. Em caso de dúvidas ou rescisão formal, consulte o setor de Recursos Humanos da sua empresa, seu sindicato ou um advogado trabalhista.
         </div>
 
         <div class="app-footer">
-          CalculaCLT • <a href="privacidade.html">Política de Privacidade</a> • Conformidade CLT
+          CalculaCLT • <a href="privacidade.html">Política de Privacidade & Termos de Uso</a> • Isenção de Responsabilidade
         </div>
       </div>
 
@@ -2690,6 +2697,10 @@
       const splitText = doc.splitTextToSize(text, 170);
       doc.text(splitText, 20, 50);
 
+      doc.setFontSize(8);
+      doc.setTextColor(148, 163, 184);
+      doc.text('Documento gerado para fins orientativos pelo aplicativo CalculaCLT • Não substitui assessoria jurídica.', 105, 285, { align: 'center' });
+
       doc.save('Carta_Rescisao_CLT.pdf');
     }
 
@@ -2931,10 +2942,27 @@
       doc.text('MONTANTE FINANCEIRO TOTAL ESTIMADO', 18, y + 9);
       doc.text(formatBRL(c.grandTotal), 192, y + 9, { align: 'right' });
 
-      doc.setTextColor(148, 163, 184);
-      doc.setFontSize(8);
+      // Cláusula de Isenção de Responsabilidade Legal no PDF
+      y += 18;
+      doc.setFillColor(248, 250, 252);
+      doc.rect(14, y, 182, 18, 'F');
+      doc.setDrawColor(203, 213, 225);
+      doc.rect(14, y, 182, 18, 'D');
+
+      doc.setTextColor(71, 85, 105);
+      doc.setFontSize(7);
+      doc.setFont('helvetica', 'bold');
+      doc.text('AVISO LEGAL E ISENÇÃO DE RESPONSABILIDADE:', 17, y + 4.5);
       doc.setFont('helvetica', 'normal');
-      doc.text(`Documento gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')} pelo CalculaCLT.`, 105, 285, { align: 'center' });
+      doc.setFontSize(6.2);
+      doc.text('Este demonstrativo foi gerado automaticamente pelo aplicativo CalculaCLT para fins estritamente informativos e de simulação preliminar.', 17, y + 8.5);
+      doc.text('Não possui valor de homologação judicial, não substitui o Termo de Rescisão oficial (TRCT) emitido pela empresa e não constitui consultoria', 17, y + 12);
+      doc.text('jurídica ou contábil. O desenvolvedor e a plataforma isentam-se integralmente de responsabilidade por decisões, divergências ou acordos firmados.', 17, y + 15.5);
+
+      doc.setTextColor(148, 163, 184);
+      doc.setFontSize(7.5);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Documento emitido em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')} pelo CalculaCLT • Uso pessoal e informativo.`, 105, 290, { align: 'center' });
 
       doc.save(`Rescisao_CLT_${c.dismissalStr}.pdf`);
     }
