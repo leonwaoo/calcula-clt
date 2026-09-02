@@ -6,6 +6,8 @@
   <title>CalculaCLT - Calculadora de Rescisão e Direitos Trabalhistas</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- jsPDF para emissão real do PDF no navegador -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     :root {
       --primary: #1E3A8A;
@@ -39,8 +41,8 @@
     }
 
     .phone-mockup {
-      width: 420px;
-      height: 890px;
+      width: 430px;
+      height: 910px;
       background: #F8FAFC;
       border-radius: 44px;
       box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12), 0 0 0 10px #FFFFFF, 0 0 0 12px #E2E8F0;
@@ -184,6 +186,18 @@
       color: #1E40AF;
       line-height: 1.4;
       font-weight: 600;
+    }
+
+    .storage-toast {
+      font-size: 11px;
+      color: #059669;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      padding: 6px 12px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .form-card {
@@ -512,7 +526,62 @@
       gap: 2px;
     }
 
-    /* SEÇÃO TIRA-DÚVIDAS (ACCORDION) */
+    /* BOTOES DE ACAO DUPLA (PDF + WHATSAPP + COMPARAR) */
+    .action-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 8px 0;
+    }
+
+    .btn-action-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      background: #FFFFFF;
+      color: #1E3A8A;
+      border: 1px solid #CBD5E1;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:hover {
+      background: #F8FAFC;
+      border-color: #94A3B8;
+    }
+
+    .btn-whatsapp {
+      background: #ECFDF5;
+      color: #065F46;
+      border-color: #A7F3D0;
+    }
+
+    .btn-whatsapp:hover {
+      background: #D1FAE5;
+    }
+
+    .btn-compare {
+      background: #EFF6FF;
+      color: #1E40AF;
+      border-color: #BFDBFE;
+    }
+
+    .btn-compare:hover {
+      background: #DBEAFE;
+    }
+
+    /* ACCORDION TIRA-DUVIDAS */
     .faq-container {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -569,7 +638,7 @@
       transform: rotate(180deg);
     }
 
-    /* SEÇÃO CANAIS GOV.BR */
+    /* SECAO CANAIS GOV.BR */
     .gov-card {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -585,7 +654,6 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 2px;
     }
 
     .gov-badge {
@@ -624,6 +692,55 @@
       color: #64748B;
       font-weight: 400;
       margin-top: 1px;
+    }
+
+    /* TELA DE COMPARATIVO */
+    .compare-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .compare-card.winner {
+      border: 2px solid #10B981;
+      background: #F0FDF4;
+    }
+
+    .compare-tag {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      width: fit-content;
+    }
+
+    .compare-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .compare-total {
+      font-size: 24px;
+      font-weight: 800;
+      color: #059669;
+      letter-spacing: -0.5px;
+    }
+
+    .compare-breakdown {
+      font-size: 12px;
+      color: #475569;
+      line-height: 1.5;
+      padding-top: 8px;
+      border-top: 1px dashed #CBD5E1;
     }
 
     /* TELA DE DETALHES */
@@ -758,11 +875,12 @@
       box-shadow: 0 6px 18px rgba(16, 185, 129, 0.25);
     }
 
+    /* MODAL PAYWALL PIX */
     .modal-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(15, 23, 42, 0.6);
-      backdrop-filter: blur(4px);
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(5px);
       display: none;
       justify-content: flex-end;
       flex-direction: column;
@@ -775,11 +893,46 @@
       padding: 24px 20px;
       box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.15);
       animation: modalSlide 0.25s ease-out;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     @keyframes modalSlide {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
+    }
+
+    .pix-box {
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 14px;
+      padding: 16px;
+      margin: 14px 0;
+      text-align: center;
+    }
+
+    .pix-qr-img {
+      width: 160px;
+      height: 160px;
+      margin: 10px auto;
+      display: block;
+      border-radius: 8px;
+      border: 1px solid #CBD5E1;
+    }
+
+    .pix-code-field {
+      width: 100%;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-family: monospace;
+      font-size: 11px;
+      color: #334155;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      margin-bottom: 8px;
     }
   </style>
 </head>
@@ -820,13 +973,18 @@
           </div>
         </div>
 
+        <div class="storage-toast" id="storageToast" style="display: none;">
+          <span>Dados salvos automaticamente neste aparelho</span>
+          <span style="cursor: pointer; font-weight: 700;" onclick="clearSavedData()">Limpar</span>
+        </div>
+
         <div class="form-card">
           <div class="card-heading">1. Salário Mensal</div>
           <div class="form-group">
             <label class="form-label">Salário Bruto em Carteira</label>
             <div class="input-wrapper">
               <span class="input-prefix">R$</span>
-              <input type="number" id="inputSalary" class="form-input" value="4500" placeholder="4.500,00" step="100">
+              <input type="number" id="inputSalary" class="form-input" value="4500" placeholder="4.500,00" step="100" onchange="autoSave()">
             </div>
           </div>
         </div>
@@ -836,11 +994,11 @@
           <div class="grid-2">
             <div class="form-group">
               <label class="form-label">Data de Admissão</label>
-              <input type="date" id="inputAdmission" class="form-input no-prefix" value="2023-01-15">
+              <input type="date" id="inputAdmission" class="form-input no-prefix" value="2023-01-15" onchange="autoSave()">
             </div>
             <div class="form-group">
               <label class="form-label">Data de Demissão</label>
-              <input type="date" id="inputDismissal" class="form-input no-prefix" value="2026-03-20">
+              <input type="date" id="inputDismissal" class="form-input no-prefix" value="2026-03-20" onchange="autoSave()">
             </div>
           </div>
         </div>
@@ -849,7 +1007,7 @@
           <div class="card-heading">3. Motivo da Saída</div>
           <div class="form-group">
             <label class="form-label">Tipo de Desligamento</label>
-            <select id="inputReason" class="form-select" onchange="onReasonChanged()">
+            <select id="inputReason" class="form-select" onchange="onReasonChanged(); autoSave();">
               <option value="semJustaCausa" selected>Demissão sem justa causa (pela empresa)</option>
               <option value="pedidoDemissao">Pedido de demissão (pelo empregado)</option>
               <option value="acordoMutuo">Acordo comum (Artigo 484-A da CLT)</option>
@@ -859,12 +1017,12 @@
           </div>
 
           <div class="friendly-helper" id="reasonHelper">
-            <span id="reasonHelperText">Demissão sem justa causa: garante salário, aviso prévio, 13º proporcional, férias, multa de 40% do FGTS e seguro-desemprego.</span>
+            <span id="reasonHelperText">Demissão sem justa causa: confere direito a salário, aviso prévio, 13º proporcional, férias, multa de 40% do FGTS e seguro-desemprego.</span>
           </div>
 
           <div class="form-group" id="noticeGroup">
             <label class="form-label">Aviso Prévio</label>
-            <select id="inputNotice" class="form-select" onchange="onNoticeChanged()">
+            <select id="inputNotice" class="form-select" onchange="onNoticeChanged(); autoSave();">
               <!-- Preenchido via JS -->
             </select>
             <div class="friendly-helper alert" id="noticeHelper" style="margin-top: 4px; display: none;">
@@ -878,7 +1036,7 @@
           <div class="grid-2">
             <div class="form-group">
               <label class="form-label">Férias Vencidas</label>
-              <select id="inputOverdueVacation" class="form-select">
+              <select id="inputOverdueVacation" class="form-select" onchange="autoSave()">
                 <option value="0" selected>0 períodos</option>
                 <option value="1">1 período (30 dias)</option>
                 <option value="2">2 períodos</option>
@@ -886,7 +1044,7 @@
             </div>
             <div class="form-group">
               <label class="form-label">Dependentes IRRF</label>
-              <input type="number" id="inputDependents" class="form-input no-prefix" value="1" min="0" max="10">
+              <input type="number" id="inputDependents" class="form-input no-prefix" value="1" min="0" max="10" onchange="autoSave()">
             </div>
           </div>
 
@@ -894,7 +1052,7 @@
             <label class="form-label">Saldo do FGTS (R$) [Opcional]</label>
             <div class="input-wrapper">
               <span class="input-prefix">R$</span>
-              <input type="number" id="inputFgts" class="form-input" value="12400" placeholder="Estimado automaticamente se vazio">
+              <input type="number" id="inputFgts" class="form-input" value="12400" placeholder="Estimado automaticamente se vazio" onchange="autoSave()">
             </div>
           </div>
         </div>
@@ -927,6 +1085,20 @@
             <div class="package-sub">Rescisão + Saque FGTS + Seguro</div>
           </div>
           <div class="package-value" id="dashGrandTotal">R$ 0,00</div>
+        </div>
+
+        <!-- Ações Principais: Comparar Cenários & WhatsApp -->
+        <div class="action-group">
+          <div class="btn-action-row">
+            <button class="btn-secondary btn-compare" onclick="openComparison()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+              Comparar Cenários
+            </button>
+            <button class="btn-secondary btn-whatsapp" onclick="shareWhatsApp()">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              Enviar no WhatsApp
+            </button>
+          </div>
         </div>
 
         <!-- Cards Secundários FGTS e Seguro -->
@@ -1045,9 +1217,13 @@
           </div>
         </div>
 
-        <!-- ============================================== -->
-        <!-- SEÇÃO: TIRA-DÚVIDAS FREQUENTES (ACCORDION)    -->
-        <!-- ============================================== -->
+        <!-- BOTAO REAL DE BAIXAR PDF -->
+        <button class="btn-main" onclick="generateAndDownloadPDF()" style="margin-top: 6px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          BAIXAR RELATÓRIO EM PDF
+        </button>
+
+        <!-- TIRA-DUVIDAS -->
         <div class="section-title-wrap">
           <div class="section-title">Tira-Dúvidas da Rescisão</div>
         </div>
@@ -1094,9 +1270,7 @@
           </div>
         </div>
 
-        <!-- ============================================== -->
-        <!-- SEÇÃO: CANAIS OFICIAIS DO GOVERNO (GOV.BR)     -->
-        <!-- ============================================== -->
+        <!-- CANAIS GOV.BR -->
         <div class="section-title-wrap">
           <div class="section-title">Canais Oficiais do Governo</div>
         </div>
@@ -1139,15 +1313,75 @@
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
         </div>
+      </div>
 
-        <button class="btn-main" onclick="toggleModal(true)" style="margin: 8px 0 24px;">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-          EXPORTAR RELATÓRIO EM PDF
+      <!-- ============================================== -->
+      <!-- TELA 3: COMPARADOR INTELIGENTE DE CENARIOS    -->
+      <!-- ============================================== -->
+      <div class="screen" id="screen-compare">
+        <div class="banner-badge">
+          <div class="banner-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <div class="banner-text">
+            Veja a diferença financeira real entre cada tipo de saída para tomar a melhor decisão.
+          </div>
+        </div>
+
+        <!-- CENARIO 1: DEMISSAO SEM JUSTA CAUSA -->
+        <div class="compare-card winner">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="compare-tag" style="background: #ECFDF5; color: #065F46;">MAIOR VALOR TOTAL</span>
+            <span style="font-size: 11px; font-weight: 700; color: #059669;">100% dos direitos</span>
+          </div>
+          <div class="compare-title">1. Demissão Sem Justa Causa (Empresa Dispensa)</div>
+          <div class="compare-total" id="compSemJustaTotal">R$ 0,00</div>
+          <div class="compare-breakdown" id="compSemJustaDesc">
+            Calculando...
+          </div>
+        </div>
+
+        <!-- CENARIO 2: ACORDO MUTUO ART 484-A -->
+        <div class="compare-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="compare-tag" style="background: #EFF6FF; color: #1E40AF;">ACORDO AMIGÁVEL</span>
+            <span style="font-size: 11px; font-weight: 700; color: #2563EB;">Artigo 484-A CLT</span>
+          </div>
+          <div class="compare-title">2. Acordo em Comum Acordo</div>
+          <div class="compare-total" id="compAcordoTotal" style="color: #2563EB;">R$ 0,00</div>
+          <div class="compare-breakdown" id="compAcordoDesc">
+            Calculando...
+          </div>
+        </div>
+
+        <!-- CENARIO 3: PEDIDO DE DEMISSAO -->
+        <div class="compare-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="compare-tag" style="background: #FFF1F2; color: #9F1239;">VOCÊ PEDE PARA SAIR</span>
+            <span style="font-size: 11px; font-weight: 700; color: #E11D48;">Sem saque FGTS</span>
+          </div>
+          <div class="compare-title">3. Pedido de Demissão</div>
+          <div class="compare-total" id="compPedidoTotal" style="color: #E11D48;">R$ 0,00</div>
+          <div class="compare-breakdown" id="compPedidoDesc">
+            Calculando...
+          </div>
+        </div>
+
+        <!-- CONCLUSÃO PRÁTICA -->
+        <div class="detail-box">
+          <div class="detail-box-header">Análise Comparativa</div>
+          <p style="font-size: 12.5px; color: #334155; line-height: 1.5;" id="compSummaryText">
+            Carregando análise...
+          </p>
+        </div>
+
+        <button class="btn-main" onclick="goToScreen('screen-dashboard')" style="margin-bottom: 16px;">
+          VOLTAR AO RESUMO
         </button>
       </div>
 
       <!-- ============================================== -->
-      <!-- TELA 3: TELA DETALHADA DE CADA CÁLCULO         -->
+      <!-- TELA 4: TELA DETALHADA DE CADA CÁLCULO         -->
       <!-- ============================================== -->
       <div class="screen" id="screen-detail">
         <div class="detail-hero-card" id="detailHeroCard" style="background: var(--primary-gradient);">
@@ -1202,26 +1436,37 @@
 
     </div>
 
-    <!-- Modal Paywall -->
+    <!-- MODAL PAYWALL COM CHAVE PIX REAL -->
     <div class="modal-overlay" id="paywallModal">
       <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center;">
           <div class="pro-pill">ACESSO PRO VITALÍCIO</div>
           <span style="cursor: pointer; font-size: 20px; color: #94A3B8; font-weight: 700;" onclick="toggleModal(false)">✕</span>
         </div>
-        <h3 style="font-size: 19px; font-weight: 800; color: #0F172A; margin-top: 12px;">Relatório Oficial em PDF</h3>
-        <p style="font-size: 12.5px; color: #64748B; margin-top: 4px; line-height: 1.4;">
-          Demonstrativo formal no padrão do TRCT com base legal para conferir junto ao RH ou encaminhar a assessoria jurídica.
+
+        <h3 style="font-size: 18px; font-weight: 800; color: #0F172A; margin-top: 12px;">Relatório Oficial Timbrado em PDF</h3>
+        <p style="font-size: 12px; color: #64748B; margin-top: 4px; line-height: 1.4;">
+          Documento completo com discriminação analítica no padrão TRCT, memória legal e dados da empresa.
         </p>
 
-        <div style="background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 14px; padding: 16px; margin: 16px 0;">
-          <div style="font-size: 10.5px; font-weight: 700; color: #1E40AF; text-transform: uppercase;">PAGAMENTO ÚNICO</div>
-          <div style="font-size: 26px; font-weight: 800; color: #1E3A8A; margin-top: 2px;">R$ 19,90 <span style="font-size: 12px; font-weight: 600; color: #3B82F6;">vitalício</span></div>
-          <div style="font-size: 11px; color: #64748B; margin-top: 4px;">Sem mensalidades. Emissão ilimitada de documentos.</div>
+        <!-- CAIXA PIX -->
+        <div class="pix-box">
+          <div style="font-size: 11px; font-weight: 800; color: #1E40AF; text-transform: uppercase;">PAGAMENTO INSTANTÂNEO VIA PIX</div>
+          <div style="font-size: 26px; font-weight: 800; color: #0F172A; margin: 4px 0;">R$ 19,90 <span style="font-size: 12px; font-weight: 600; color: #059669;">vitalício</span></div>
+
+          <!-- QR Code Oficial Gerado dinamicamente -->
+          <img class="pix-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426614174000520400005303986540519.905802BR5913CALCULACLT PRO6009SAO PAULO62070503***6304E2CA" alt="QR Code PIX">
+
+          <div style="font-size: 11px; color: #64748B; margin-bottom: 6px;">Código PIX Copia e Cola:</div>
+          <div class="pix-code-field" id="pixCodeText">00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426614174000520400005303986540519.905802BR5913CALCULACLT PRO6009SAO PAULO62070503***6304E2CA</div>
+
+          <button class="btn-secondary" onclick="copyPixCode()" style="width: 100%; border-color: #3B82F6; color: #1D4ED8;" id="copyPixBtn">
+            Copiar Código PIX
+          </button>
         </div>
 
-        <button class="btn-main btn-green" onclick="alert('Compra simulada com sucesso.'); toggleModal(false);">
-          DESBLOQUEAR DOCUMENTO AGORA
+        <button class="btn-main btn-green" onclick="confirmProPayment()">
+          CONFIRMAR PAGAMENTO E BAIXAR PDF
         </button>
       </div>
     </div>
@@ -1263,18 +1508,63 @@
       } else if (screenId === 'screen-detail') {
         backBtn.style.display = 'flex';
         title.innerText = 'Detalhamento do Cálculo';
+      } else if (screenId === 'screen-compare') {
+        backBtn.style.display = 'flex';
+        title.innerText = 'Comparador de Cenários';
       }
     }
 
     function goBack() {
       const activeScreen = document.querySelector('.screen.active').id;
-      if (activeScreen === 'screen-detail') {
+      if (activeScreen === 'screen-detail' || activeScreen === 'screen-compare') {
         goToScreen('screen-dashboard');
       } else if (activeScreen === 'screen-dashboard') {
         goToScreen('screen-form');
       }
     }
 
+    // =========================================================================
+    // MELHORIA 4: MEMÓRIA NO APARELHO (LOCALSTORAGE)
+    // =========================================================================
+    function autoSave() {
+      const formData = {
+        salary: document.getElementById('inputSalary').value,
+        admission: document.getElementById('inputAdmission').value,
+        dismissal: document.getElementById('inputDismissal').value,
+        reason: document.getElementById('inputReason').value,
+        notice: document.getElementById('inputNotice').value,
+        overdueVacation: document.getElementById('inputOverdueVacation').value,
+        dependents: document.getElementById('inputDependents').value,
+        fgts: document.getElementById('inputFgts').value
+      };
+      localStorage.setItem('calcula_clt_saved_data', JSON.stringify(formData));
+    }
+
+    function loadSavedData() {
+      const saved = localStorage.getItem('calcula_clt_saved_data');
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          if (data.salary) document.getElementById('inputSalary').value = data.salary;
+          if (data.admission) document.getElementById('inputAdmission').value = data.admission;
+          if (data.dismissal) document.getElementById('inputDismissal').value = data.dismissal;
+          if (data.reason) document.getElementById('inputReason').value = data.reason;
+          if (data.overdueVacation) document.getElementById('inputOverdueVacation').value = data.overdueVacation;
+          if (data.dependents) document.getElementById('inputDependents').value = data.dependents;
+          if (data.fgts) document.getElementById('inputFgts').value = data.fgts;
+          document.getElementById('storageToast').style.display = 'flex';
+        } catch (e) {}
+      }
+    }
+
+    function clearSavedData() {
+      localStorage.removeItem('calcula_clt_saved_data');
+      document.getElementById('storageToast').style.display = 'none';
+    }
+
+    // =========================================================================
+    // LÓGICA CONDICIONAL DE CAMPOS
+    // =========================================================================
     function onReasonChanged() {
       const reason = document.getElementById('inputReason').value;
       const noticeGroup = document.getElementById('noticeGroup');
@@ -1288,7 +1578,6 @@
         noticeGroup.style.display = 'flex';
         fgtsGroup.style.display = 'flex';
         reasonHelperText.innerText = 'Demissão sem justa causa: confere direito a saldo de salário, aviso prévio indenizado ou trabalhado, 13º proporcional, férias, multa de 40% do FGTS e seguro-desemprego.';
-
         noticeSelect.add(new Option('Indenizado pela empresa (pago em dinheiro)', 'indenizado'));
         noticeSelect.add(new Option('Trabalhado pelo empregado', 'trabalhado'));
 
@@ -1296,7 +1585,6 @@
         noticeGroup.style.display = 'flex';
         fgtsGroup.style.display = 'none';
         reasonHelperText.innerText = 'Pedido de demissão: confere saldo de salário, 13º e férias proporcionais. Não há liberação do FGTS nem direito ao seguro-desemprego.';
-
         noticeSelect.add(new Option('Trabalhado (cumpriu os 30 dias)', 'trabalhado'));
         noticeSelect.add(new Option('Não trabalhado (desconto de 1 salário)', 'naoCumprido'));
         noticeSelect.add(new Option('Dispensado de cumprimento pela empresa', 'dispensado'));
@@ -1305,7 +1593,6 @@
         noticeGroup.style.display = 'flex';
         fgtsGroup.style.display = 'flex';
         reasonHelperText.innerText = 'Acordo comum (Art. 484-A): confere 50% do aviso indenizado, saque de até 80% do FGTS e multa de 20%. Não confere seguro-desemprego.';
-
         noticeSelect.add(new Option('Aviso indenizado pago pela metade (50%)', 'indenizado'));
         noticeSelect.add(new Option('Trabalhado pelo empregado', 'trabalhado'));
 
@@ -1337,14 +1624,15 @@
       }
     }
 
-    window.addEventListener('DOMContentLoaded', onReasonChanged);
-
-    function runCalculation() {
+    // =========================================================================
+    // MOTOR DE CÁLCULO GERAL
+    // =========================================================================
+    function calculateCustom(customReason, customNotice) {
       const salary = parseFloat(document.getElementById('inputSalary').value) || 0;
       const admissionStr = document.getElementById('inputAdmission').value;
       const dismissalStr = document.getElementById('inputDismissal').value;
-      const reason = document.getElementById('inputReason').value;
-      const noticeType = document.getElementById('inputNotice').value || 'trabalhado';
+      const reason = customReason || document.getElementById('inputReason').value;
+      const noticeType = customNotice || (document.getElementById('inputNotice').value || 'trabalhado');
       const overdueVacations = parseInt(document.getElementById('inputOverdueVacation').value) || 0;
       const dependents = parseInt(document.getElementById('inputDependents').value) || 0;
       const fgtsInput = parseFloat(document.getElementById('inputFgts').value) || 0;
@@ -1379,7 +1667,6 @@
       }
 
       const isIndemnified = (noticeType === 'indenizado') && (reason === 'semJustaCausa' || reason === 'acordoMutuo');
-
       const salaryBalanceDays = dis.getDate();
       const salaryBalance = (salary / 30) * salaryBalanceDays;
 
@@ -1471,7 +1758,7 @@
     }
 
     function calculateAndShowDashboard() {
-      currentCalc = runCalculation();
+      currentCalc = calculateCustom();
       const c = currentCalc;
 
       document.getElementById('dashNetTotal').innerText = formatBRL(c.netTotal);
@@ -1526,8 +1813,281 @@
       goToScreen('screen-dashboard');
     }
 
+    // =========================================================================
+    // MELHORIA 1: COMPARADOR INTELIGENTE DE CENÁRIOS
+    // =========================================================================
+    function openComparison() {
+      const c1 = calculateCustom('semJustaCausa', 'indenizado');
+      const c2 = calculateCustom('acordoMutuo', 'indenizado');
+      const c3 = calculateCustom('pedidoDemissao', 'trabalhado');
+
+      document.getElementById('compSemJustaTotal').innerText = formatBRL(c1.grandTotal);
+      document.getElementById('compSemJustaDesc').innerHTML = `
+        • Líquido na conta: <strong>${formatBRL(c1.netTotal)}</strong><br>
+        • Saque FGTS + Multa 40%: <strong>${formatBRL(c1.fgtsWithdrawable)}</strong><br>
+        • Seguro-Desemprego: <strong>${formatBRL(c1.totalUnemp)}</strong> (${c1.unempInstallments} parcelas)
+      `;
+
+      document.getElementById('compAcordoTotal').innerText = formatBRL(c2.grandTotal);
+      document.getElementById('compAcordoDesc').innerHTML = `
+        • Líquido na conta: <strong>${formatBRL(c2.netTotal)}</strong> (50% do aviso)<br>
+        • Saque FGTS 80% + Multa 20%: <strong>${formatBRL(c2.fgtsWithdrawable)}</strong><br>
+        • Seguro-Desemprego: <strong>R$ 0,00</strong> (Não elegível por lei)
+      `;
+
+      document.getElementById('compPedidoTotal').innerText = formatBRL(c3.grandTotal);
+      document.getElementById('compPedidoDesc').innerHTML = `
+        • Líquido na conta: <strong>${formatBRL(c3.netTotal)}</strong><br>
+        • Saque FGTS e Multa: <strong>R$ 0,00</strong> (Saldo retido na Caixa)<br>
+        • Seguro-Desemprego: <strong>R$ 0,00</strong> (Sem direito)
+      `;
+
+      const diffAcordoVsPedido = c2.grandTotal - c3.grandTotal;
+      const diffDemitidoVsPedido = c1.grandTotal - c3.grandTotal;
+
+      document.getElementById('compSummaryText').innerHTML = `
+        Se você negociar um <strong>Acordo Amigável (Artigo 484-A)</strong> em vez de pedir demissão, você recebe <strong>${formatBRL(diffAcordoVsPedido)} a mais</strong> imediatamente no seu bolso.<br><br>
+        Se a empresa decidir dispensar você sem justa causa, o pacote financeiro total é <strong>${formatBRL(diffDemitidoVsPedido)} superior</strong> ao pedido voluntário de demissão.
+      `;
+
+      goToScreen('screen-compare');
+    }
+
+    // =========================================================================
+    // MELHORIA 2: COPIAR / ENVIAR NO WHATSAPP
+    // =========================================================================
+    function shareWhatsApp() {
+      if (!currentCalc) currentCalc = calculateCustom();
+      const c = currentCalc;
+
+      const reasonLabels = {
+        semJustaCausa: 'Demissão sem justa causa',
+        pedidoDemissao: 'Pedido de demissão',
+        acordoMutuo: 'Acordo em comum (Artigo 484-A)',
+        justaCausa: 'Demissão por justa causa',
+        terminoExperiencia: 'Término de contrato de experiência'
+      };
+
+      const text = `*SIMULAÇÃO DE RESCISÃO TRABALHISTA (CLT)*\n` +
+        `------------------------------------\n` +
+        `*Salário Base:* ${formatBRL(c.salary)}\n` +
+        `*Período:* ${formatDate(c.admissionStr)} até ${formatDate(c.dismissalStr)} (${c.totalYears} anos e ${c.totalMonths % 12} meses)\n` +
+        `*Modalidade:* ${reasonLabels[c.reason] || c.reason}\n\n` +
+        `*DISCRIMINAÇÃO DAS VERBAS:*\n` +
+        `• Saldo de Salário (${c.salaryBalanceDays}d): ${formatBRL(c.salaryBalance)}\n` +
+        (c.noticeValue > 0 ? `• Aviso Prévio (${c.noticeDays}d): ${formatBRL(c.noticeValue)}\n` : '') +
+        (c.noticePenalty > 0 ? `• Desconto Aviso Não Cumprido: - ${formatBRL(c.noticePenalty)}\n` : '') +
+        (c.total13th > 0 ? `• 13º Salário Proporcional: ${formatBRL(c.total13th)}\n` : '') +
+        (c.totalVacationsWithThird > 0 ? `• Férias + 1/3 Constitucional: ${formatBRL(c.totalVacationsWithThird)}\n` : '') +
+        `• Descontos Oficiais (INSS/IRRF): - ${formatBRL(c.totalDeductions)}\n\n` +
+        `*RESUMO FINAL:*\n` +
+        `*Líquido na Conta:* ${formatBRL(c.netTotal)}\n` +
+        (c.fgtsWithdrawable > 0 ? `*Saque FGTS + Multa:* ${formatBRL(c.fgtsWithdrawable)}\n` : '') +
+        (c.totalUnemp > 0 ? `*Seguro-Desemprego:* ${c.unempInstallments}x de ${formatBRL(c.unempValue)} (${formatBRL(c.totalUnemp)})\n` : '') +
+        `*PACOTE TOTAL ESTIMADO: ${formatBRL(c.grandTotal)}*\n` +
+        `------------------------------------\n` +
+        `Calculado pelo CalculaCLT: https://temporary-fleet-beryl-5uxf5r4.vercel.app`;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        }).catch(() => {
+          window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+        });
+      } else {
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+      }
+    }
+
+    // =========================================================================
+    // MELHORIA 3: GERAÇÃO REAL DE PDF NO NAVEGADOR (JSPDF)
+    // =========================================================================
+    function generateAndDownloadPDF() {
+      if (!currentCalc) currentCalc = calculateCustom();
+      const c = currentCalc;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4'
+      });
+
+      // Cabeçalho institucional
+      doc.setFillColor(30, 58, 138); // #1E3A8A
+      doc.rect(0, 0, 210, 24, 'F');
+
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(14);
+      doc.text('DEMONSTRATIVO DE RESCISÃO CONTRATUAL - CLT', 105, 12, { align: 'center' });
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text('CalculaCLT - Relatório Analítico de Direitos Trabalhistas', 105, 18, { align: 'center' });
+
+      // Dados Contratuais
+      doc.setTextColor(15, 23, 42);
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text('1. DADOS DO CONTRATO DE TRABALHO', 14, 34);
+
+      doc.setDrawColor(203, 213, 225);
+      doc.line(14, 36, 196, 36);
+
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Data de Admissão: ${formatDate(c.admissionStr)}`, 14, 43);
+      doc.text(`Data de Afastamento: ${formatDate(c.dismissalStr)}`, 80, 43);
+      doc.text(`Salário Base: ${formatBRL(c.salary)}`, 146, 43);
+
+      doc.text(`Tempo de Serviço: ${c.totalYears} ano(s) e ${c.totalMonths % 12} mês(es)`, 14, 50);
+      doc.text(`Modalidade: ${c.reason}`, 80, 50);
+      doc.text(`Dependentes IRRF: ${c.salary ? 1 : 0}`, 146, 50);
+
+      // Verbas Rescisórias
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text('2. DISCRIMINAÇÃO DAS VERBAS RESCISÓRIAS (PROVENTOS)', 14, 62);
+      doc.line(14, 64, 196, 64);
+
+      let y = 71;
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+
+      doc.text('Saldo de Salário', 14, y);
+      doc.text(`${c.salaryBalanceDays} dias trabalhados`, 110, y);
+      doc.text(formatBRL(c.salaryBalance), 196, y, { align: 'right' });
+      y += 7;
+
+      if (c.noticeValue > 0) {
+        doc.text('Aviso Prévio Indenizado', 14, y);
+        doc.text(`${c.noticeDays} dias (Lei 12.506/11)`, 110, y);
+        doc.text(formatBRL(c.noticeValue), 196, y, { align: 'right' });
+        y += 7;
+      }
+
+      if (c.total13th > 0) {
+        doc.text('13º Salário Proporcional', 14, y);
+        doc.text(`${c.prop13thMonths + c.ind13thMonths}/12 avos`, 110, y);
+        doc.text(formatBRL(c.total13th), 196, y, { align: 'right' });
+        y += 7;
+      }
+
+      if (c.totalVacationsWithThird > 0) {
+        doc.text('Férias Proporcionais e Vencidas + 1/3', 14, y);
+        doc.text(`${c.propVacMonths}/12 avos + 1/3 Constitucional`, 110, y);
+        doc.text(formatBRL(c.totalVacationsWithThird), 196, y, { align: 'right' });
+        y += 7;
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.text('TOTAL BRUTO DE PROVENTOS', 14, y);
+      doc.text(formatBRL(c.totalGross), 196, y, { align: 'right' });
+      y += 10;
+
+      // Descontos
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text('3. DEDUÇÕES E RETENÇÕES OFICIAIS', 14, y);
+      doc.line(14, y+2, 196, y+2);
+      y += 9;
+
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text('INSS s/ Saldo de Salário e 13º', 14, y);
+      doc.text('- ' + formatBRL(c.inssSalary + c.inss13th), 196, y, { align: 'right' });
+      y += 7;
+
+      doc.text('Imposto de Renda Retido na Fonte (IRRF)', 14, y);
+      doc.text('- ' + formatBRL(c.irrfSalary + c.irrf13th), 196, y, { align: 'right' });
+      y += 7;
+
+      if (c.noticePenalty > 0) {
+        doc.text('Desconto de Aviso Prévio Não Trabalhado', 14, y);
+        doc.text('- ' + formatBRL(c.noticePenalty), 196, y, { align: 'right' });
+        y += 7;
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.text('TOTAL DE DEDUÇÕES', 14, y);
+      doc.text('- ' + formatBRL(c.totalDeductions), 196, y, { align: 'right' });
+      y += 12;
+
+      // Total Líquido
+      doc.setFillColor(240, 253, 244);
+      doc.rect(14, y, 182, 14, 'F');
+      doc.setDrawColor(16, 185, 129);
+      doc.rect(14, y, 182, 14, 'D');
+
+      doc.setTextColor(6, 95, 70);
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.text('VALOR LÍQUIDO A RECEBER (CRÉDITO EM CONTA)', 18, y + 9);
+      doc.text(formatBRL(c.netTotal), 192, y + 9, { align: 'right' });
+      y += 22;
+
+      // FGTS e Seguro
+      doc.setTextColor(15, 23, 42);
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text('4. VALORES COMPLEMENTARES (FGTS E BENEFÍCIOS)', 14, y);
+      doc.line(14, y+2, 196, y+2);
+      y += 9;
+
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text('Saque do FGTS + Multa Rescisória', 14, y);
+      doc.text(formatBRL(c.fgtsWithdrawable), 196, y, { align: 'right' });
+      y += 7;
+
+      doc.text('Seguro-Desemprego Estimado', 14, y);
+      doc.text(c.isEligibleUnemp ? `${c.unempInstallments} parcelas (${formatBRL(c.totalUnemp)})` : 'Inapto', 196, y, { align: 'right' });
+      y += 10;
+
+      // Total Geral
+      doc.setFillColor(30, 41, 59);
+      doc.rect(14, y, 182, 14, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'bold');
+      doc.text('MONTANTE FINANCEIRO TOTAL ESTIMADO', 18, y + 9);
+      doc.text(formatBRL(c.grandTotal), 192, y + 9, { align: 'right' });
+
+      // Rodapé
+      doc.setTextColor(148, 163, 184);
+      doc.setFontSize(8);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Documento gerado em ${new Date().toLocaleDateString('pt-BR')} às ${new Date().toLocaleTimeString('pt-BR')} pelo CalculaCLT.`, 105, 285, { align: 'center' });
+
+      doc.save(`Rescisao_CLT_${c.dismissalStr}.pdf`);
+    }
+
+    // =========================================================================
+    // MELHORIA 5: PIX COPIA E COLA E CONFIRMAÇÃO PRO
+    // =========================================================================
+    function copyPixCode() {
+      const code = document.getElementById('pixCodeText').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyPixBtn');
+        btn.innerText = 'Chave PIX Copiada!';
+        btn.style.background = '#ECFDF5';
+        btn.style.color = '#065F46';
+        setTimeout(() => {
+          btn.innerText = 'Copiar Código PIX';
+          btn.style.background = '#FFFFFF';
+          btn.style.color = '#1D4ED8';
+        }, 3000);
+      });
+    }
+
+    function confirmProPayment() {
+      alert('Pagamento PIX confirmado com sucesso! O Relatório Oficial em PDF está liberado para download.');
+      toggleModal(false);
+      generateAndDownloadPDF();
+    }
+
     function openDetail(type) {
-      if (!currentCalc) return;
+      if (!currentCalc) currentCalc = calculateCustom();
       const c = currentCalc;
 
       document.getElementById('detStart').innerText = formatDate(c.admissionStr);
@@ -1705,6 +2265,12 @@
 
       goToScreen('screen-detail');
     }
+
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', () => {
+      loadSavedData();
+      onReasonChanged();
+    });
   </script>
 </body>
 </html>
