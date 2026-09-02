@@ -1,0 +1,21 @@
+# Arquivos e diretórios de build
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+
+# Arquivos de IDE
+.idea/
+.vscode/
+*.iml
+*.iws
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Chaves privadas e segredos
+*.jks
+*.keystore
+key.properties

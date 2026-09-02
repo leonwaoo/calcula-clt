@@ -1,0 +1,13 @@
+name: calcula_clt
+description: "CalculaCLT - Calculadora de Rescisão e Direitos Trabalhistas CLT"
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  intl: ^0.19.0
+
+dev_dependencies:
+  test: ^1.25.0
