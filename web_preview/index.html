@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CalculaCLT - Calculadora de Rescisão e Direitos Trabalhistas</title>
+
+  <!-- PWA Meta Tags -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1E3A8A">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="CalculaCLT">
+  <link rel="apple-touch-icon" href="icon-192.png">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <!-- jsPDF para emissão real do PDF no navegador -->
@@ -42,7 +52,7 @@
 
     .phone-mockup {
       width: 430px;
-      height: 910px;
+      height: 920px;
       background: #F8FAFC;
       border-radius: 44px;
       box-shadow: 0 20px 60px rgba(15, 23, 42, 0.12), 0 0 0 10px #FFFFFF, 0 0 0 12px #E2E8F0;
@@ -131,6 +141,12 @@
       letter-spacing: -0.4px;
     }
 
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
     .pro-pill {
       background: #F8FAFC;
       color: #1E3A8A;
@@ -141,6 +157,18 @@
       border: 1px solid #CBD5E1;
       cursor: pointer;
       letter-spacing: 0.5px;
+    }
+
+    .pwa-install-btn {
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
     }
 
     .screen-container {
@@ -385,6 +413,74 @@
       color: #60A5FA;
     }
 
+    /* WIDGET DOS 10 DIAS / MULTA ARTIGO 477 */
+    .deadline-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .deadline-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .deadline-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #1E3A8A;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .deadline-badge {
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .deadline-badge.ontime {
+      background: #ECFDF5;
+      color: #065F46;
+    }
+
+    .deadline-badge.late {
+      background: #FEF2F2;
+      color: #991B1B;
+    }
+
+    .deadline-date {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .deadline-toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      padding-top: 8px;
+      border-top: 1px dashed #E2E8F0;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+    }
+
+    .deadline-checkbox {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
     .stats-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -526,12 +622,12 @@
       gap: 2px;
     }
 
-    /* BOTOES DE ACAO DUPLA (PDF + WHATSAPP + COMPARAR) */
+    /* BOTOES DE ACAO */
     .action-group {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin: 8px 0;
+      margin: 4px 0;
     }
 
     .btn-action-row {
@@ -546,7 +642,7 @@
       border: 1px solid #CBD5E1;
       padding: 12px 14px;
       border-radius: 12px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
@@ -579,6 +675,16 @@
 
     .btn-compare:hover {
       background: #DBEAFE;
+    }
+
+    .btn-letter {
+      background: #FAF5FF;
+      color: #6B21A8;
+      border-color: #E9D5FF;
+    }
+
+    .btn-letter:hover {
+      background: #F3E8FF;
     }
 
     /* ACCORDION TIRA-DUVIDAS */
@@ -638,7 +744,7 @@
       transform: rotate(180deg);
     }
 
-    /* SECAO CANAIS GOV.BR */
+    /* CANAIS GOV.BR */
     .gov-card {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -723,7 +829,7 @@
     }
 
     .compare-title {
-      font-size: 15px;
+      font-size: 14.5px;
       font-weight: 800;
       color: #0F172A;
     }
@@ -741,6 +847,19 @@
       line-height: 1.5;
       padding-top: 8px;
       border-top: 1px dashed #CBD5E1;
+    }
+
+    /* TELA DE CARTA */
+    .letter-preview-box {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: #1E293B;
+      white-space: pre-wrap;
+      font-family: monospace;
     }
 
     /* TELA DE DETALHES */
@@ -952,8 +1071,11 @@
         </div>
         <div class="app-title" id="headerTitle">Calcula<span style="color: #059669;">CLT</span></div>
       </div>
-      <div class="pro-pill" onclick="toggleModal(true)">
-        VERSÃO PRO
+      <div class="header-actions">
+        <button class="pwa-install-btn" id="pwaInstallBtn" onclick="installPWA()">Instalar App</button>
+        <div class="pro-pill" onclick="toggleModal(true)">
+          VERSÃO PRO
+        </div>
       </div>
     </div>
 
@@ -1078,6 +1200,19 @@
           </div>
         </div>
 
+        <!-- WIDGET PRAZO DE PAGAMENTO (10 DIAS) + MULTA ART. 477 -->
+        <div class="deadline-card">
+          <div class="deadline-header">
+            <div class="deadline-title">Prazo Limite de Pagamento (CLT)</div>
+            <span class="deadline-badge ontime" id="deadlineBadge">Até 10 dias corridos</span>
+          </div>
+          <div class="deadline-date" id="deadlineDate">30/03/2026</div>
+          <label class="deadline-toggle-wrap">
+            <input type="checkbox" class="deadline-checkbox" id="checkLatePenalty" onchange="toggleLatePenalty()">
+            <span>A empresa atrasou o pagamento? (+1 Salário de Multa - Art. 477)</span>
+          </label>
+        </div>
+
         <!-- Pacote Total -->
         <div class="package-banner">
           <div>
@@ -1087,16 +1222,26 @@
           <div class="package-value" id="dashGrandTotal">R$ 0,00</div>
         </div>
 
-        <!-- Ações Principais: Comparar Cenários & WhatsApp -->
+        <!-- Ações Principais: Comparar Cenários, Carta e WhatsApp -->
         <div class="action-group">
           <div class="btn-action-row">
             <button class="btn-secondary btn-compare" onclick="openComparison()">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
-              Comparar Cenários
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>
+              Comparar Tipos
             </button>
+            <button class="btn-secondary btn-letter" onclick="openLetterGenerator()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              Gerar Carta
+            </button>
+          </div>
+          <div class="btn-action-row">
             <button class="btn-secondary btn-whatsapp" onclick="shareWhatsApp()">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
               Enviar no WhatsApp
+            </button>
+            <button class="btn-secondary" onclick="shareCalculationLink()" id="btnShareLink">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Copiar Link
             </button>
           </div>
         </div>
@@ -1328,7 +1473,6 @@
           </div>
         </div>
 
-        <!-- CENARIO 1: DEMISSAO SEM JUSTA CAUSA -->
         <div class="compare-card winner">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span class="compare-tag" style="background: #ECFDF5; color: #065F46;">MAIOR VALOR TOTAL</span>
@@ -1341,7 +1485,6 @@
           </div>
         </div>
 
-        <!-- CENARIO 2: ACORDO MUTUO ART 484-A -->
         <div class="compare-card">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span class="compare-tag" style="background: #EFF6FF; color: #1E40AF;">ACORDO AMIGÁVEL</span>
@@ -1354,7 +1497,6 @@
           </div>
         </div>
 
-        <!-- CENARIO 3: PEDIDO DE DEMISSAO -->
         <div class="compare-card">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <span class="compare-tag" style="background: #FFF1F2; color: #9F1239;">VOCÊ PEDE PARA SAIR</span>
@@ -1367,7 +1509,6 @@
           </div>
         </div>
 
-        <!-- CONCLUSÃO PRÁTICA -->
         <div class="detail-box">
           <div class="detail-box-header">Análise Comparativa</div>
           <p style="font-size: 12.5px; color: #334155; line-height: 1.5;" id="compSummaryText">
@@ -1381,7 +1522,75 @@
       </div>
 
       <!-- ============================================== -->
-      <!-- TELA 4: TELA DETALHADA DE CADA CÁLCULO         -->
+      <!-- TELA 4: GERADOR DE CARTA DE DEMISSAO / ACORDO -->
+      <!-- ============================================== -->
+      <div class="screen" id="screen-letter">
+        <div class="banner-badge">
+          <div class="banner-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="banner-text">
+            Carta formal pronta nos padrões da CLT. Preencha seus dados para copiar ou baixar em PDF.
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="card-heading">Dados para o Documento</div>
+          <div class="form-group">
+            <label class="form-label">Seu Nome Completo</label>
+            <input type="text" id="letterName" class="form-input no-prefix" value="Nome do Trabalhador" oninput="updateLetterPreview()">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Seu CPF</label>
+              <input type="text" id="letterCpf" class="form-input no-prefix" value="000.000.000-00" oninput="updateLetterPreview()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Seu Cargo</label>
+              <input type="text" id="letterRole" class="form-input no-prefix" value="Assistente" oninput="updateLetterPreview()">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nome da Empresa</label>
+            <input type="text" id="letterCompany" class="form-input no-prefix" value="Nome da Empresa LTDA" oninput="updateLetterPreview()">
+          </div>
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label">Sua Cidade e UF</label>
+              <input type="text" id="letterCity" class="form-input no-prefix" value="São Paulo - SP" oninput="updateLetterPreview()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tipo da Carta</label>
+              <select id="letterType" class="form-select" onchange="updateLetterPreview()">
+                <option value="demissaoCumprir" selected>Demissão (Cumprindo aviso de 30 dias)</option>
+                <option value="demissaoDispensar">Demissão (Pedindo dispensa do aviso)</option>
+                <option value="acordoMutuo">Proposta de Acordo Mútuo (Art. 484-A)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-card">
+          <div class="card-heading">Prévia da Carta</div>
+          <div class="letter-preview-box" id="letterPreviewText"></div>
+        </div>
+
+        <div class="btn-action-row">
+          <button class="btn-secondary" onclick="copyLetterText()" id="btnCopyLetter">
+            Copiar Texto
+          </button>
+          <button class="btn-main btn-green" onclick="downloadLetterPDF()" style="box-shadow: none;">
+            Baixar Carta PDF
+          </button>
+        </div>
+
+        <button class="btn-main" onclick="goToScreen('screen-dashboard')" style="margin-bottom: 16px;">
+          VOLTAR AO RESUMO
+        </button>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- TELA 5: TELA DETALHADA DE CADA CÁLCULO         -->
       <!-- ============================================== -->
       <div class="screen" id="screen-detail">
         <div class="detail-hero-card" id="detailHeroCard" style="background: var(--primary-gradient);">
@@ -1454,7 +1663,6 @@
           <div style="font-size: 11px; font-weight: 800; color: #1E40AF; text-transform: uppercase;">PAGAMENTO INSTANTÂNEO VIA PIX</div>
           <div style="font-size: 26px; font-weight: 800; color: #0F172A; margin: 4px 0;">R$ 19,90 <span style="font-size: 12px; font-weight: 600; color: #059669;">vitalício</span></div>
 
-          <!-- QR Code Oficial Gerado dinamicamente -->
           <img class="pix-qr-img" src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=00020126580014br.gov.bcb.pix0136123e4567-e89b-12d3-a456-426614174000520400005303986540519.905802BR5913CALCULACLT PRO6009SAO PAULO62070503***6304E2CA" alt="QR Code PIX">
 
           <div style="font-size: 11px; color: #64748B; margin-bottom: 6px;">Código PIX Copia e Cola:</div>
@@ -1474,6 +1682,7 @@
 
   <script>
     let currentCalc = null;
+    let deferredInstallPrompt = null;
 
     function formatBRL(val) {
       return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -1511,12 +1720,15 @@
       } else if (screenId === 'screen-compare') {
         backBtn.style.display = 'flex';
         title.innerText = 'Comparador de Cenários';
+      } else if (screenId === 'screen-letter') {
+        backBtn.style.display = 'flex';
+        title.innerText = 'Gerador de Carta';
       }
     }
 
     function goBack() {
       const activeScreen = document.querySelector('.screen.active').id;
-      if (activeScreen === 'screen-detail' || activeScreen === 'screen-compare') {
+      if (activeScreen === 'screen-detail' || activeScreen === 'screen-compare' || activeScreen === 'screen-letter') {
         goToScreen('screen-dashboard');
       } else if (activeScreen === 'screen-dashboard') {
         goToScreen('screen-form');
@@ -1524,7 +1736,70 @@
     }
 
     // =========================================================================
-    // MELHORIA 4: MEMÓRIA NO APARELHO (LOCALSTORAGE)
+    // PWA: REGISTRO DE SERVICE WORKER E BOTÃO DE INSTALAÇÃO
+    // =========================================================================
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredInstallPrompt = e;
+      const btn = document.getElementById('pwaInstallBtn');
+      if (btn) btn.style.display = 'block';
+    });
+
+    function installPWA() {
+      if (deferredInstallPrompt) {
+        deferredInstallPrompt.prompt();
+        deferredInstallPrompt.userChoice.then(() => {
+          deferredInstallPrompt = null;
+          document.getElementById('pwaInstallBtn').style.display = 'none';
+        });
+      } else {
+        alert('Para instalar no iPhone: toque no ícone de Compartilhar (quadrado com seta) do Safari e escolha "Adicionar à Tela de Início".');
+      }
+    }
+
+    // =========================================================================
+    // URL PARAMETERS & COMPARTILHAMENTO DE LINK
+    // =========================================================================
+    function loadFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.has('s')) document.getElementById('inputSalary').value = params.get('s');
+      if (params.has('adm')) document.getElementById('inputAdmission').value = params.get('adm');
+      if (params.has('dis')) document.getElementById('inputDismissal').value = params.get('dis');
+      if (params.has('r')) document.getElementById('inputReason').value = params.get('r');
+      if (params.has('s')) {
+        calculateAndShowDashboard();
+      }
+    }
+
+    function shareCalculationLink() {
+      const s = document.getElementById('inputSalary').value;
+      const adm = document.getElementById('inputAdmission').value;
+      const dis = document.getElementById('inputDismissal').value;
+      const r = document.getElementById('inputReason').value;
+
+      const url = `${window.location.origin}${window.location.pathname}?s=${s}&adm=${adm}&dis=${dis}&r=${r}`;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+          const btn = document.getElementById('btnShareLink');
+          btn.innerText = 'Link Copiado!';
+          btn.style.color = '#059669';
+          setTimeout(() => {
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Copiar Link`;
+            btn.style.color = '#1E3A8A';
+          }, 3000);
+        });
+      }
+    }
+
+    // =========================================================================
+    // MEMÓRIA NO APARELHO (LOCALSTORAGE)
     // =========================================================================
     function autoSave() {
       const formData = {
@@ -1625,9 +1900,9 @@
     }
 
     // =========================================================================
-    // MOTOR DE CÁLCULO GERAL
+    // MOTOR DE CÁLCULO GERAL + MULTA DO ARTIGO 477 (ATRASO)
     // =========================================================================
-    function calculateCustom(customReason, customNotice) {
+    function calculateCustom(customReason, customNotice, includeLatePenalty) {
       const salary = parseFloat(document.getElementById('inputSalary').value) || 0;
       const admissionStr = document.getElementById('inputAdmission').value;
       const dismissalStr = document.getElementById('inputDismissal').value;
@@ -1636,6 +1911,7 @@
       const overdueVacations = parseInt(document.getElementById('inputOverdueVacation').value) || 0;
       const dependents = parseInt(document.getElementById('inputDependents').value) || 0;
       const fgtsInput = parseFloat(document.getElementById('inputFgts').value) || 0;
+      const hasLatePenalty = (includeLatePenalty !== undefined) ? includeLatePenalty : document.getElementById('checkLatePenalty').checked;
 
       const adm = new Date(admissionStr + 'T00:00:00');
       const dis = new Date(dismissalStr + 'T00:00:00');
@@ -1644,6 +1920,11 @@
       const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       const totalYears = Math.floor(totalDays / 365);
       const totalMonths = Math.floor(totalDays / 30);
+
+      // Data limite para pagamento (10 dias corridos - Art. 477, § 6º)
+      const deadlineDateObj = new Date(dis);
+      deadlineDateObj.setDate(deadlineDateObj.getDate() + 10);
+      const deadlineDateStr = deadlineDateObj.toISOString().split('T')[0];
 
       let noticeDays = 0;
       let noticeValue = 0;
@@ -1691,6 +1972,9 @@
       let constitutionalThird = totalVacations / 3;
       let totalVacationsWithThird = totalVacations + constitutionalThird;
 
+      // Multa Artigo 477 da CLT (1 salário integral em caso de atraso)
+      const latePenaltyVal = hasLatePenalty ? salary : 0;
+
       function calcInss(base) {
         if (base <= 0) return 0;
         if (base <= 1518.00) return base * 0.075;
@@ -1718,7 +2002,7 @@
       const irrf13th = calcIrrf(total13th, inss13th);
 
       const totalDeductions = inssSalary + inss13th + irrfSalary + irrf13th + noticePenalty;
-      const totalGross = salaryBalance + noticeValue + total13th + totalVacationsWithThird;
+      const totalGross = salaryBalance + noticeValue + total13th + totalVacationsWithThird + latePenaltyVal;
       const netTotal = Math.max(0, totalGross - totalDeductions);
 
       const fgtsBase = fgtsInput > 0 ? fgtsInput : (salary * 0.08 * totalMonths);
@@ -1745,6 +2029,7 @@
       return {
         salary, admissionStr, dismissalStr, reason, noticeType,
         totalDays, totalYears, totalMonths,
+        deadlineDateStr, hasLatePenalty, latePenaltyVal,
         noticeDays, noticeValue, noticePenalty,
         salaryBalanceDays, salaryBalance,
         prop13thMonths, ind13thMonths, total13th,
@@ -1757,6 +2042,10 @@
       };
     }
 
+    function toggleLatePenalty() {
+      calculateAndShowDashboard();
+    }
+
     function calculateAndShowDashboard() {
       currentCalc = calculateCustom();
       const c = currentCalc;
@@ -1765,6 +2054,21 @@
       document.getElementById('dashGrossTotal').innerText = `Total bruto: ${formatBRL(c.totalGross)}`;
       document.getElementById('dashDeductionsTotal').innerText = `Descontos: - ${formatBRL(c.totalDeductions)}`;
       document.getElementById('dashGrandTotal').innerText = formatBRL(c.grandTotal);
+
+      // Atualiza data limite de pagamento dos 10 dias
+      document.getElementById('deadlineDate').innerText = formatDate(c.deadlineDateStr);
+
+      const today = new Date();
+      const deadline = new Date(c.deadlineDateStr + 'T23:59:59');
+      const badge = document.getElementById('deadlineBadge');
+      if (today > deadline) {
+        badge.innerText = 'Prazo Expirado (Em Atraso)';
+        badge.className = 'deadline-badge late';
+      } else {
+        const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+        badge.innerText = `Faltam ${daysLeft} dias para pagar`;
+        badge.className = 'deadline-badge ontime';
+      }
 
       document.getElementById('dashSalaryVal').innerText = formatBRL(c.salaryBalance);
       document.getElementById('dashSalarySub').innerText = `${c.salaryBalanceDays} dias no mês de saída`;
@@ -1814,12 +2118,104 @@
     }
 
     // =========================================================================
-    // MELHORIA 1: COMPARADOR INTELIGENTE DE CENÁRIOS
+    // MELHORIA 1: GERADOR DE CARTA DE DEMISSAO OU ACORDO
+    // =========================================================================
+    function openLetterGenerator() {
+      if (!currentCalc) currentCalc = calculateCustom();
+      const reason = currentCalc.reason;
+
+      const typeSelect = document.getElementById('letterType');
+      if (reason === 'acordoMutuo') {
+        typeSelect.value = 'acordoMutuo';
+      } else {
+        typeSelect.value = 'demissaoCumprir';
+      }
+
+      updateLetterPreview();
+      goToScreen('screen-letter');
+    }
+
+    function updateLetterPreview() {
+      const name = document.getElementById('letterName').value || 'Nome do Trabalhador';
+      const cpf = document.getElementById('letterCpf').value || '000.000.000-00';
+      const role = document.getElementById('letterRole').value || 'Cargo';
+      const company = document.getElementById('letterCompany').value || 'Nome da Empresa LTDA';
+      const city = document.getElementById('letterCity').value || 'Cidade - UF';
+      const type = document.getElementById('letterType').value;
+      const today = new Date().toLocaleDateString('pt-BR');
+
+      let letter = '';
+
+      if (type === 'demissaoCumprir') {
+        letter = `À ${company}\n\n` +
+          `Prezados Senhores,\n\n` +
+          `Venho por meio desta comunicar oficialmente a minha decisão de pedir demissão do cargo de ${role}, o qual ocupo nesta empresa.\n\n` +
+          `Informo que irei cumprir integralmente o período de aviso prévio de 30 (trinta) dias previsto em lei, permanecendo no exercício das minhas funções até o término do prazo legal.\n\n` +
+          `${city}, ${today}.\n\n\n` +
+          `_________________________________________\n` +
+          `${name}\n` +
+          `CPF: ${cpf}`;
+      } else if (type === 'demissaoDispensar') {
+        letter = `À ${company}\n\n` +
+          `Prezados Senhores,\n\n` +
+          `Venho por meio desta apresentar meu pedido de demissão do cargo de ${role}, exercido nesta conceituada empresa.\n\n` +
+          `Por motivos de ordem estritamente pessoal, venho solicitar a dispensa do cumprimento do aviso prévio, requerendo que a rescisão contratual produza efeitos a partir da presente data.\n\n` +
+          `${city}, ${today}.\n\n\n` +
+          `_________________________________________\n` +
+          `${name}\n` +
+          `CPF: ${cpf}`;
+      } else if (type === 'acordoMutuo') {
+        letter = `À ${company}\n\n` +
+          `Prezados Senhores,\n\n` +
+          `Venho por meio desta propor a rescisão do meu contrato de trabalho por MÚTUO ACORDO, nos termos expressamente previstos pelo Artigo 484-A da Consolidação das Leis do Trabalho (CLT).\n\n` +
+          `Ciente de que a modalidade garante a quitação de 50% do aviso prévio indenizado, movimentação de até 80% do saldo do FGTS com multa rescisória de 20%, aguardo manifestação da empresa para formalização do termo de rescisão.\n\n` +
+          `${city}, ${today}.\n\n\n` +
+          `_________________________________________\n` +
+          `${name}\n` +
+          `CPF: ${cpf}`;
+      }
+
+      document.getElementById('letterPreviewText').innerText = letter;
+    }
+
+    function copyLetterText() {
+      const text = document.getElementById('letterPreviewText').innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        const btn = document.getElementById('btnCopyLetter');
+        btn.innerText = 'Carta Copiada!';
+        btn.style.color = '#059669';
+        setTimeout(() => {
+          btn.innerText = 'Copiar Texto';
+          btn.style.color = '#1E3A8A';
+        }, 3000);
+      });
+    }
+
+    function downloadLetterPDF() {
+      const text = document.getElementById('letterPreviewText').innerText;
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+
+      doc.setFont('times', 'bold');
+      doc.setFontSize(16);
+      doc.text('COMUNICAÇÃO DE RESCISÃO CONTRATUAL', 105, 30, { align: 'center' });
+
+      doc.setFont('times', 'normal');
+      doc.setFontSize(12);
+
+      const splitText = doc.splitTextToSize(text, 170);
+      doc.text(splitText, 20, 50);
+
+      doc.save('Carta_Rescisao_CLT.pdf');
+    }
+
+    // =========================================================================
+    // COMPARADOR INTELIGENTE DE CENÁRIOS
     // =========================================================================
     function openComparison() {
-      const c1 = calculateCustom('semJustaCausa', 'indenizado');
-      const c2 = calculateCustom('acordoMutuo', 'indenizado');
-      const c3 = calculateCustom('pedidoDemissao', 'trabalhado');
+      const c1 = calculateCustom('semJustaCausa', 'indenizado', false);
+      const c2 = calculateCustom('acordoMutuo', 'indenizado', false);
+      const c3 = calculateCustom('pedidoDemissao', 'trabalhado', false);
 
       document.getElementById('compSemJustaTotal').innerText = formatBRL(c1.grandTotal);
       document.getElementById('compSemJustaDesc').innerHTML = `
@@ -1854,7 +2250,7 @@
     }
 
     // =========================================================================
-    // MELHORIA 2: COPIAR / ENVIAR NO WHATSAPP
+    // COPIAR / ENVIAR NO WHATSAPP
     // =========================================================================
     function shareWhatsApp() {
       if (!currentCalc) currentCalc = calculateCustom();
@@ -1879,12 +2275,14 @@
         (c.noticePenalty > 0 ? `• Desconto Aviso Não Cumprido: - ${formatBRL(c.noticePenalty)}\n` : '') +
         (c.total13th > 0 ? `• 13º Salário Proporcional: ${formatBRL(c.total13th)}\n` : '') +
         (c.totalVacationsWithThird > 0 ? `• Férias + 1/3 Constitucional: ${formatBRL(c.totalVacationsWithThird)}\n` : '') +
+        (c.latePenaltyVal > 0 ? `• Multa Atraso Artigo 477 da CLT: + ${formatBRL(c.latePenaltyVal)}\n` : '') +
         `• Descontos Oficiais (INSS/IRRF): - ${formatBRL(c.totalDeductions)}\n\n` +
         `*RESUMO FINAL:*\n` +
         `*Líquido na Conta:* ${formatBRL(c.netTotal)}\n` +
         (c.fgtsWithdrawable > 0 ? `*Saque FGTS + Multa:* ${formatBRL(c.fgtsWithdrawable)}\n` : '') +
         (c.totalUnemp > 0 ? `*Seguro-Desemprego:* ${c.unempInstallments}x de ${formatBRL(c.unempValue)} (${formatBRL(c.totalUnemp)})\n` : '') +
         `*PACOTE TOTAL ESTIMADO: ${formatBRL(c.grandTotal)}*\n` +
+        `*Prazo Limite de Pagamento:* ${formatDate(c.deadlineDateStr)} (10 dias corridos)\n` +
         `------------------------------------\n` +
         `Calculado pelo CalculaCLT: https://temporary-fleet-beryl-5uxf5r4.vercel.app`;
 
@@ -1900,21 +2298,16 @@
     }
 
     // =========================================================================
-    // MELHORIA 3: GERAÇÃO REAL DE PDF NO NAVEGADOR (JSPDF)
+    // GERAÇÃO REAL DE PDF NO NAVEGADOR (JSPDF)
     // =========================================================================
     function generateAndDownloadPDF() {
       if (!currentCalc) currentCalc = calculateCustom();
       const c = currentCalc;
 
       const { jsPDF } = window.jspdf;
-      const doc = new jsPDF({
-        orientation: 'portrait',
-        unit: 'mm',
-        format: 'a4'
-      });
+      const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
 
-      // Cabeçalho institucional
-      doc.setFillColor(30, 58, 138); // #1E3A8A
+      doc.setFillColor(30, 58, 138);
       doc.rect(0, 0, 210, 24, 'F');
 
       doc.setTextColor(255, 255, 255);
@@ -1925,7 +2318,6 @@
       doc.setFont('helvetica', 'normal');
       doc.text('CalculaCLT - Relatório Analítico de Direitos Trabalhistas', 105, 18, { align: 'center' });
 
-      // Dados Contratuais
       doc.setTextColor(15, 23, 42);
       doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
@@ -1942,9 +2334,8 @@
 
       doc.text(`Tempo de Serviço: ${c.totalYears} ano(s) e ${c.totalMonths % 12} mês(es)`, 14, 50);
       doc.text(`Modalidade: ${c.reason}`, 80, 50);
-      doc.text(`Dependentes IRRF: ${c.salary ? 1 : 0}`, 146, 50);
+      doc.text(`Prazo Pagamento: ${formatDate(c.deadlineDateStr)}`, 146, 50);
 
-      // Verbas Rescisórias
       doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.text('2. DISCRIMINAÇÃO DAS VERBAS RESCISÓRIAS (PROVENTOS)', 14, 62);
@@ -1980,12 +2371,18 @@
         y += 7;
       }
 
+      if (c.latePenaltyVal > 0) {
+        doc.text('Multa por Atraso no Pagamento (Artigo 477, § 8º da CLT)', 14, y);
+        doc.text('1 salário integral', 110, y);
+        doc.text(formatBRL(c.latePenaltyVal), 196, y, { align: 'right' });
+        y += 7;
+      }
+
       doc.setFont('helvetica', 'bold');
       doc.text('TOTAL BRUTO DE PROVENTOS', 14, y);
       doc.text(formatBRL(c.totalGross), 196, y, { align: 'right' });
       y += 10;
 
-      // Descontos
       doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
       doc.text('3. DEDUÇÕES E RETENÇÕES OFICIAIS', 14, y);
@@ -2013,7 +2410,6 @@
       doc.text('- ' + formatBRL(c.totalDeductions), 196, y, { align: 'right' });
       y += 12;
 
-      // Total Líquido
       doc.setFillColor(240, 253, 244);
       doc.rect(14, y, 182, 14, 'F');
       doc.setDrawColor(16, 185, 129);
@@ -2026,7 +2422,6 @@
       doc.text(formatBRL(c.netTotal), 192, y + 9, { align: 'right' });
       y += 22;
 
-      // FGTS e Seguro
       doc.setTextColor(15, 23, 42);
       doc.setFontSize(11);
       doc.setFont('helvetica', 'bold');
@@ -2044,7 +2439,6 @@
       doc.text(c.isEligibleUnemp ? `${c.unempInstallments} parcelas (${formatBRL(c.totalUnemp)})` : 'Inapto', 196, y, { align: 'right' });
       y += 10;
 
-      // Total Geral
       doc.setFillColor(30, 41, 59);
       doc.rect(14, y, 182, 14, 'F');
       doc.setTextColor(255, 255, 255);
@@ -2053,7 +2447,6 @@
       doc.text('MONTANTE FINANCEIRO TOTAL ESTIMADO', 18, y + 9);
       doc.text(formatBRL(c.grandTotal), 192, y + 9, { align: 'right' });
 
-      // Rodapé
       doc.setTextColor(148, 163, 184);
       doc.setFontSize(8);
       doc.setFont('helvetica', 'normal');
@@ -2063,7 +2456,7 @@
     }
 
     // =========================================================================
-    // MELHORIA 5: PIX COPIA E COLA E CONFIRMAÇÃO PRO
+    // PIX COPIA E COLA E CONFIRMAÇÃO PRO
     // =========================================================================
     function copyPixCode() {
       const code = document.getElementById('pixCodeText').innerText;
@@ -2266,10 +2659,10 @@
       goToScreen('screen-detail');
     }
 
-    // Inicialização
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
       onReasonChanged();
+      loadFromUrl();
     });
   </script>
 </body>
