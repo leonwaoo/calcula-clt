@@ -39,6 +39,10 @@ Aplicativo Android de alta precisão para cálculo de verbas rescisórias da CLT
 
 ## Como executar
 
+Na primeira execução, gere os arquivos de plataforma Android:
+
+    flutter create --platforms=android --project-name calcula_clt .
+
 ### 1. Testar o motor de cálculo no terminal (Instantâneo)
 Para simular um cálculo completo no terminal:
 ```bash
