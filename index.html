@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CalculaCLT - Pré-visualização Interativa</title>
+  <title>CalculaCLT - Calculadora Interativa de Rescisão</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -13,11 +13,13 @@
       --secondary: #059669;
       --secondary-dark: #065F46;
       --danger: #DC2626;
-      --bg: #0F172A;
+      --bg: #0B0F19;
       --card-bg: #1E293B;
+      --card-hover: #273549;
       --text: #F8FAFC;
       --text-muted: #94A3B8;
       --border: #334155;
+      --input-bg: #0F172A;
     }
 
     * {
@@ -29,32 +31,32 @@
     }
 
     body {
-      background: #0B0F19;
+      background: var(--bg);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 20px;
+      padding: 16px;
     }
 
     /* Moldura do Celular */
     .phone-mockup {
-      width: 390px;
-      height: 844px;
+      width: 410px;
+      height: 870px;
       background: #0F172A;
       border-radius: 48px;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 12px #1E293B, 0 0 0 14px #334155;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 0 10px #1E293B, 0 0 0 12px #334155;
       overflow: hidden;
       display: flex;
       flex-direction: column;
       position: relative;
     }
 
-    /* Dynamic Island */
+    /* Barra Superior / Dynamic Island */
     .dynamic-island {
       width: 120px;
-      height: 28px;
+      height: 26px;
       background: #000;
       border-radius: 20px;
       position: absolute;
@@ -66,7 +68,7 @@
 
     .app-header {
       padding: 44px 20px 14px;
-      background: rgba(30, 41, 59, 0.8);
+      background: rgba(30, 41, 59, 0.95);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       display: flex;
@@ -75,10 +77,29 @@
       z-index: 10;
     }
 
-    .logo-container {
+    .header-left {
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+
+    .back-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover {
+      background: rgba(255, 255, 255, 0.2);
     }
 
     .logo-icon {
@@ -95,7 +116,7 @@
     }
 
     .app-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 800;
       letter-spacing: -0.5px;
     }
@@ -108,18 +129,71 @@
       padding: 3px 8px;
       border-radius: 12px;
       letter-spacing: 0.5px;
+      cursor: pointer;
     }
 
-    .app-body {
+    /* Container de Telas */
+    .screen-container {
       flex: 1;
       overflow-y: auto;
-      padding: 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      position: relative;
     }
 
-    /* Hero Card Líquido */
+    .screen {
+      display: none;
+      padding: 16px;
+      flex-direction: column;
+      gap: 14px;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Formulário da Tela 1 */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input, .form-select {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus {
+      border-color: var(--primary-light);
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    /* Card Hero de Resultados */
     .hero-card {
       background: linear-gradient(135deg, #065F46, #059669);
       border-radius: 20px;
@@ -133,7 +207,7 @@
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.8px;
-      color: rgba(255, 255, 255, 0.8);
+      color: rgba(255, 255, 255, 0.85);
       margin-bottom: 6px;
     }
 
@@ -147,92 +221,187 @@
     .hero-footer {
       margin-top: 14px;
       padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
       display: flex;
       justify-content: space-between;
       font-size: 12px;
     }
 
-    /* Cards Secundários */
-    .grid-cards {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .sub-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 12px 14px;
-    }
-
-    .sub-title {
-      font-size: 10px;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-
-    .sub-value {
-      font-size: 16px;
-      font-weight: 700;
-      color: #fff;
-    }
-
-    .sub-desc {
-      font-size: 10px;
-      color: #38BDF8;
-      margin-top: 2px;
-    }
-
-    /* Extrato de Verbas */
+    /* Cards de Verbas Clicáveis */
     .section-title {
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
       color: var(--text-muted);
       text-transform: uppercase;
       letter-spacing: 0.5px;
       margin-top: 4px;
-    }
-
-    .item-list {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .item-row {
-      padding: 12px 14px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(51, 65, 85, 0.4);
-      font-size: 12px;
     }
 
-    .item-row:last-child {
+    .clickable-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .clickable-card:hover {
+      background: var(--card-hover);
+      border-color: #475569;
+      transform: translateY(-1px);
+    }
+
+    .card-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(37, 99, 235, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .card-right {
+      text-align: right;
+    }
+
+    .card-amount {
+      font-size: 14px;
+      font-weight: 800;
+      color: #34D399;
+    }
+
+    .card-arrow {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Tela de Detalhes Específica do Cálculo */
+    .detail-hero {
+      background: linear-gradient(135deg, #1E3A8A, #2563EB);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .detail-hero-title {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.8);
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .detail-hero-value {
+      font-size: 30px;
+      font-weight: 800;
+      color: #fff;
+      margin: 8px 0;
+    }
+
+    .detail-hero-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .info-box {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .info-box-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #93C5FD;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      font-size: 13px;
+    }
+
+    .info-row:last-child {
       border-bottom: none;
     }
 
-    .item-row.deduction {
-      color: #F87171;
+    .info-label {
+      color: var(--text-muted);
     }
 
-    .item-icon {
-      margin-right: 8px;
+    .info-val {
+      font-weight: 700;
+      color: white;
     }
 
-    /* Barra de Ação Inferior */
+    .formula-box {
+      background: #090D16;
+      border-left: 4px solid var(--secondary);
+      padding: 14px;
+      border-radius: 0 12px 12px 0;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .legal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(5, 150, 105, 0.15);
+      color: #34D399;
+      border: 1px solid #059669;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* Botão de Ação Inferior */
     .action-bar {
       padding: 14px 16px 24px;
       background: rgba(15, 23, 42, 0.95);
       border-top: 1px solid var(--border);
     }
 
-    .btn-pdf {
+    .btn-main {
       width: 100%;
       background: linear-gradient(135deg, #1E3A8A, #2563EB);
       color: white;
@@ -250,19 +419,21 @@
       transition: all 0.2s;
     }
 
-    .btn-pdf:hover {
+    .btn-main:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(37, 99, 235, 0.6);
+    }
+
+    .btn-green {
+      background: linear-gradient(135deg, #065F46, #059669);
+      box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
     }
 
     /* Modal Paywall */
     .modal-overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.7);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(4px);
       display: none;
       justify-content: flex-end;
@@ -282,13 +453,6 @@
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
-
-    .modal-price-box {
-      background: linear-gradient(135deg, #1E3A8A, #2563EB);
-      border-radius: 16px;
-      padding: 14px 16px;
-      margin: 16px 0;
-    }
   </style>
 </head>
 <body>
@@ -296,94 +460,281 @@
   <div class="phone-mockup">
     <div class="dynamic-island"></div>
 
+    <!-- Cabeçalho -->
     <div class="app-header">
-      <div class="logo-container">
+      <div class="header-left">
+        <button class="back-btn" id="headerBackBtn" onclick="goBack()" style="display: none;">←</button>
         <div class="logo-icon">⚖️</div>
-        <div class="app-title">Calcula<span style="color: #10B981;">CLT</span></div>
+        <div class="app-title" id="headerTitle">Calcula<span style="color: #10B981;">CLT</span></div>
       </div>
-      <div class="pro-badge" onclick="toggleModal(true)" style="cursor: pointer;">⭐ VERSÃO PRO</div>
+      <div class="pro-badge" onclick="toggleModal(true)">⭐ PRO</div>
     </div>
 
-    <div class="app-body">
-      <!-- Card Principal Líquido -->
-      <div class="hero-card">
-        <div class="hero-label">Líquido a Receber na Rescisão</div>
-        <div class="hero-value">R$ 11.499,01</div>
-        <div class="hero-footer">
-          <span>Total Bruto: R$ 11.850,00</span>
-          <span style="color: #FECACA;">Descontos: -R$ 350,98</span>
+    <!-- Container das Telas -->
+    <div class="screen-container">
+
+      <!-- ============================================== -->
+      <!-- TELA 1: FORMULÁRIO DE ENTRADA                 -->
+      <!-- ============================================== -->
+      <div class="screen active" id="screen-form">
+        <div style="background: rgba(37, 99, 235, 0.12); border: 1px solid #2563EB; border-radius: 14px; padding: 12px 14px; font-size: 12px; color: #93C5FD;">
+          ⚖️ <strong>Calculadora Oficial CLT:</strong> Preencha as informações do contrato para calcular todas as verbas rescisórias e detalhes.
         </div>
+
+        <div class="form-group">
+          <label class="form-label">Salário Bruto Mensal (R$)</label>
+          <input type="number" id="inputSalary" class="form-input" value="4500" placeholder="Ex: 4500.00" step="50">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Data de Início (Admissão)</label>
+            <input type="date" id="inputAdmission" class="form-input" value="2023-01-15">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Data de Fim (Demissão)</label>
+            <input type="date" id="inputDismissal" class="form-input" value="2026-03-20">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Motivo da Rescisão</label>
+          <select id="inputReason" class="form-select">
+            <option value="semJustaCausa" selected>Demissão sem Justa Causa (Direitos Completos)</option>
+            <option value="pedidoDemissao">Pedido de Demissão pelo Trabalhador</option>
+            <option value="acordoMutuo">Acordo Mútuo (Art. 484-A da CLT)</option>
+            <option value="justaCausa">Demissão com Justa Causa</option>
+            <option value="terminoExperiencia">Término de Contrato de Experiência</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Aviso Prévio</label>
+          <select id="inputNotice" class="form-select">
+            <option value="indenizado" selected>Indenizado pela Empresa (Paga em dinheiro)</option>
+            <option value="trabalhado">Trabalhado (Cumpriu os dias)</option>
+            <option value="naoCumprido">Não Cumprido (Descontar 1 salário)</option>
+            <option value="dispensado">Dispensado pela Empresa (Sem desconto)</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Férias Vencidas</label>
+            <select id="inputOverdueVacation" class="form-select">
+              <option value="0" selected>0 períodos</option>
+              <option value="1">1 período completo</option>
+              <option value="2">2 períodos</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dependentes IRRF</label>
+            <input type="number" id="inputDependents" class="form-input" value="1" min="0" max="10">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Saldo do FGTS (Opcional R$)</label>
+          <input type="number" id="inputFgts" class="form-input" value="12400" placeholder="Se vazio, estimaremos">
+        </div>
+
+        <button class="btn-main btn-green" onclick="calculateAndShowDashboard()" style="margin-top: 6px;">
+          CALCULAR RESCISÃO COMPLETA ➔
+        </button>
       </div>
 
-      <!-- Cards Secundários -->
-      <div class="grid-cards">
-        <div class="sub-card">
-          <div class="sub-title">FGTS + Multa 40%</div>
-          <div class="sub-value" style="color: #38BDF8;">R$ 18.477,20</div>
-          <div class="sub-desc">✓ Saque 100% Liberado</div>
+      <!-- ============================================== -->
+      <!-- TELA 2: DASHBOARD GERAL DE RESULTADOS         -->
+      <!-- ============================================== -->
+      <div class="screen" id="screen-dashboard">
+        <!-- Hero Card -->
+        <div class="hero-card">
+          <div class="hero-label">Valor Líquido a Receber na Rescisão</div>
+          <div class="hero-value" id="dashNetTotal">R$ 0,00</div>
+          <div class="hero-footer">
+            <span id="dashGrossTotal">Bruto: R$ 0,00</span>
+            <span id="dashDeductionsTotal" style="color: #FECACA;">Descontos: -R$ 0,00</span>
+          </div>
         </div>
-        <div class="sub-card">
-          <div class="sub-title">Seguro-Desemprego</div>
-          <div class="sub-value" style="color: #A78BFA;">5x R$ 2.313,74</div>
-          <div class="sub-desc">Total: R$ 11.568,70</div>
+
+        <div style="background: rgba(37, 99, 235, 0.15); border: 1px solid #3B82F6; border-radius: 14px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div style="font-size: 10px; font-weight: 700; color: #93C5FD; text-transform: uppercase;">Pacote Financeiro Total</div>
+            <div style="font-size: 11px; color: #60A5FA;">Rescisão + Saque FGTS + Seguro</div>
+          </div>
+          <div style="font-size: 18px; font-weight: 800; color: #93C5FD;" id="dashGrandTotal">R$ 0,00</div>
         </div>
+
+        <div class="section-title">
+          <span>Toque em qualquer cálculo para ver os detalhes:</span>
+        </div>
+
+        <!-- Cards Clicáveis de Cada Cálculo -->
+        <div class="clickable-card" onclick="openDetail('salary')">
+          <div class="card-left">
+            <div class="card-icon">💵</div>
+            <div>
+              <div class="card-title">Saldo de Salário</div>
+              <div class="card-subtitle" id="dashSalarySub">Dias trabalhados no mês</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-amount" id="dashSalaryVal">R$ 0,00</div>
+            <div class="card-arrow">Ver cálculo ➔</div>
+          </div>
+        </div>
+
+        <div class="clickable-card" onclick="openDetail('notice')">
+          <div class="card-left">
+            <div class="card-icon">⏱️</div>
+            <div>
+              <div class="card-title">Aviso Prévio</div>
+              <div class="card-subtitle" id="dashNoticeSub">Lei 12.506/2011 proporcional</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-amount" id="dashNoticeVal">R$ 0,00</div>
+            <div class="card-arrow">Ver cálculo ➔</div>
+          </div>
+        </div>
+
+        <div class="clickable-card" onclick="openDetail('thirteenth')">
+          <div class="card-left">
+            <div class="card-icon">🎁</div>
+            <div>
+              <div class="card-title">13º Salário Proporcional</div>
+              <div class="card-subtitle" id="dash13thSub">Meses trabalhados no ano</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-amount" id="dash13thVal">R$ 0,00</div>
+            <div class="card-arrow">Ver cálculo ➔</div>
+          </div>
+        </div>
+
+        <div class="clickable-card" onclick="openDetail('vacation')">
+          <div class="card-left">
+            <div class="card-icon">🏖️</div>
+            <div>
+              <div class="card-title">Férias + 1/3 Constitucional</div>
+              <div class="card-subtitle" id="dashVacationSub">Proporcionais e vencidas</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-amount" id="dashVacationVal">R$ 0,00</div>
+            <div class="card-arrow">Ver cálculo ➔</div>
+          </div>
+        </div>
+
+        <div class="clickable-card" onclick="openDetail('fgts')">
+          <div class="card-left">
+            <div class="card-icon" style="background: rgba(16, 185, 129, 0.15);">💰</div>
+            <div>
+              <div class="card-title">FGTS & Multa Rescisória</div>
+              <div class="card-subtitle" id="dashFgtsSub">Saldo + Multa de 40%</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-amount" style="color: #60A5FA;" id="dashFgtsVal">R$ 0,00</div>
+            <div class="card-arrow">Ver cálculo ➔</div>
+          </div>
+        </div>
+
+        <div class="clickable-card" onclick="openDetail('unemployment')">
+          <div class="card-left">
+            <div class="card-icon" style="background: rgba(167, 139, 250, 0.15);">🛡️</div>
+            <div>
+              <div class="card-title">Seguro-Desemprego</div>
+              <div class="card-subtitle" id="dashUnempSub">Parcelas estimadas MTE</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-amount" style="color: #C084FC;" id="dashUnempVal">R$ 0,00</div>
+            <div class="card-arrow">Ver regras ➔</div>
+          </div>
+        </div>
+
+        <div class="clickable-card" onclick="openDetail('deductions')">
+          <div class="card-left">
+            <div class="card-icon" style="background: rgba(220, 38, 38, 0.15);">🏛️</div>
+            <div>
+              <div class="card-title">Descontos Oficiais (INSS & IRRF)</div>
+              <div class="card-subtitle">Tabelas progressivas vigentes</div>
+            </div>
+          </div>
+          <div class="card-right">
+            <div class="card-amount" style="color: #F87171;" id="dashDeductionsVal">- R$ 0,00</div>
+            <div class="card-arrow">Ver faixas ➔</div>
+          </div>
+        </div>
+
+        <button class="btn-main" onclick="toggleModal(true)" style="margin-top: 8px;">
+          <span>📄</span> EXPORTAR RELATÓRIO OFICIAL EM PDF
+        </button>
       </div>
 
-      <!-- Resumo do Pacote Total -->
-      <div style="background: rgba(37, 99, 235, 0.15); border: 1px solid #3B82F6; border-radius: 14px; padding: 12px 14px; display: flex; justify-content: space-between; align-items: center;">
-        <div>
-          <div style="font-size: 10px; font-weight: 700; color: #93C5FD; text-transform: uppercase;">Pacote Financeiro Total</div>
-          <div style="font-size: 11px; color: #60A5FA;">Rescisão + FGTS + Seguro</div>
+      <!-- ============================================== -->
+      <!-- TELA 3: TELA DETALHADA DO CÁLCULO INDIVIDUAL   -->
+      <!-- ============================================== -->
+      <div class="screen" id="screen-detail">
+        <div class="detail-hero">
+          <div class="detail-hero-title" id="detailCategory">CÁLCULO DETALHADO</div>
+          <div class="detail-hero-value" id="detailValue">R$ 0,00</div>
+          <div class="detail-hero-badge" id="detailBadge">Memória de Cálculo Oficial</div>
         </div>
-        <div style="font-size: 18px; font-weight: 800; color: #93C5FD;">R$ 41.544,92</div>
+
+        <!-- Bloco de Informações que Compõem o Cálculo -->
+        <div class="info-box">
+          <div class="info-box-title">📋 Informações que Compõem Este Cálculo</div>
+          <div class="info-row">
+            <span class="info-label">Data de Início (Admissão):</span>
+            <span class="info-val" id="detStart">00/00/0000</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Data de Fim (Afastamento):</span>
+            <span class="info-val" id="detEnd">00/00/0000</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Tempo Total Trabalhado:</span>
+            <span class="info-val" id="detTenure">0 anos e 0 meses</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Salário Base Considerado:</span>
+            <span class="info-val" id="detSalary">R$ 0,00</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label" id="detCustomLabel">Variável Específica:</span>
+            <span class="info-val" id="detCustomVal">-</span>
+          </div>
+        </div>
+
+        <!-- Passo a Passo da Fórmula -->
+        <div class="info-box">
+          <div class="info-box-title">🧮 Passo a Passo Matemático</div>
+          <div class="formula-box" id="detFormula">
+            Fórmula detalhada aqui...
+          </div>
+        </div>
+
+        <!-- Base Legal e Direitos -->
+        <div class="info-box">
+          <div class="info-box-title">⚖️ Base Legal e Jurisprudência</div>
+          <div style="margin-bottom: 8px;">
+            <span class="legal-badge" id="detLawBadge">Art. 477 da CLT</span>
+          </div>
+          <p style="font-size: 12px; color: var(--text-muted); line-height: 1.5;" id="detLegalText">
+            Explicação da lei aplicável...
+          </p>
+        </div>
+
+        <button class="btn-main" onclick="goToScreen('screen-dashboard')">
+          ← VOLTAR AO RESUMO
+        </button>
       </div>
 
-      <!-- Extrato Detalhado -->
-      <div class="section-title">Verbas Rescisórias (Proventos)</div>
-      <div class="item-list">
-        <div class="item-row">
-          <span><span class="item-icon">📄</span>Saldo de Salário (20 dias)</span>
-          <span style="font-weight: 700;">R$ 3.000,00</span>
-        </div>
-        <div class="item-row">
-          <span><span class="item-icon">⏱️</span>Aviso Prévio Indenizado (39 dias)</span>
-          <span style="font-weight: 700;">R$ 5.850,00</span>
-        </div>
-        <div class="item-row">
-          <span><span class="item-icon">🎁</span>13º Salário Proporcional (4/12)</span>
-          <span style="font-weight: 700;">R$ 1.500,00</span>
-        </div>
-        <div class="item-row">
-          <span><span class="item-icon">🏖️</span>Férias Proporcionais + 1/3</span>
-          <span style="font-weight: 700;">R$ 1.500,00</span>
-        </div>
-      </div>
-
-      <div class="section-title">Descontos Oficiais</div>
-      <div class="item-list">
-        <div class="item-row deduction">
-          <span><span class="item-icon">🏛️</span>INSS Saldo de Salário</span>
-          <span style="font-weight: 700;">- R$ 253,41</span>
-        </div>
-        <div class="item-row deduction">
-          <span><span class="item-icon">🏛️</span>INSS 13º Salário</span>
-          <span style="font-weight: 700;">- R$ 84,38</span>
-        </div>
-        <div class="item-row deduction">
-          <span><span class="item-icon">📉</span>IRRF na Fonte</span>
-          <span style="font-weight: 700;">- R$ 13,20</span>
-        </div>
-      </div>
     </div>
 
-    <!-- Botão de Ação -->
-    <div class="action-bar">
-      <button class="btn-pdf" onclick="toggleModal(true)">
-        <span>📄</span> EXPORTAR RELATÓRIO EM PDF
-      </button>
-    </div>
-
-    <!-- Modal Paywall Interativo -->
+    <!-- Modal Paywall -->
     <div class="modal-overlay" id="paywallModal">
       <div class="modal-content">
         <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -392,16 +743,16 @@
         </div>
         <h3 style="font-size: 18px; margin-top: 10px;">Desbloqueie o Relatório Oficial em PDF</h3>
         <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">
-          Gere o demonstrativo formal com citação dos artigos da CLT para contestar erros no RH ou enviar no WhatsApp.
+          Gere o demonstrativo formal com citação de todos os artigos da CLT para contestar erros no RH ou enviar no WhatsApp.
         </p>
 
-        <div class="modal-price-box">
+        <div style="background: linear-gradient(135deg, #1E3A8A, #2563EB); border-radius: 16px; padding: 14px 16px; margin: 16px 0;">
           <div style="font-size: 11px; opacity: 0.8; font-weight: 600;">ACESSO VITALÍCIO</div>
           <div style="font-size: 26px; font-weight: 800;">R$ 19,90 <span style="font-size: 12px; font-weight: 400; opacity: 0.8;">pagamento único</span></div>
           <div style="font-size: 10px; opacity: 0.9; margin-top: 2px;">Sem mensalidades. Use para sempre.</div>
         </div>
 
-        <button class="btn-pdf" style="background: var(--secondary);" onclick="alert('🎉 Compra simulada com sucesso! Na versão final, isso aciona o Apple In-App Purchase ou Google Play Billing.'); toggleModal(false);">
+        <button class="btn-main btn-green" onclick="alert('🎉 Compra simulada com sucesso!'); toggleModal(false);">
           DESBLOQUEAR AGORA
         </button>
       </div>
@@ -409,8 +760,368 @@
   </div>
 
   <script>
+    let currentCalc = null;
+    let currentDetailKey = null;
+
+    function formatBRL(val) {
+      return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function formatDate(dateStr) {
+      const parts = dateStr.split('-');
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
     function toggleModal(show) {
       document.getElementById('paywallModal').style.display = show ? 'flex' : 'none';
+    }
+
+    function goToScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+
+      const backBtn = document.getElementById('headerBackBtn');
+      const title = document.getElementById('headerTitle');
+
+      if (screenId === 'screen-form') {
+        backBtn.style.display = 'none';
+        title.innerHTML = 'Calcula<span style="color: #10B981;">CLT</span>';
+      } else if (screenId === 'screen-dashboard') {
+        backBtn.style.display = 'flex';
+        title.innerText = 'Resultado da Rescisão';
+      } else if (screenId === 'screen-detail') {
+        backBtn.style.display = 'flex';
+        title.innerText = 'Detalhe do Cálculo';
+      }
+    }
+
+    function goBack() {
+      const activeScreen = document.querySelector('.screen.active').id;
+      if (activeScreen === 'screen-detail') {
+        goToScreen('screen-dashboard');
+      } else if (activeScreen === 'screen-dashboard') {
+        goToScreen('screen-form');
+      }
+    }
+
+    // Motor de Cálculo Jurídico Completo em JS
+    function runCalculation() {
+      const salary = parseFloat(document.getElementById('inputSalary').value) || 0;
+      const admissionStr = document.getElementById('inputAdmission').value;
+      const dismissalStr = document.getElementById('inputDismissal').value;
+      const reason = document.getElementById('inputReason').value;
+      const noticeType = document.getElementById('inputNotice').value;
+      const overdueVacations = parseInt(document.getElementById('inputOverdueVacation').value) || 0;
+      const dependents = parseInt(document.getElementById('inputDependents').value) || 0;
+      const fgtsInput = parseFloat(document.getElementById('inputFgts').value) || 0;
+
+      const adm = new Date(admissionStr + 'T00:00:00');
+      const dis = new Date(dismissalStr + 'T00:00:00');
+
+      const diffTime = Math.abs(dis - adm);
+      const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      const totalYears = Math.floor(totalDays / 365);
+      const totalMonths = Math.floor(totalDays / 30);
+
+      // Aviso Prévio (Lei 12.506/11)
+      let noticeDays = 30;
+      if (reason === 'pedidoDemissao') {
+        noticeDays = 30;
+      } else {
+        noticeDays = Math.min(90, 30 + (totalYears * 3));
+      }
+
+      const isIndemnified = (noticeType === 'indenizado') && (reason === 'semJustaCausa' || reason === 'acordoMutuo');
+
+      // Saldo de Salário (dias do mês de saída)
+      const salaryBalanceDays = dis.getDate();
+      const salaryBalance = (salary / 30) * salaryBalanceDays;
+
+      // Valor do Aviso
+      let noticeValue = 0;
+      let noticePenalty = 0;
+      if (reason === 'semJustaCausa' && noticeType === 'indenizado') {
+        noticeValue = (salary / 30) * noticeDays;
+      } else if (reason === 'acordoMutuo' && noticeType === 'indenizado') {
+        noticeValue = ((salary / 30) * noticeDays) * 0.5;
+      } else if (reason === 'pedidoDemissao' && noticeType === 'naoCumprido') {
+        noticePenalty = salary;
+      }
+
+      // 13º Salário
+      let prop13thMonths = Math.min(12, dis.getMonth() + 1);
+      if (dis.getDate() < 15) prop13thMonths = Math.max(0, prop13thMonths - 1);
+      if (reason === 'justaCausa') prop13thMonths = 0;
+
+      let ind13thMonths = isIndemnified && (noticeDays >= 30) ? 1 : 0;
+      let prop13th = (salary / 12) * prop13thMonths;
+      let ind13th = (salary / 12) * ind13thMonths;
+      let total13th = prop13th + ind13th;
+
+      // Férias
+      let propVacMonths = Math.min(12, Math.floor((totalDays % 365) / 30));
+      if (((totalDays % 365) % 30) >= 15) propVacMonths++;
+      if (reason === 'justaCausa') propVacMonths = 0;
+
+      let indVacMonths = isIndemnified ? 1 : 0;
+      let overdueVacVal = salary * overdueVacations;
+      let propVacVal = (salary / 12) * propVacMonths;
+      let indVacVal = (salary / 12) * indVacMonths;
+      let totalVacations = overdueVacVal + propVacVal + indVacVal;
+      let constitutionalThird = totalVacations / 3;
+      let totalVacationsWithThird = totalVacations + constitutionalThird;
+
+      // INSS Progressivo
+      function calcInss(base) {
+        if (base <= 0) return 0;
+        if (base <= 1518.00) return base * 0.075;
+        if (base <= 2793.88) return (base * 0.09) - 22.77;
+        if (base <= 4190.83) return (base * 0.12) - 106.59;
+        return Math.min(951.63, (base * 0.14) - 190.40);
+      }
+
+      const inssSalary = calcInss(salaryBalance);
+      const inss13th = calcInss(total13th);
+
+      // IRRF Progressivo
+      function calcIrrf(taxable, inss) {
+        if (taxable <= 0) return 0;
+        const baseLegal = Math.max(0, taxable - inss - (dependents * 189.59));
+        const baseSimp = Math.max(0, taxable - 564.80);
+        const base = Math.min(baseLegal, baseSimp);
+        if (base <= 2259.20) return 0;
+        if (base <= 2826.65) return (base * 0.075) - 169.44;
+        if (base <= 3751.05) return (base * 0.15) - 381.44;
+        if (base <= 4664.68) return (base * 0.225) - 662.77;
+        return (base * 0.275) - 896.00;
+      }
+
+      const irrfSalary = calcIrrf(salaryBalance, inssSalary);
+      const irrf13th = calcIrrf(total13th, inss13th);
+
+      const totalDeductions = inssSalary + inss13th + irrfSalary + irrf13th + noticePenalty;
+      const totalGross = salaryBalance + noticeValue + total13th + totalVacationsWithThird;
+      const netTotal = Math.max(0, totalGross - totalDeductions);
+
+      // FGTS
+      const fgtsBase = fgtsInput > 0 ? fgtsInput : (salary * 0.08 * totalMonths);
+      const terminationDeposit = (salaryBalance + total13th + noticeValue) * 0.08;
+      const totalFgts = fgtsBase + terminationDeposit;
+      let fgtsPenaltyRate = 0;
+      let fgtsWithdrawable = 0;
+
+      if (reason === 'semJustaCausa') {
+        fgtsPenaltyRate = 0.40;
+        fgtsWithdrawable = totalFgts * 1.40;
+      } else if (reason === 'acordoMutuo') {
+        fgtsPenaltyRate = 0.20;
+        fgtsWithdrawable = (totalFgts * 0.80) + (totalFgts * 0.20);
+      } else if (reason === 'terminoExperiencia') {
+        fgtsWithdrawable = totalFgts;
+      }
+
+      // Seguro-Desemprego
+      let isEligibleUnemp = (reason === 'semJustaCausa' && totalMonths >= 12);
+      let unempInstallments = isEligibleUnemp ? (totalMonths >= 24 ? 5 : 4) : 0;
+      let unempValue = Math.min(2313.74, Math.max(1518.00, salary * 0.8));
+      let totalUnemp = isEligibleUnemp ? (unempInstallments * unempValue) : 0;
+
+      return {
+        salary, admissionStr, dismissalStr, reason, noticeType,
+        totalDays, totalYears, totalMonths,
+        noticeDays, noticeValue, noticePenalty,
+        salaryBalanceDays, salaryBalance,
+        prop13thMonths, ind13thMonths, total13th,
+        propVacMonths, overdueVacations, totalVacationsWithThird,
+        inssSalary, inss13th, irrfSalary, irrf13th, totalDeductions,
+        totalGross, netTotal,
+        totalFgts, fgtsPenaltyRate, fgtsWithdrawable,
+        isEligibleUnemp, unempInstallments, unempValue, totalUnemp,
+        grandTotal: netTotal + fgtsWithdrawable + totalUnemp
+      };
+    }
+
+    function calculateAndShowDashboard() {
+      currentCalc = runCalculation();
+
+      // Preenche Tela 2 (Dashboard)
+      document.getElementById('dashNetTotal').innerText = formatBRL(currentCalc.netTotal);
+      document.getElementById('dashGrossTotal').innerText = `Bruto: ${formatBRL(currentCalc.totalGross)}`;
+      document.getElementById('dashDeductionsTotal').innerText = `Descontos: - ${formatBRL(currentCalc.totalDeductions)}`;
+      document.getElementById('dashGrandTotal').innerText = formatBRL(currentCalc.grandTotal);
+
+      document.getElementById('dashSalaryVal').innerText = formatBRL(currentCalc.salaryBalance);
+      document.getElementById('dashSalarySub').innerText = `${currentCalc.salaryBalanceDays} dias no mês de afastamento`;
+
+      document.getElementById('dashNoticeVal').innerText = formatBRL(currentCalc.noticeValue);
+      document.getElementById('dashNoticeSub').innerText = `${currentCalc.noticeDays} dias (Lei 12.506/11)`;
+
+      document.getElementById('dash13thVal').innerText = formatBRL(currentCalc.total13th);
+      document.getElementById('dash13thSub').innerText = `${currentCalc.prop13thMonths + currentCalc.ind13thMonths}/12 avos devidos`;
+
+      document.getElementById('dashVacationVal').innerText = formatBRL(currentCalc.totalVacationsWithThird);
+      document.getElementById('dashVacationSub').innerText = `${currentCalc.propVacMonths}/12 proporcionais + 1/3`;
+
+      document.getElementById('dashFgtsVal').innerText = formatBRL(currentCalc.fgtsWithdrawable);
+      document.getElementById('dashFgtsSub').innerText = currentCalc.fgtsWithdrawable > 0 ? `Saque Liberado (${currentCalc.fgtsPenaltyRate*100}% multa)` : 'Sem saque na modalidade';
+
+      document.getElementById('dashUnempVal').innerText = currentCalc.isEligibleUnemp ? `${currentCalc.unempInstallments}x de ${formatBRL(currentCalc.unempValue)}` : 'Inapto';
+      document.getElementById('dashUnempSub').innerText = currentCalc.isEligibleUnemp ? `Total: ${formatBRL(currentCalc.totalUnemp)}` : 'Sem direito nesta rescisão';
+
+      document.getElementById('dashDeductionsVal').innerText = `- ${formatBRL(currentCalc.totalDeductions)}`;
+
+      goToScreen('screen-dashboard');
+    }
+
+    // Abre a tela detalhada de CADA CÁLCULO INDIVIDUAL
+    function openDetail(type) {
+      if (!currentCalc) return;
+      currentDetailKey = type;
+
+      const c = currentCalc;
+      document.getElementById('detStart').innerText = formatDate(c.admissionStr);
+      document.getElementById('detEnd').innerText = formatDate(c.dismissalStr);
+      document.getElementById('detTenure').innerText = `${c.totalYears} ano(s) e ${c.totalMonths % 12} mês(es) (${c.totalDays} dias)`;
+      document.getElementById('detSalary').innerText = formatBRL(c.salary);
+
+      if (type === 'salary') {
+        document.getElementById('detailCategory').innerText = 'SALDO DE SALÁRIO';
+        document.getElementById('detailValue').innerText = formatBRL(c.salaryBalance);
+        document.getElementById('detailBadge').innerText = `${c.salaryBalanceDays} dias trabalhados`;
+
+        document.getElementById('detCustomLabel').innerText = 'Dias Trabalhados no Mês:';
+        document.getElementById('detCustomVal').innerText = `${c.salaryBalanceDays} dias`;
+
+        document.getElementById('detFormula').innerHTML = `
+          <strong>Fórmula Oficial da CLT (Art. 64):</strong><br>
+          (Salário Base ÷ 30 dias) × Dias Trabalhados<br><br>
+          <strong>Cálculo:</strong><br>
+          (${formatBRL(c.salary)} ÷ 30) = ${formatBRL(c.salary/30)} por dia<br>
+          ${formatBRL(c.salary/30)} × ${c.salaryBalanceDays} dias = <strong>${formatBRL(c.salaryBalance)}</strong>
+        `;
+
+        document.getElementById('detLawBadge').innerText = 'Artigo 4º e Artigo 477 da CLT';
+        document.getElementById('detLegalText').innerText = 'O trabalhador tem direito a receber os dias exatos trabalhados no mês do desligamento. Se o afastamento ocorreu no dia 20, são pagos 20 dias integrais de salário.';
+
+      } else if (type === 'notice') {
+        document.getElementById('detailCategory').innerText = 'AVISO PRÉVIO PROPORCIONAL';
+        document.getElementById('detailValue').innerText = formatBRL(c.noticeValue);
+        document.getElementById('detailBadge').innerText = `${c.noticeDays} dias de direito (Lei 12.506/11)`;
+
+        document.getElementById('detCustomLabel').innerText = 'Anos Completos de Casa:';
+        document.getElementById('detCustomVal').innerText = `${c.totalYears} anos`;
+
+        document.getElementById('detFormula').innerHTML = `
+          <strong>Regra da Lei nº 12.506/2011:</strong><br>
+          30 dias base + (3 dias × cada ano completo trabalhado)<br><br>
+          <strong>Cálculo dos Dias:</strong><br>
+          30 + (${c.totalYears} anos × 3) = <strong>${c.noticeDays} dias</strong> de aviso prévio.<br><br>
+          <strong>Valor Indenizado:</strong><br>
+          (${formatBRL(c.salary)} ÷ 30) × ${c.noticeDays} dias = <strong>${formatBRL(c.noticeValue)}</strong>
+        `;
+
+        document.getElementById('detLawBadge').innerText = 'Lei Federal nº 12.506/2011 e Súmula 441 TST';
+        document.getElementById('detLegalText').innerText = 'A cada ano completo trabalhado na mesma empresa, o funcionário conquista 3 dias a mais de aviso prévio (até o teto de 90 dias). No pedido de demissão, o aviso exigido do trabalhador permanece fixo em 30 dias.';
+
+      } else if (type === 'thirteenth') {
+        document.getElementById('detailCategory').innerText = '13º SALÁRIO PROPORCIONAL';
+        document.getElementById('detailValue').innerText = formatBRL(c.total13th);
+        document.getElementById('detailBadge').innerText = `${c.prop13thMonths + c.ind13thMonths}/12 avos devidos`;
+
+        document.getElementById('detCustomLabel').innerText = 'Meses Computados no Ano:';
+        document.getElementById('detCustomVal').innerText = `${c.prop13thMonths} normais + ${c.ind13thMonths} projetado`;
+
+        document.getElementById('detFormula').innerHTML = `
+          <strong>Regra do 13º Salário (Lei 4.090/62):</strong><br>
+          Cada mês trabalhado por 15 dias ou mais dá direito a 1/12 avos do salário anual.<br><br>
+          <strong>Cálculo:</strong><br>
+          (${formatBRL(c.salary)} ÷ 12) × ${c.prop13thMonths + c.ind13thMonths} avos = <strong>${formatBRL(c.total13th)}</strong>
+        `;
+
+        document.getElementById('detLawBadge').innerText = 'Lei nº 4.090/1962 e Lei nº 4.749/1965';
+        document.getElementById('detLegalText').innerText = 'O 13º proporcional conta a partir de 1º de janeiro do ano da saída. Além disso, o aviso prévio indenizado projeta mais 1 mês caso passe de 15 dias de duração.';
+
+      } else if (type === 'vacation') {
+        document.getElementById('detailCategory').innerText = 'FÉRIAS PROPORCIONAIS + 1/3 CONSTITUCIONAL';
+        document.getElementById('detailValue').innerText = formatBRL(c.totalVacationsWithThird);
+        document.getElementById('detailBadge').innerText = 'Verba Indenizatória (Isenta de INSS/IRRF)';
+
+        document.getElementById('detCustomLabel').innerText = 'Avos de Férias Proporcionais:';
+        document.getElementById('detCustomVal').innerText = `${c.propVacMonths}/12 avos`;
+
+        document.getElementById('detFormula').innerHTML = `
+          <strong>Regra Constitucional (Art. 7º, XVII da CF/88):</strong><br>
+          Férias Proporcionais + Férias Vencidas + 1/3 Constitucional.<br><br>
+          <strong>Cálculo:</strong><br>
+          • Férias: (${formatBRL(c.salary)} ÷ 12) × ${c.propVacMonths} = ${formatBRL((c.salary/12)*c.propVacMonths)}<br>
+          • 1/3 Constitucional (+33,33%): ${formatBRL(((c.salary/12)*c.propVacMonths)/3)}<br>
+          • Total: <strong>${formatBRL(c.totalVacationsWithThird)}</strong>
+        `;
+
+        document.getElementById('detLawBadge').innerText = 'Art. 146 e 147 da CLT / Art. 7º, XVII da CF/88';
+        document.getElementById('detLegalText').innerText = 'Férias indenizadas na rescisão contratual têm natureza estritamente indenizatória, portanto NÃO sofrem desconto de INSS nem de imposto de renda.';
+
+      } else if (type === 'fgts') {
+        document.getElementById('detailCategory').innerText = 'FGTS E MULTA RESCISÓRIA';
+        document.getElementById('detailValue').innerText = formatBRL(c.fgtsWithdrawable);
+        document.getElementById('detailBadge').innerText = `Multa de ${(c.fgtsPenaltyRate*100).toFixed(0)}% Aplicada`;
+
+        document.getElementById('detCustomLabel').innerText = 'Saldo Total Base do FGTS:';
+        document.getElementById('detCustomVal').innerText = formatBRL(c.totalFgts);
+
+        document.getElementById('detFormula').innerHTML = `
+          <strong>Regra do FGTS (Lei nº 8.036/90):</strong><br>
+          Saldo acumulado + Depósito rescisório do mês + Multa Rescisória.<br><br>
+          <strong>Cálculo:</strong><br>
+          • Saldo Base Total: ${formatBRL(c.totalFgts)}<br>
+          • Multa Rescisória (${(c.fgtsPenaltyRate*100).toFixed(0)}%): ${formatBRL(c.totalFgts * c.fgtsPenaltyRate)}<br>
+          • Total Liberado para Saque: <strong>${formatBRL(c.fgtsWithdrawable)}</strong>
+        `;
+
+        document.getElementById('detLawBadge').innerText = 'Lei Federal nº 8.036/1990 (Art. 18)';
+        document.getElementById('detLegalText').innerText = 'Na demissão sem justa causa, o empregador deve pagar 40% de multa sobre todos os depósitos do contrato. No acordo mútuo (Art. 484-A), a multa é de 20% e o trabalhador saca 80% do saldo.';
+
+      } else if (type === 'unemployment') {
+        document.getElementById('detailCategory').innerText = 'SEGURO-DESEMPREGO';
+        document.getElementById('detailValue').innerText = c.isEligibleUnemp ? `${c.unempInstallments} parcelas de ${formatBRL(c.unempValue)}` : 'Inapto';
+        document.getElementById('detailBadge').innerText = c.isEligibleUnemp ? `Total Estimado: ${formatBRL(c.totalUnemp)}` : 'Sem direito';
+
+        document.getElementById('detCustomLabel').innerText = 'Carência Mínima Exigida:';
+        document.getElementById('detCustomVal').innerText = '12 meses no período aquisitivo';
+
+        document.getElementById('detFormula').innerHTML = `
+          <strong>Tabela Oficial CODEFAT / Ministério do Trabalho:</strong><br>
+          Salário acima de R$ 3.402,65 recebe o teto de R$ 2.313,74 por parcela.<br><br>
+          <strong>Cálculo:</strong><br>
+          ${c.unempInstallments} parcelas × ${formatBRL(c.unempValue)} = <strong>${formatBRL(c.totalUnemp)}</strong>
+        `;
+
+        document.getElementById('detLawBadge').innerText = 'Lei nº 7.998/1990 e Resoluções CODEFAT';
+        document.getElementById('detLegalText').innerText = 'Exclusivo para demissões sem justa causa. O benefício é pago pela Caixa Econômica Federal em parcelas mensais proporcionais ao tempo trabalhado.';
+
+      } else if (type === 'deductions') {
+        document.getElementById('detailCategory').innerText = 'DESCONTOS OFICIAIS (INSS E IRRF)';
+        document.getElementById('detailValue').innerText = `- ${formatBRL(c.totalDeductions)}`;
+        document.getElementById('detailBadge').innerText = 'Tabelas Progressivas Vigentes';
+
+        document.getElementById('detCustomLabel').innerText = 'Total de Descontos Legais:';
+        document.getElementById('detCustomVal').innerText = formatBRL(c.totalDeductions);
+
+        document.getElementById('detFormula').innerHTML = `
+          <strong>Discriminação dos Descontos:</strong><br>
+          • INSS s/ Saldo de Salário: ${formatBRL(c.inssSalary)}<br>
+          • INSS s/ 13º Salário: ${formatBRL(c.inss13th)}<br>
+          • IRRF s/ Saldo de Salário: ${formatBRL(c.irrfSalary)}<br>
+          • IRRF s/ 13º Salário: ${formatBRL(c.irrf13th)}<br>
+          ${c.noticePenalty > 0 ? `• Penalidade de Aviso Não Cumprido: ${formatBRL(c.noticePenalty)}<br>` : ''}
+          Total de Descontos: <strong>${formatBRL(c.totalDeductions)}</strong>
+        `;
+
+        document.getElementById('detLawBadge').innerText = 'Portarias Interministeriais MPS/MF';
+        document.getElementById('detLegalText').innerText = 'O INSS é progressivo por faixas salariais. O IRRF considera as deduções legais por dependente (R$ 189,59) ou o desconto simplificado mensal, aplicando o que for mais vantajoso para o trabalhador.';
+      }
+
+      goToScreen('screen-detail');
     }
   </script>
 </body>
