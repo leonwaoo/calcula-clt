@@ -27,6 +27,9 @@ jobs:
         with:
           gradle-version: "8.11.1"
 
+      - name: Configurar ferramentas Android
+        uses: android-actions/setup-android@v3
+
       - name: Instalar SDK Android 36
         run: |
           yes | sdkmanager --licenses
