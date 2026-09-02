@@ -2,10 +2,12 @@ class CltSimulation {
   const CltSimulation({
     required this.salary,
     required this.monthsWorked,
+    required this.daysWorked,
     required this.noticePaid,
   });
   final double salary;
   final int monthsWorked;
+  final int daysWorked;
   final bool noticePaid;
 }
 
@@ -34,9 +36,10 @@ class CltCalculator {
   const CltCalculator();
   CltResult simulate(CltSimulation input) {
     final months = input.monthsWorked.clamp(0, 12);
+    final days = input.daysWorked.clamp(0, 30);
     final vacation = input.salary * months / 12;
     return CltResult(
-      salaryBalance: input.salary,
+      salaryBalance: input.salary * days / 30,
       notice: input.noticePaid ? input.salary : 0,
       proportionalVacation: vacation,
       vacationBonus: vacation / 3,

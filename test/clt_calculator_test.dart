@@ -5,7 +5,12 @@ void main() {
   test('calcula verbas proporcionais e aviso indenizado', () {
     const calculator = CltCalculator();
     final result = calculator.simulate(
-      const CltSimulation(salary: 2400, monthsWorked: 6, noticePaid: true),
+      const CltSimulation(
+        salary: 2400,
+        monthsWorked: 6,
+        daysWorked: 30,
+        noticePaid: true,
+      ),
     );
     expect(result.salaryBalance, 2400);
     expect(result.notice, 2400);
