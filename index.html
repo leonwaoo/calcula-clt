@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>CalculaCLT - Calculadora de Rescisão e Direitos Trabalhistas</title>
 
-  <!-- PWA Meta Tags -->
+  <!-- PWA & Android Meta Tags -->
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#1E3A8A">
   <meta name="mobile-web-app-capable" content="yes">
@@ -87,6 +87,135 @@
       z-index: 100;
     }
 
+    /* ========================================================================= */
+    /* ANIMAÇÃO DE ABERTURA (SPLASH SCREEN)                                      */
+    /* ========================================================================= */
+    .splash-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 30%, #1E3A8A 0%, #0F172A 70%, #020617 100%);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 80px 24px 40px;
+      color: white;
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+
+    .splash-screen.fade-out {
+      opacity: 0;
+      transform: scale(1.05);
+      pointer-events: none;
+    }
+
+    .splash-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      animation: splashAppear 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes splashAppear {
+      0% { opacity: 0; transform: scale(0.86) translateY(10px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .splash-icon-box {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .splash-glow {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(16, 185, 129, 0.35);
+      filter: blur(28px);
+      border-radius: 50%;
+      animation: glowPulse 2s infinite alternate ease-in-out;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 0.3; transform: translate(-50%, -50%) scale(0.9); }
+      100% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.25); }
+    }
+
+    .splash-badge {
+      width: 82px;
+      height: 82px;
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 50%, #059669 100%);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 32px rgba(37, 99, 235, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+      border: 1.5px solid rgba(255, 255, 255, 0.25);
+      position: relative;
+      z-index: 2;
+    }
+
+    .splash-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      color: #FFFFFF;
+      margin-bottom: 6px;
+    }
+
+    .splash-subtitle {
+      font-size: 13px;
+      font-weight: 500;
+      color: #94A3B8;
+      letter-spacing: 0.2px;
+      margin-bottom: 34px;
+    }
+
+    .splash-bar-wrap {
+      width: 180px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .splash-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #3B82F6 0%, #10B981 100%);
+      border-radius: 10px;
+      transition: width 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    .splash-status-text {
+      font-size: 11.5px;
+      color: #64748B;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      transition: color 0.3s;
+    }
+
+    .splash-bottom {
+      font-size: 10.5px;
+      color: #64748B;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /* HEADER */
     .app-header {
       padding: 44px 20px 14px;
       background: rgba(255, 255, 255, 0.95);
@@ -903,6 +1032,22 @@
       margin-top: 1px;
     }
 
+    /* FOOTER COM LINK DE PRIVACIDADE */
+    .app-footer {
+      padding: 16px;
+      text-align: center;
+      font-size: 11px;
+      color: #94A3B8;
+      border-top: 1px solid var(--border-subtle);
+      margin-top: 10px;
+    }
+
+    .app-footer a {
+      color: #2563EB;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
     /* TELA DE COMPARATIVO */
     .compare-card {
       background: #FFFFFF;
@@ -1163,6 +1308,36 @@
   <div class="phone-mockup">
     <div class="dynamic-island"></div>
 
+    <!-- ========================================================================= -->
+    <!-- ANIMAÇÃO DE ABERTURA (SPLASH SCREEN)                                      -->
+    <!-- ========================================================================= -->
+    <div class="splash-screen" id="appSplashScreen" onclick="dismissSplash()">
+      <div class="splash-center">
+        <div class="splash-icon-box">
+          <div class="splash-glow"></div>
+          <div class="splash-badge">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+              <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/>
+              <path d="M7 21h10"/>
+              <path d="M12 3v18"/>
+              <path d="M3 7h18"/>
+            </svg>
+          </div>
+        </div>
+        <div class="splash-title">Calcula<span style="color: #10B981;">CLT</span></div>
+        <div class="splash-subtitle">Rescisão e Direitos Trabalhistas</div>
+
+        <div class="splash-bar-wrap">
+          <div class="splash-bar-fill" id="splashBarFill"></div>
+        </div>
+        <div class="splash-status-text" id="splashStatus">Carregando tabelas oficiais da CLT...</div>
+      </div>
+      <div class="splash-bottom">
+        CONFORME LEGISLAÇÃO TRABALHISTA OFICIAL • 2026
+      </div>
+    </div>
+
     <!-- Header do App -->
     <div class="app-header">
       <div class="header-left">
@@ -1285,6 +1460,10 @@
         <button class="btn-main btn-green" onclick="calculateAndShowDashboard()" style="margin-bottom: 16px;">
           CALCULAR RESCISÃO
         </button>
+
+        <div class="app-footer">
+          CalculaCLT • <a href="privacidade.html">Política de Privacidade</a> • Conformidade CLT
+        </div>
       </div>
 
       <!-- ============================================== -->
@@ -1349,9 +1528,7 @@
           </div>
         </div>
 
-        <!-- ============================================== -->
-        <!-- MELHORIA 1: VALIDADOR DE TRCT DA EMPRESA      -->
-        <!-- ============================================== -->
+        <!-- VALIDADOR DE TRCT DA EMPRESA -->
         <div class="validator-card">
           <div class="card-heading">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -1583,6 +1760,10 @@
             </div>
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           </a>
+        </div>
+
+        <div class="app-footer">
+          CalculaCLT • <a href="privacidade.html">Política de Privacidade</a> • Conformidade CLT
         </div>
       </div>
 
@@ -1903,6 +2084,40 @@
       element.classList.toggle('open');
     }
 
+    // =========================================================================
+    // SPLASH SCREEN LOGIC
+    // =========================================================================
+    function runSplashScreen() {
+      const fill = document.getElementById('splashBarFill');
+      const status = document.getElementById('splashStatus');
+
+      setTimeout(() => {
+        if (fill) fill.style.width = '65%';
+      }, 150);
+
+      setTimeout(() => {
+        if (fill) fill.style.width = '100%';
+        if (status) {
+          status.innerText = 'Tabelas oficiais carregadas!';
+          status.style.color = '#10B981';
+        }
+      }, 850);
+
+      setTimeout(() => {
+        dismissSplash();
+      }, 1600);
+    }
+
+    function dismissSplash() {
+      const splash = document.getElementById('appSplashScreen');
+      if (splash && !splash.classList.contains('fade-out')) {
+        splash.classList.add('fade-out');
+        setTimeout(() => {
+          splash.style.display = 'none';
+        }, 600);
+      }
+    }
+
     function goToScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(screenId).classList.add('active');
@@ -1941,7 +2156,7 @@
     }
 
     // =========================================================================
-    // MELHORIA 1: VALIDADOR DE TRCT DA EMPRESA
+    // VALIDADOR DE TRCT DA EMPRESA
     // =========================================================================
     function validateCompanyTrct() {
       if (!currentCalc) currentCalc = calculateCustom();
@@ -1983,7 +2198,7 @@
     }
 
     // =========================================================================
-    // MELHORIA 2: CHECKLIST DO TRABALHADOR DEMITIDO COM LOCALSTORAGE
+    // CHECKLIST DO TRABALHADOR DEMITIDO COM LOCALSTORAGE
     // =========================================================================
     function toggleChecklistItem(index) {
       const cb = document.getElementById(`chk${index}`);
@@ -2067,27 +2282,6 @@
       if (params.has('r')) document.getElementById('inputReason').value = params.get('r');
       if (params.has('s')) {
         calculateAndShowDashboard();
-      }
-    }
-
-    function shareCalculationLink() {
-      const s = document.getElementById('inputSalary').value;
-      const adm = document.getElementById('inputAdmission').value;
-      const dis = document.getElementById('inputDismissal').value;
-      const r = document.getElementById('inputReason').value;
-
-      const url = `${window.location.origin}${window.location.pathname}?s=${s}&adm=${adm}&dis=${dis}&r=${r}`;
-
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(() => {
-          const btn = document.getElementById('btnShareLink');
-          btn.innerText = 'Link Copiado!';
-          btn.style.color = '#059669';
-          setTimeout(() => {
-            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Copiar Link`;
-            btn.style.color = '#1E3A8A';
-          }, 3000);
-        });
       }
     }
 
@@ -2950,6 +3144,7 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
+      runSplashScreen();
       loadSavedData();
       onReasonChanged();
       loadChecklistData();
