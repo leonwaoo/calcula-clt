@@ -19,3 +19,7 @@ Thumbs.db
 *.jks
 *.keystore
 key.properties
+
+.vercel
+
+node_modules/
