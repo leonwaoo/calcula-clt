@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>CalculaCLT - Calculadora Oficial de Rescisão e Direitos</title>
+  <title>CalculaCLT - Calculadora Fácil de Direitos e Rescisão</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -12,12 +12,12 @@
       --primary-gradient: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
       --emerald-gradient: linear-gradient(135deg, #059669 0%, #10B981 100%);
       --surface: #FFFFFF;
-      --bg-page: #F1F5F9;
+      --bg-page: #F8FAFC;
       --text-main: #0F172A;
       --text-muted: #64748B;
       --border-subtle: #E2E8F0;
       --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);
-      --card-shadow-hover: 0 16px 30px -6px rgba(37, 99, 235, 0.12), 0 10px 15px -5px rgba(0, 0, 0, 0.04);
+      --card-shadow-hover: 0 16px 30px -6px rgba(37, 99, 235, 0.12);
     }
 
     * {
@@ -38,7 +38,6 @@
       padding: 16px;
     }
 
-    /* Moldura estilo iPhone 16 Pro Max */
     .phone-mockup {
       width: 420px;
       height: 890px;
@@ -51,7 +50,6 @@
       position: relative;
     }
 
-    /* Se abrir em celular real, ocupa a tela cheia perfeitamente */
     @media (max-width: 480px) {
       body {
         padding: 0;
@@ -65,7 +63,6 @@
       }
     }
 
-    /* Dynamic Island */
     .dynamic-island {
       width: 125px;
       height: 28px;
@@ -78,10 +75,9 @@
       z-index: 100;
     }
 
-    /* Top Bar do App */
     .app-header {
       padding: 46px 20px 14px;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-subtle);
       display: flex;
@@ -151,7 +147,6 @@
       gap: 4px;
     }
 
-    /* Container de Telas */
     .screen-container {
       flex: 1;
       overflow-y: auto;
@@ -175,7 +170,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Estilos do Formulário (Tela 1) */
     .banner-badge {
       background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
       border: 1px solid #BFDBFE;
@@ -288,6 +282,24 @@
       cursor: pointer;
     }
 
+    .friendly-helper {
+      font-size: 12px;
+      line-height: 1.4;
+      padding: 10px 12px;
+      background: #F1F5F9;
+      border-radius: 12px;
+      color: #475569;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .friendly-helper.alert {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+    }
+
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -349,7 +361,37 @@
       font-weight: 600;
     }
 
-    /* Cards Informativos de FGTS e Seguro */
+    .package-banner {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      border-radius: 20px;
+      padding: 16px 20px;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+    }
+
+    .package-title {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #BFDBFE;
+    }
+
+    .package-sub {
+      font-size: 11px;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    .package-value {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
     .stats-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -399,39 +441,6 @@
       margin-top: 4px;
     }
 
-    /* Banner Pacote Total */
-    .package-banner {
-      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
-      border-radius: 20px;
-      padding: 16px 20px;
-      color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
-    }
-
-    .package-title {
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: #BFDBFE;
-    }
-
-    .package-sub {
-      font-size: 11px;
-      opacity: 0.9;
-      margin-top: 2px;
-    }
-
-    .package-value {
-      font-size: 22px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-
-    /* Lista de Verbas Clicáveis */
     .section-title-wrap {
       display: flex;
       justify-content: space-between;
@@ -527,7 +536,7 @@
       gap: 2px;
     }
 
-    /* TELA DE DETALHES DE CADA CÁLCULO */
+    /* TELA DE DETALHES */
     .detail-hero-card {
       border-radius: 24px;
       padding: 24px;
@@ -560,7 +569,6 @@
       font-weight: 700;
     }
 
-    /* Cartão de Variáveis */
     .detail-box {
       background: #FFFFFF;
       border: 1px solid var(--border-subtle);
@@ -604,7 +612,6 @@
       color: #0F172A;
     }
 
-    /* Caixa de Fórmula em Destaque */
     .math-formula-box {
       background: linear-gradient(135deg, #F8FAFC 0%, #EDF2F7 100%);
       border: 2px dashed #CBD5E1;
@@ -637,7 +644,6 @@
       margin-bottom: 8px;
     }
 
-    /* Botão Principal Estilizado */
     .btn-main {
       width: 100%;
       background: var(--primary-gradient);
@@ -670,7 +676,6 @@
       box-shadow: 0 14px 30px rgba(16, 185, 129, 0.5);
     }
 
-    /* Modal Paywall */
     .modal-overlay {
       position: absolute;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -717,20 +722,20 @@
     <div class="screen-container">
 
       <!-- ============================================== -->
-      <!-- TELA 1: FORMULÁRIO DE ENTRADA DO CONTRATO     -->
+      <!-- TELA 1: FORMULÁRIO COM LÓGICA CONDICIONAL      -->
       <!-- ============================================== -->
       <div class="screen active" id="screen-form">
         <div class="banner-badge">
-          <div class="banner-icon">🎯</div>
+          <div class="banner-icon">💡</div>
           <div class="banner-text">
-            <strong>Cálculo Oficial CLT & Lei 12.506/11:</strong> Preencha os dados abaixo para simular todas as verbas da sua rescisão.
+            <strong>Linguagem Simples:</strong> Sem termos difíceis. Preencha seu salário e datas para saber exatamente quanto vai cair na sua conta.
           </div>
         </div>
 
         <div class="form-card">
-          <div class="card-heading">💵 1. Salário e Ganhos Mensais</div>
+          <div class="card-heading">💵 1. Quanto você ganhava por mês?</div>
           <div class="form-group">
-            <label class="form-label">Salário Bruto Mensal</label>
+            <label class="form-label">Salário Bruto na Carteira</label>
             <div class="input-wrapper">
               <span class="input-prefix">R$</span>
               <input type="number" id="inputSalary" class="form-input" value="4500" placeholder="4.500,00" step="100">
@@ -739,71 +744,80 @@
         </div>
 
         <div class="form-card">
-          <div class="card-heading">📅 2. Período do Contrato</div>
+          <div class="card-heading">📅 2. Suas Datas de Trabalho</div>
           <div class="grid-2">
             <div class="form-group">
-              <label class="form-label">Início (Admissão)</label>
+              <label class="form-label">Dia que entrou</label>
               <input type="date" id="inputAdmission" class="form-input no-prefix" value="2023-01-15">
             </div>
             <div class="form-group">
-              <label class="form-label">Fim (Demissão)</label>
+              <label class="form-label">Dia que saiu</label>
               <input type="date" id="inputDismissal" class="form-input no-prefix" value="2026-03-20">
             </div>
           </div>
         </div>
 
         <div class="form-card">
-          <div class="card-heading">⚖️ 3. Motivo e Aviso Prévio</div>
+          <div class="card-heading">❓ 3. Como foi a sua saída?</div>
           <div class="form-group">
-            <label class="form-label">Tipo de Rescisão</label>
-            <select id="inputReason" class="form-select">
-              <option value="semJustaCausa" selected>Demissão sem Justa Causa (Direitos Completos)</option>
-              <option value="pedidoDemissao">Pedido de Demissão pelo Trabalhador</option>
-              <option value="acordoMutuo">Acordo Mútuo (Art. 484-A da CLT)</option>
-              <option value="justaCausa">Demissão com Justa Causa</option>
-              <option value="terminoExperiencia">Término de Contrato de Experiência</option>
+            <label class="form-label">Motivo do desligamento</label>
+            <select id="inputReason" class="form-select" onchange="onReasonChanged()">
+              <option value="semJustaCausa" selected>Fui demitido sem justa causa (A empresa me mandou embora)</option>
+              <option value="pedidoDemissao">Eu pedi demissão (Quis sair por conta própria)</option>
+              <option value="acordoMutuo">Fizemos acordo amigável (Artigo 484-A)</option>
+              <option value="justaCausa">Fui demitido com justa causa (Motivo grave)</option>
+              <option value="terminoExperiencia">Terminou o prazo do contrato de experiência</option>
             </select>
           </div>
 
-          <div class="form-group">
-            <label class="form-label">Aviso Prévio</label>
-            <select id="inputNotice" class="form-select">
-              <option value="indenizado" selected>Indenizado pela Empresa (Paga em dinheiro)</option>
-              <option value="trabalhado">Trabalhado (Cumpriu os dias)</option>
-              <option value="naoCumprido">Não Cumprido (Desconto de 1 salário)</option>
-              <option value="dispensado">Dispensado pela Empresa (Sem desconto)</option>
+          <!-- Explicação Didática em Linguagem Simples -->
+          <div class="friendly-helper" id="reasonHelper">
+            <span>ℹ️</span>
+            <span id="reasonHelperText">Você foi mandado embora: tem direito a tudo (salário, aviso prévio, 13º, férias, multa de 40% do FGTS e seguro-desemprego).</span>
+          </div>
+
+          <!-- CAMPO CONDICIONAL: Aviso Prévio (Some se for Justa Causa ou Término de Experiência) -->
+          <div class="form-group" id="noticeGroup">
+            <label class="form-label">Sobre o Aviso Prévio</label>
+            <select id="inputNotice" class="form-select" onchange="onNoticeChanged()">
+              <!-- As opções são preenchidas dinamicamente pelo JavaScript de acordo com o motivo -->
             </select>
+            <div class="friendly-helper" id="noticeHelper" style="margin-top: 6px; display: none;">
+              <span>⚠️</span>
+              <span id="noticeHelperText"></span>
+            </div>
           </div>
         </div>
 
         <div class="form-card">
-          <div class="card-heading">🏖️ 4. Férias, Dependentes & FGTS</div>
+          <div class="card-heading">🏖️ 4. Férias e Dependentes</div>
           <div class="grid-2">
             <div class="form-group">
-              <label class="form-label">Férias Vencidas</label>
+              <label class="form-label">Férias vencidas</label>
               <select id="inputOverdueVacation" class="form-select">
-                <option value="0" selected>0 períodos</option>
-                <option value="1">1 período (30 dias)</option>
-                <option value="2">2 períodos</option>
+                <option value="0" selected>Nenhuma (Tudo em dia)</option>
+                <option value="1">1 ano de férias vencidas</option>
+                <option value="2">2 anos de férias vencidas</option>
               </select>
             </div>
             <div class="form-group">
-              <label class="form-label">Dependentes IRRF</label>
+              <label class="form-label">Filhos / Dependentes</label>
               <input type="number" id="inputDependents" class="form-input no-prefix" value="1" min="0" max="10">
             </div>
           </div>
 
-          <div class="form-group">
-            <label class="form-label">Saldo do FGTS (R$) [Opcional]</label>
+          <!-- Saldo FGTS (Só exibe se a modalidade permitir saque) -->
+          <div class="form-group" id="fgtsInputGroup">
+            <label class="form-label">Saldo acumulado do FGTS (R$) [Opcional]</label>
             <div class="input-wrapper">
               <span class="input-prefix">R$</span>
-              <input type="number" id="inputFgts" class="form-input" value="12400" placeholder="Estimaremos se vazio">
+              <input type="number" id="inputFgts" class="form-input" value="12400" placeholder="Se não souber, calculamos">
             </div>
           </div>
         </div>
 
         <button class="btn-main btn-green" onclick="calculateAndShowDashboard()" style="margin-bottom: 16px;">
-          <span>🚀</span> CALCULAR MINHA RESCISÃO
+          <span>🚀</span> CALCULAR MEUS DIREITOS AGORA
         </button>
       </div>
 
@@ -814,11 +828,11 @@
         <!-- Hero Líquido -->
         <div class="hero-card">
           <div class="hero-badge-top">
-            <span>✨</span> Líquido a Receber na Conta
+            <span>✨</span> O que vai cair na sua conta
           </div>
           <div class="hero-amount" id="dashNetTotal">R$ 0,00</div>
           <div class="hero-footer-stats">
-            <span id="dashGrossTotal">Bruto: R$ 0,00</span>
+            <span id="dashGrossTotal">Total ganho: R$ 0,00</span>
             <span id="dashDeductionsTotal" style="color: #FED7AA;">Descontos: -R$ 0,00</span>
           </div>
         </div>
@@ -826,8 +840,8 @@
         <!-- Banner do Pacote Total -->
         <div class="package-banner">
           <div>
-            <div class="package-title">Pacote Financeiro Total</div>
-            <div class="package-sub">Rescisão + Saque FGTS + Seguro</div>
+            <div class="package-title">Tudo o que você vai receber</div>
+            <div class="package-sub">Dinheiro na conta + Saque FGTS + Seguro</div>
           </div>
           <div class="package-value" id="dashGrandTotal">R$ 0,00</div>
         </div>
@@ -841,90 +855,93 @@
           </div>
 
           <div class="stat-card" onclick="openDetail('unemployment')">
-            <div class="stat-label">🛡️ Seguro-Desemp.</div>
-            <div class="stat-number" id="dashUnempVal" style="color: #7C3AED; font-size: 15px;">5x R$ 2.313</div>
+            <div class="stat-label">🛡️ Seguro-Desemprego</div>
+            <div class="stat-number" id="dashUnempVal" style="color: #7C3AED; font-size: 14px;">5x de R$ 2.313</div>
             <div class="stat-tag" id="dashUnempTag" style="color: #7C3AED; background: #F3E8FF;">Elegível</div>
           </div>
         </div>
 
         <div class="section-title-wrap">
-          <div class="section-title">Discriminação das Verbas</div>
-          <div class="section-hint">Toque para ver detalhes ➔</div>
+          <div class="section-title">De onde veio esse dinheiro?</div>
+          <div class="section-hint">Toque para ver a conta ➔</div>
         </div>
 
-        <!-- Lista Clicável com Ícones Coloridos -->
-        <div class="clickable-card" onclick="openDetail('salary')">
+        <!-- Lista Clicável com cards condicionais -->
+        <div class="clickable-card" id="cardSalary" onclick="openDetail('salary')">
           <div class="card-left">
             <div class="icon-round" style="background: #EFF6FF; color: #2563EB;">💵</div>
             <div>
-              <div class="card-title">Saldo de Salário</div>
-              <div class="card-subtitle" id="dashSalarySub">20 dias trabalhados no mês</div>
+              <div class="card-title">Dias trabalhados no mês</div>
+              <div class="card-subtitle" id="dashSalarySub">20 dias no mês da saída</div>
             </div>
           </div>
           <div class="card-right">
             <div class="card-amount" id="dashSalaryVal">R$ 0,00</div>
-            <div class="card-action-link">Ver memória ➔</div>
+            <div class="card-action-link">Ver conta ➔</div>
           </div>
         </div>
 
-        <div class="clickable-card" onclick="openDetail('notice')">
+        <!-- Card Aviso Prévio (Some se não tiver aviso) -->
+        <div class="clickable-card" id="cardNotice" onclick="openDetail('notice')">
           <div class="card-left">
             <div class="icon-round" style="background: #F0FDFA; color: #0D9488;">⏱️</div>
             <div>
-              <div class="card-title">Aviso Prévio</div>
-              <div class="card-subtitle" id="dashNoticeSub">39 dias (Lei 12.506/11)</div>
+              <div class="card-title">Aviso Prévio Pago</div>
+              <div class="card-subtitle" id="dashNoticeSub">39 dias indenizados</div>
             </div>
           </div>
           <div class="card-right">
             <div class="card-amount" id="dashNoticeVal">R$ 0,00</div>
-            <div class="card-action-link">Ver memória ➔</div>
+            <div class="card-action-link">Ver conta ➔</div>
           </div>
         </div>
 
-        <div class="clickable-card" onclick="openDetail('thirteenth')">
+        <!-- Card 13º Salário (Some se for justa causa) -->
+        <div class="clickable-card" id="card13th" onclick="openDetail('thirteenth')">
           <div class="card-left">
             <div class="icon-round" style="background: #FAF5FF; color: #7C3AED;">🎁</div>
             <div>
               <div class="card-title">13º Salário Proporcional</div>
-              <div class="card-subtitle" id="dash13thSub">4/12 avos computados</div>
+              <div class="card-subtitle" id="dash13thSub">Meses trabalhados este ano</div>
             </div>
           </div>
           <div class="card-right">
             <div class="card-amount" id="dash13thVal">R$ 0,00</div>
-            <div class="card-action-link">Ver memória ➔</div>
+            <div class="card-action-link">Ver conta ➔</div>
           </div>
         </div>
 
-        <div class="clickable-card" onclick="openDetail('vacation')">
+        <!-- Card Férias (Some se for justa causa e sem vencidas) -->
+        <div class="clickable-card" id="cardVacation" onclick="openDetail('vacation')">
           <div class="card-left">
             <div class="icon-round" style="background: #FFF7ED; color: #EA580C;">🏖️</div>
             <div>
-              <div class="card-title">Férias + 1/3 Constitucional</div>
-              <div class="card-subtitle" id="dashVacationSub">Proporcionais + 33,33%</div>
+              <div class="card-title">Férias + Bônus de 1/3</div>
+              <div class="card-subtitle" id="dashVacationSub">Férias acumuladas + 33%</div>
             </div>
           </div>
           <div class="card-right">
             <div class="card-amount" id="dashVacationVal">R$ 0,00</div>
-            <div class="card-action-link">Ver memória ➔</div>
+            <div class="card-action-link">Ver conta ➔</div>
           </div>
         </div>
 
-        <div class="clickable-card" onclick="openDetail('deductions')">
+        <div class="clickable-card" id="cardDeductions" onclick="openDetail('deductions')">
           <div class="card-left">
             <div class="icon-round" style="background: #FFF1F2; color: #E11D48;">🏛️</div>
             <div>
-              <div class="card-title">Descontos Oficiais (INSS & IRRF)</div>
-              <div class="card-subtitle">Tabelas progressivas do governo</div>
+              <div class="card-title">Descontos (INSS e Imposto de Renda)</div>
+              <div class="card-subtitle">Descontos oficiais do governo</div>
             </div>
           </div>
           <div class="card-right">
             <div class="card-amount danger" id="dashDeductionsVal">- R$ 0,00</div>
-            <div class="card-action-link" style="color: #E11D48;">Ver faixas ➔</div>
+            <div class="card-action-link" style="color: #E11D48;">Ver detalhes ➔</div>
           </div>
         </div>
 
         <button class="btn-main" onclick="toggleModal(true)" style="margin: 10px 0 20px;">
-          <span>📄</span> EXPORTAR RELATÓRIO OFICIAL EM PDF
+          <span>📄</span> GERAR RELATÓRIO OFICIAL EM PDF
         </button>
       </div>
 
@@ -933,55 +950,55 @@
       <!-- ============================================== -->
       <div class="screen" id="screen-detail">
         <div class="detail-hero-card" id="detailHeroCard" style="background: var(--primary-gradient);">
-          <div class="detail-hero-tag" id="detailCategory">DETALHES DO CÁLCULO</div>
+          <div class="detail-hero-tag" id="detailCategory">DETALHES DO VALOR</div>
           <div class="detail-hero-value" id="detailValue">R$ 0,00</div>
-          <div class="detail-hero-badge" id="detailBadge">Memória de Cálculo Oficial</div>
+          <div class="detail-hero-badge" id="detailBadge">Memória de Cálculo Simples</div>
         </div>
 
-        <!-- 1. Informações que Compõem Este Cálculo -->
+        <!-- 1. Dados Usados -->
         <div class="detail-box">
-          <div class="detail-box-header">📋 Dados do Contrato Utilizados</div>
+          <div class="detail-box-header">📋 Dados do seu Contrato</div>
           <div class="detail-row">
-            <span class="detail-label">Data de Início (Admissão):</span>
+            <span class="detail-label">Dia em que começou:</span>
             <span class="detail-val" id="detStart">00/00/0000</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Data de Fim (Afastamento):</span>
+            <span class="detail-label">Dia em que saiu:</span>
             <span class="detail-val" id="detEnd">00/00/0000</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Tempo Total Trabalhado:</span>
+            <span class="detail-label">Tempo trabalhado na empresa:</span>
             <span class="detail-val" id="detTenure">0 anos e 0 meses</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label">Salário Base Mensal:</span>
+            <span class="detail-label">Salário registrado:</span>
             <span class="detail-val" id="detSalary">R$ 0,00</span>
           </div>
           <div class="detail-row">
-            <span class="detail-label" id="detCustomLabel">Variável do Cálculo:</span>
+            <span class="detail-label" id="detCustomLabel">Variável deste cálculo:</span>
             <span class="detail-val" id="detCustomVal">-</span>
           </div>
         </div>
 
-        <!-- 2. Passo a Passo Matemático Didático -->
+        <!-- 2. Como a Conta foi Feita (Linguagem Simples) -->
         <div class="detail-box">
-          <div class="detail-box-header">🧮 Como a Conta foi Feita (Passo a Passo)</div>
+          <div class="detail-box-header">🧮 Como essa conta foi feita?</div>
           <div class="math-formula-box" id="detFormula">
             Carregando fórmula...
           </div>
         </div>
 
-        <!-- 3. Base Legal Oficial -->
+        <!-- 3. O que a Lei diz -->
         <div class="detail-box">
-          <div class="detail-box-header">⚖️ Legislação e Base Jurídica</div>
-          <div class="law-pill" id="detLawBadge">Artigo da CLT</div>
+          <div class="detail-box-header">⚖️ O que a Lei Garante?</div>
+          <div class="law-pill" id="detLawBadge">CLT</div>
           <p style="font-size: 13px; color: #475569; line-height: 1.5;" id="detLegalText">
-            Explicação da lei...
+            Explicação simples...
           </p>
         </div>
 
         <button class="btn-main" onclick="goToScreen('screen-dashboard')" style="margin-bottom: 20px;">
-          ← VOLTAR AO RESUMO GERAL
+          ← VOLTAR AO RESUMO
         </button>
       </div>
 
@@ -996,13 +1013,13 @@
         </div>
         <h3 style="font-size: 20px; font-weight: 800; color: #0F172A; margin-top: 14px;">Desbloqueie o Relatório Oficial em PDF</h3>
         <p style="font-size: 13px; color: #64748B; margin-top: 6px; line-height: 1.4;">
-          Tenha em mãos o documento executivo detalhado com citações legais para conferir cada centavo no RH ou contestar erros.
+          Tenha em mãos o documento oficial formatado para conferir cada centavo no RH da empresa ou mandar no WhatsApp do seu advogado.
         </p>
 
         <div style="background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%); border: 1.5px solid #93C5FD; border-radius: 18px; padding: 18px; margin: 18px 0;">
-          <div style="font-size: 11px; font-weight: 800; color: #1E40AF; text-transform: uppercase;">OFERTA ESPECIAL VITALÍCIA</div>
-          <div style="font-size: 28px; font-weight: 800; color: #1E3A8A; margin-top: 2px;">R$ 19,90 <span style="font-size: 13px; font-weight: 600; color: #3B82F6;">pagamento único</span></div>
-          <div style="font-size: 11px; color: #1E40AF; margin-top: 4px;">✓ Sem mensalidades. Uso ilimitado para sempre.</div>
+          <div style="font-size: 11px; font-weight: 800; color: #1E40AF; text-transform: uppercase;">PAGAMENTO ÚNICO</div>
+          <div style="font-size: 28px; font-weight: 800; color: #1E3A8A; margin-top: 2px;">R$ 19,90 <span style="font-size: 13px; font-weight: 600; color: #3B82F6;">vitalício</span></div>
+          <div style="font-size: 11px; color: #1E40AF; margin-top: 4px;">✓ Sem mensalidade. Use quantas vezes quiser.</div>
         </div>
 
         <button class="btn-main btn-green" onclick="alert('🎉 Compra Pro simulada com sucesso!'); toggleModal(false);">
@@ -1040,10 +1057,10 @@
         title.innerHTML = 'Calcula<span style="color: #059669;">CLT</span>';
       } else if (screenId === 'screen-dashboard') {
         backBtn.style.display = 'flex';
-        title.innerText = 'Resultado da Rescisão';
+        title.innerText = 'Seus Direitos';
       } else if (screenId === 'screen-detail') {
         backBtn.style.display = 'flex';
-        title.innerText = 'Detalhe do Cálculo';
+        title.innerText = 'Entenda a Conta';
       }
     }
 
@@ -1056,13 +1073,89 @@
       }
     }
 
-    // Motor de Cálculo Oficial Completo
+    // =========================================================================
+    // REGRAS DINÂMICAS: QUANDO UMA OPÇÃO DESMARCA A OUTRA, TIRA A OPÇÃO!
+    // =========================================================================
+    function onReasonChanged() {
+      const reason = document.getElementById('inputReason').value;
+      const noticeGroup = document.getElementById('noticeGroup');
+      const noticeSelect = document.getElementById('inputNotice');
+      const reasonHelperText = document.getElementById('reasonHelperText');
+      const fgtsGroup = document.getElementById('fgtsInputGroup');
+
+      noticeSelect.innerHTML = '';
+
+      if (reason === 'semJustaCausa') {
+        // Demissão sem justa causa
+        noticeGroup.style.display = 'flex';
+        fgtsGroup.style.display = 'flex';
+        reasonHelperText.innerText = 'Você foi mandado embora: tem direito a tudo (salário, aviso prévio, 13º, férias, multa de 40% do FGTS e seguro-desemprego).';
+
+        // Opções válidas para demissão sem justa causa
+        noticeSelect.add(new Option('A empresa me pagou em dinheiro (não precisei trabalhar)', 'indenizado'));
+        noticeSelect.add(new Option('Trabalhei os dias do aviso prévio', 'trabalhado'));
+
+      } else if (reason === 'pedidoDemissao') {
+        // Pedido de demissão
+        noticeGroup.style.display = 'flex';
+        fgtsGroup.style.display = 'none'; // Não saca FGTS, tira o campo
+        reasonHelperText.innerText = 'Você pediu para sair: recebe salário dos dias trabalhados, 13º e férias proporcionais. Mas não saca FGTS nem tem seguro-desemprego.';
+
+        // Opções válidas quando o trabalhador pede para sair (NUNCA existe aviso indenizado pela empresa)
+        noticeSelect.add(new Option('Cumpri trabalhando os 30 dias', 'trabalhado'));
+        noticeSelect.add(new Option('Não trabalhei (a empresa vai descontar 1 salário)', 'naoCumprido'));
+        noticeSelect.add(new Option('A empresa me dispensou de cumprir (sem desconto)', 'dispensado'));
+
+      } else if (reason === 'acordoMutuo') {
+        // Acordo mútuo (Art. 484-A)
+        noticeGroup.style.display = 'flex';
+        fgtsGroup.style.display = 'flex';
+        reasonHelperText.innerText = 'Acordo amigável: você recebe metade do aviso prévio, saca até 80% do FGTS e recebe 20% de multa. Não dá direito a seguro-desemprego.';
+
+        noticeSelect.add(new Option('Aviso indenizado pago pela metade em dinheiro', 'indenizado'));
+        noticeSelect.add(new Option('Cumpri trabalhando os dias', 'trabalhado'));
+
+      } else if (reason === 'justaCausa') {
+        // Justa Causa: NÃO EXISTE AVISO PRÉVIO NEM SAQUE DE FGTS! TIRA AS OPÇÕES!
+        noticeGroup.style.display = 'none';
+        fgtsGroup.style.display = 'none';
+        reasonHelperText.innerText = 'Atenção (Justa Causa): você perde quase tudo (aviso prévio, 13º proporcional, férias proporcionais, saque do FGTS e seguro). Recebe apenas os dias trabalhados e férias vencidas de anos anteriores.';
+
+      } else if (reason === 'terminoExperiencia') {
+        // Término de experiência no prazo: NÃO EXISTE AVISO PRÉVIO! TIRA A OPÇÃO!
+        noticeGroup.style.display = 'none';
+        fgtsGroup.style.display = 'flex';
+        reasonHelperText.innerText = 'Término normal de experiência: o contrato apenas acabou na data combinada. Você saca 100% do FGTS (sem multa de 40%) e recebe salário, 13º e férias proporcionais. Não tem aviso nem seguro.';
+      }
+
+      onNoticeChanged();
+    }
+
+    function onNoticeChanged() {
+      const noticeHelper = document.getElementById('noticeHelper');
+      const noticeHelperText = document.getElementById('noticeHelperText');
+      const noticeVal = document.getElementById('inputNotice').value;
+      const reasonVal = document.getElementById('inputReason').value;
+
+      if (reasonVal === 'pedidoDemissao' && noticeVal === 'naoCumprido') {
+        noticeHelper.style.display = 'flex';
+        noticeHelper.classList.add('alert');
+        noticeHelperText.innerText = 'Cuidado: como você não vai trabalhar os 30 dias, a lei permite que a empresa desconte 1 salário inteiro (R$) do seu acerto.';
+      } else {
+        noticeHelper.style.display = 'none';
+      }
+    }
+
+    // Inicializa as opções no carregamento
+    window.addEventListener('DOMContentLoaded', onReasonChanged);
+
+    // Motor de Cálculo com Linguagem Simples
     function runCalculation() {
       const salary = parseFloat(document.getElementById('inputSalary').value) || 0;
       const admissionStr = document.getElementById('inputAdmission').value;
       const dismissalStr = document.getElementById('inputDismissal').value;
       const reason = document.getElementById('inputReason').value;
-      const noticeType = document.getElementById('inputNotice').value;
+      const noticeType = document.getElementById('inputNotice').value || 'trabalhado';
       const overdueVacations = parseInt(document.getElementById('inputOverdueVacation').value) || 0;
       const dependents = parseInt(document.getElementById('inputDependents').value) || 0;
       const fgtsInput = parseFloat(document.getElementById('inputFgts').value) || 0;
@@ -1075,12 +1168,26 @@
       const totalYears = Math.floor(totalDays / 365);
       const totalMonths = Math.floor(totalDays / 30);
 
-      // Aviso Prévio (Lei 12.506/11)
-      let noticeDays = 30;
-      if (reason === 'pedidoDemissao') {
-        noticeDays = 30;
-      } else {
+      // Aviso Prévio
+      let noticeDays = 0;
+      let noticeValue = 0;
+      let noticePenalty = 0;
+
+      if (reason === 'semJustaCausa') {
         noticeDays = Math.min(90, 30 + (totalYears * 3));
+        if (noticeType === 'indenizado') {
+          noticeValue = (salary / 30) * noticeDays;
+        }
+      } else if (reason === 'acordoMutuo') {
+        noticeDays = Math.min(90, 30 + (totalYears * 3));
+        if (noticeType === 'indenizado') {
+          noticeValue = ((salary / 30) * noticeDays) * 0.5;
+        }
+      } else if (reason === 'pedidoDemissao') {
+        noticeDays = 30;
+        if (noticeType === 'naoCumprido') {
+          noticePenalty = salary;
+        }
       }
 
       const isIndemnified = (noticeType === 'indenizado') && (reason === 'semJustaCausa' || reason === 'acordoMutuo');
@@ -1088,17 +1195,6 @@
       // Saldo de Salário
       const salaryBalanceDays = dis.getDate();
       const salaryBalance = (salary / 30) * salaryBalanceDays;
-
-      // Aviso Valor
-      let noticeValue = 0;
-      let noticePenalty = 0;
-      if (reason === 'semJustaCausa' && noticeType === 'indenizado') {
-        noticeValue = (salary / 30) * noticeDays;
-      } else if (reason === 'acordoMutuo' && noticeType === 'indenizado') {
-        noticeValue = ((salary / 30) * noticeDays) * 0.5;
-      } else if (reason === 'pedidoDemissao' && noticeType === 'naoCumprido') {
-        noticePenalty = salary;
-      }
 
       // 13º Salário
       let prop13thMonths = Math.min(12, dis.getMonth() + 1);
@@ -1135,7 +1231,7 @@
       const inssSalary = calcInss(salaryBalance);
       const inss13th = calcInss(total13th);
 
-      // IRRF Progressivo
+      // IRRF
       function calcIrrf(taxable, inss) {
         if (taxable <= 0) return 0;
         const baseLegal = Math.max(0, taxable - inss - (dependents * 189.59));
@@ -1195,37 +1291,66 @@
 
     function calculateAndShowDashboard() {
       currentCalc = runCalculation();
+      const c = currentCalc;
 
-      // Atualiza Tela 2
-      document.getElementById('dashNetTotal').innerText = formatBRL(currentCalc.netTotal);
-      document.getElementById('dashGrossTotal').innerText = `Bruto: ${formatBRL(currentCalc.totalGross)}`;
-      document.getElementById('dashDeductionsTotal').innerText = `Descontos: - ${formatBRL(currentCalc.totalDeductions)}`;
-      document.getElementById('dashGrandTotal').innerText = formatBRL(currentCalc.grandTotal);
+      document.getElementById('dashNetTotal').innerText = formatBRL(c.netTotal);
+      document.getElementById('dashGrossTotal').innerText = `Total bruto: ${formatBRL(c.totalGross)}`;
+      document.getElementById('dashDeductionsTotal').innerText = `Descontos: - ${formatBRL(c.totalDeductions)}`;
+      document.getElementById('dashGrandTotal').innerText = formatBRL(c.grandTotal);
 
-      document.getElementById('dashSalaryVal').innerText = formatBRL(currentCalc.salaryBalance);
-      document.getElementById('dashSalarySub').innerText = `${currentCalc.salaryBalanceDays} dias no mês da demissão`;
+      // Saldo Salário
+      document.getElementById('dashSalaryVal').innerText = formatBRL(c.salaryBalance);
+      document.getElementById('dashSalarySub').innerText = `${c.salaryBalanceDays} dias trabalhados no mês da saída`;
 
-      document.getElementById('dashNoticeVal').innerText = formatBRL(currentCalc.noticeValue);
-      document.getElementById('dashNoticeSub').innerText = `${currentCalc.noticeDays} dias (Lei 12.506/11)`;
+      // Aviso Prévio: esconde se não tiver aviso nessa rescisão
+      const cardNotice = document.getElementById('cardNotice');
+      if (c.noticeValue > 0) {
+        cardNotice.style.display = 'flex';
+        document.getElementById('dashNoticeVal').innerText = formatBRL(c.noticeValue);
+        document.getElementById('dashNoticeSub').innerText = `${c.noticeDays} dias pagos em dinheiro`;
+      } else if (c.noticePenalty > 0) {
+        cardNotice.style.display = 'flex';
+        document.getElementById('dashNoticeVal').innerText = `- ${formatBRL(c.noticePenalty)}`;
+        document.getElementById('dashNoticeVal').classList.add('danger');
+        document.getElementById('dashNoticeSub').innerText = 'Desconto por não cumprir o aviso';
+      } else {
+        cardNotice.style.display = 'none'; // Tira a opção se não houver
+      }
 
-      document.getElementById('dash13thVal').innerText = formatBRL(currentCalc.total13th);
-      document.getElementById('dash13thSub').innerText = `${currentCalc.prop13thMonths + currentCalc.ind13thMonths}/12 avos computados`;
+      // 13º Salário: esconde se for justa causa
+      const card13th = document.getElementById('card13th');
+      if (c.total13th > 0) {
+        card13th.style.display = 'flex';
+        document.getElementById('dash13thVal').innerText = formatBRL(c.total13th);
+        document.getElementById('dash13thSub').innerText = `${c.prop13thMonths + c.ind13thMonths}/12 meses de direito`;
+      } else {
+        card13th.style.display = 'none';
+      }
 
-      document.getElementById('dashVacationVal').innerText = formatBRL(currentCalc.totalVacationsWithThird);
-      document.getElementById('dashVacationSub').innerText = `${currentCalc.propVacMonths}/12 avos + 1/3`;
+      // Férias: esconde se for 0
+      const cardVac = document.getElementById('cardVacation');
+      if (c.totalVacationsWithThird > 0) {
+        cardVac.style.display = 'flex';
+        document.getElementById('dashVacationVal').innerText = formatBRL(c.totalVacationsWithThird);
+        document.getElementById('dashVacationSub').innerText = `${c.propVacMonths}/12 meses + bônus de 1/3`;
+      } else {
+        cardVac.style.display = 'none';
+      }
 
-      document.getElementById('dashFgtsVal').innerText = formatBRL(currentCalc.fgtsWithdrawable);
-      document.getElementById('dashFgtsTag').innerText = currentCalc.fgtsWithdrawable > 0 ? `✓ Multa de ${(currentCalc.fgtsPenaltyRate*100).toFixed(0)}%` : 'Sem saque';
+      // FGTS
+      document.getElementById('dashFgtsVal').innerText = formatBRL(c.fgtsWithdrawable);
+      document.getElementById('dashFgtsTag').innerText = c.fgtsWithdrawable > 0 ? `✓ Multa de ${(c.fgtsPenaltyRate*100).toFixed(0)}%` : 'Sem saque liberado';
 
-      document.getElementById('dashUnempVal').innerText = currentCalc.isEligibleUnemp ? `${currentCalc.unempInstallments}x de ${formatBRL(currentCalc.unempValue)}` : 'Inapto';
-      document.getElementById('dashUnempTag').innerText = currentCalc.isEligibleUnemp ? `Total: ${formatBRL(currentCalc.totalUnemp)}` : 'Sem direito';
+      // Seguro-Desemprego
+      document.getElementById('dashUnempVal').innerText = c.isEligibleUnemp ? `${c.unempInstallments}x de ${formatBRL(c.unempValue)}` : 'Inapto';
+      document.getElementById('dashUnempTag').innerText = c.isEligibleUnemp ? `Total: ${formatBRL(c.totalUnemp)}` : 'Sem direito nesta saída';
 
-      document.getElementById('dashDeductionsVal').innerText = `- ${formatBRL(currentCalc.totalDeductions)}`;
+      document.getElementById('dashDeductionsVal').innerText = `- ${formatBRL(c.totalDeductions)}`;
 
       goToScreen('screen-dashboard');
     }
 
-    // Abre a tela detalhada de CADA CÁLCULO ESPECÍFICO
+    // Abre a tela de detalhes de cada cálculo com LINGUAGEM SIMPLES
     function openDetail(type) {
       if (!currentCalc) return;
       const c = currentCalc;
@@ -1239,153 +1364,169 @@
 
       if (type === 'salary') {
         hero.style.background = 'linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%)';
-        document.getElementById('detailCategory').innerText = 'DETALHE: SALDO DE SALÁRIO';
+        document.getElementById('detailCategory').innerText = 'DIAS TRABALHADOS NO MÊS';
         document.getElementById('detailValue').innerText = formatBRL(c.salaryBalance);
-        document.getElementById('detailBadge').innerText = `${c.salaryBalanceDays} dias no mês de afastamento`;
+        document.getElementById('detailBadge').innerText = `${c.salaryBalanceDays} dias trabalhados`;
 
-        document.getElementById('detCustomLabel').innerText = 'Dias Trabalhados no Mês:';
+        document.getElementById('detCustomLabel').innerText = 'Dias trabalhados no mês:';
         document.getElementById('detCustomVal').innerText = `${c.salaryBalanceDays} dias`;
 
         document.getElementById('detFormula').innerHTML = `
-          <strong>1. Regra Oficial da CLT (Artigo 64):</strong><br>
-          Para o mensalista, o cálculo utiliza o divisor 30 dias:<br>
-          <span class="math-highlight">(Salário Base ÷ 30 dias) × Dias Trabalhados no Mês</span><br><br>
-          <strong>2. Aplicação com seus dados:</strong><br>
-          • Valor de 1 dia de trabalho: ${formatBRL(c.salary)} ÷ 30 = <strong>${formatBRL(c.salary/30)}/dia</strong><br>
-          • Dias até a data da saída: <strong>${c.salaryBalanceDays} dias</strong><br>
-          • Conta final: ${formatBRL(c.salary/30)} × ${c.salaryBalanceDays} = <strong>${formatBRL(c.salaryBalance)}</strong>
+          <strong>Como funciona a conta?</strong><br>
+          Seu salário é dividido por 30 para descobrir quanto você ganha por cada dia de trabalho. Depois, esse valor diário é multiplicado pelos dias que você trabalhou até a data de saída:<br><br>
+          • <strong>Quanto vale 1 dia seu:</strong> ${formatBRL(c.salary)} ÷ 30 = <strong>${formatBRL(c.salary/30)} por dia</strong><br>
+          • <strong>Dias que você trabalhou:</strong> <strong>${c.salaryBalanceDays} dias</strong><br>
+          • <strong>Conta final:</strong> ${formatBRL(c.salary/30)} × ${c.salaryBalanceDays} dias = <span class="math-highlight">${formatBRL(c.salaryBalance)}</span>
         `;
 
-        document.getElementById('detLawBadge').innerText = 'Artigo 4º e Artigo 477 da CLT';
-        document.getElementById('detLegalText').innerText = 'O trabalhador tem direito irrevogável de receber o valor exato dos dias trabalhados no mês em que ocorreu a demissão. Sobre esse valor incide desconto proporcional de INSS.';
+        document.getElementById('detLawBadge').innerText = 'Artigo 4º e 477 da CLT';
+        document.getElementById('detLegalText').innerText = 'A lei garante que você receba por cada dia que compareceu ao trabalho no mês da sua saída. Se saiu no dia 20, a empresa é obrigada a pagar 20 dias cheios.';
 
       } else if (type === 'notice') {
         hero.style.background = 'linear-gradient(135deg, #0F766E 0%, #14B8A6 100%)';
-        document.getElementById('detailCategory').innerText = 'DETALHE: AVISO PRÉVIO PROPORCIONAL';
-        document.getElementById('detailValue').innerText = formatBRL(c.noticeValue);
-        document.getElementById('detailBadge').innerText = `${c.noticeDays} dias pela Lei nº 12.506/2011`;
+        document.getElementById('detailCategory').innerText = 'AVISO PRÉVIO';
+        document.getElementById('detailValue').innerText = c.noticePenalty > 0 ? `- ${formatBRL(c.noticePenalty)}` : formatBRL(c.noticeValue);
+        document.getElementById('detailBadge').innerText = c.noticePenalty > 0 ? 'Desconto por não cumprir' : `${c.noticeDays} dias pagos`;
 
-        document.getElementById('detCustomLabel').innerText = 'Anos Completos Trabalhados:';
-        document.getElementById('detCustomVal').innerText = `${c.totalYears} anos completos`;
+        document.getElementById('detCustomLabel').innerText = 'Anos completos de trabalho:';
+        document.getElementById('detCustomVal').innerText = `${c.totalYears} anos`;
 
-        document.getElementById('detFormula').innerHTML = `
-          <strong>1. Regra da Lei Federal nº 12.506/2011:</strong><br>
-          O aviso base é de 30 dias + 3 dias adicionais por ano completo de casa (máximo de 90 dias):<br>
-          <span class="math-highlight">30 dias + (${c.totalYears} anos × 3 dias) = ${c.noticeDays} dias</span><br><br>
-          <strong>2. Valor Indenizado:</strong><br>
-          • Diária de trabalho: ${formatBRL(c.salary)} ÷ 30 = <strong>${formatBRL(c.salary/30)}/dia</strong><br>
-          • Multiplicação: ${formatBRL(c.salary/30)} × ${c.noticeDays} dias = <strong>${formatBRL(c.noticeValue)}</strong>
-        `;
-
-        document.getElementById('detLawBadge').innerText = 'Lei 12.506/2011 e Súmula 441 do TST';
-        document.getElementById('detLegalText').innerText = 'Se a empresa dispensou você do cumprimento (aviso indenizado), você recebe o valor em dinheiro e ganha a projeção das datas para 13º e férias. Se foi pedido de demissão, o aviso exigido é de 30 dias fixos.';
+        if (c.noticePenalty > 0) {
+          document.getElementById('detFormula').innerHTML = `
+            <strong>Por que tem esse desconto?</strong><br>
+            Como você pediu demissão e escolheu não trabalhar os 30 dias de aviso prévio, a lei permite que o patrão desconte exatamente 1 mês do seu salário na rescisão:<br><br>
+            • <strong>Desconto:</strong> <span class="math-highlight">- ${formatBRL(c.noticePenalty)}</span>
+          `;
+          document.getElementById('detLawBadge').innerText = 'Artigo 487, § 2º da CLT';
+          document.getElementById('detLegalText').innerText = 'Quando o funcionário pede demissão e não cumpre o aviso, a empresa tem o direito legal de descontar os salários correspondentes ao prazo do aviso.';
+        } else {
+          document.getElementById('detFormula').innerHTML = `
+            <strong>Como a lei calcula seus dias de aviso?</strong><br>
+            Todo trabalhador tem direito a 30 dias base. Além disso, a Lei nº 12.506 dá <strong>+3 dias de bônus</strong> para cada ano completo que você ficou na empresa:<br><br>
+            • <strong>Cálculo dos dias:</strong> 30 + (${c.totalYears} anos × 3) = <strong>${c.noticeDays} dias</strong><br>
+            • <strong>Valor que você ganha:</strong> (${formatBRL(c.salary)} ÷ 30) × ${c.noticeDays} dias = <span class="math-highlight">${formatBRL(c.noticeValue)}</span>
+          `;
+          document.getElementById('detLawBadge').innerText = 'Lei Federal nº 12.506/2011';
+          document.getElementById('detLegalText').innerText = 'Como a empresa mandou você embora e não quis que você trabalhasse os dias, ela é obrigada a pagar todos esses dias em dinheiro.';
+        }
 
       } else if (type === 'thirteenth') {
         hero.style.background = 'linear-gradient(135deg, #6B21A8 0%, #A855F7 100%)';
-        document.getElementById('detailCategory').innerText = 'DETALHE: 13º SALÁRIO PROPORCIONAL';
+        document.getElementById('detailCategory').innerText = '13º SALÁRIO PROPORCIONAL';
         document.getElementById('detailValue').innerText = formatBRL(c.total13th);
-        document.getElementById('detailBadge').innerText = `${c.prop13thMonths + c.ind13thMonths}/12 avos de direito`;
+        document.getElementById('detailBadge').innerText = `${c.prop13thMonths + c.ind13thMonths}/12 meses recebidos`;
 
-        document.getElementById('detCustomLabel').innerText = 'Avos Computados no Ano:';
-        document.getElementById('detCustomVal').innerText = `${c.prop13thMonths} normais + ${c.ind13thMonths} indenizados`;
+        document.getElementById('detCustomLabel').innerText = 'Meses contados neste ano:';
+        document.getElementById('detCustomVal').innerText = `${c.prop13thMonths + c.ind13thMonths} meses`;
 
         document.getElementById('detFormula').innerHTML = `
-          <strong>1. Regra da Lei nº 4.090/1962:</strong><br>
-          A cada mês trabalhado por 15 dias ou mais dentro do ano civil, conquista-se 1/12 avos do salário:<br>
-          <span class="math-highlight">(Salário Base ÷ 12) × Avos de Direito</span><br><br>
-          <strong>2. Cálculo com seus dados:</strong><br>
-          • Valor de cada mês (1/12): ${formatBRL(c.salary)} ÷ 12 = <strong>${formatBRL(c.salary/12)}</strong><br>
-          • Total de avos conquistados: <strong>${c.prop13thMonths + c.ind13thMonths} avos</strong><br>
-          • Resultado final: ${formatBRL(c.salary/12)} × ${c.prop13thMonths + c.ind13thMonths} = <strong>${formatBRL(c.total13th)}</strong>
+          <strong>Como funciona a conta do 13º?</strong><br>
+          A cada mês do ano em que você trabalhou 15 dias ou mais, você ganha 1 pedaço de 12 (1/12) do seu 13º salário:<br><br>
+          • <strong>Valor de cada mês:</strong> ${formatBRL(c.salary)} ÷ 12 = <strong>${formatBRL(c.salary/12)} por mês</strong><br>
+          • <strong>Meses acumulados no ano:</strong> <strong>${c.prop13thMonths + c.ind13thMonths} meses</strong><br>
+          • <strong>Conta final:</strong> ${formatBRL(c.salary/12)} × ${c.prop13thMonths + c.ind13thMonths} = <span class="math-highlight">${formatBRL(c.total13th)}</span>
         `;
 
-        document.getElementById('detLawBadge').innerText = 'Lei 4.090/62 e Lei 4.749/65';
-        document.getElementById('detLegalText').innerText = 'O 13º salário na rescisão é proporcional ao tempo trabalhado no ano. Caso haja aviso prévio indenizado superior a 15 dias, é adicionado +1 avo indenizado obrigatório.';
+        document.getElementById('detLawBadge').innerText = 'Lei Federal nº 4.090/1962';
+        document.getElementById('detLegalText').innerText = 'O 13º salário é um direito de todo trabalhador que sai sem justa causa ou pede demissão. Apenas quem é demitido por justa causa perde essa verba.';
 
       } else if (type === 'vacation') {
         hero.style.background = 'linear-gradient(135deg, #C2410C 0%, #F97316 100%)';
-        document.getElementById('detailCategory').innerText = 'DETALHE: FÉRIAS + 1/3 CONSTITUCIONAL';
+        document.getElementById('detailCategory').innerText = 'FÉRIAS + BÔNUS DE 1/3';
         document.getElementById('detailValue').innerText = formatBRL(c.totalVacationsWithThird);
-        document.getElementById('detailBadge').innerText = 'Isento de INSS e IRRF (Indenizatória)';
+        document.getElementById('detailBadge').innerText = 'Dinheiro 100% livre de impostos';
 
-        document.getElementById('detCustomLabel').innerText = 'Avos de Férias Proporcionais:';
-        document.getElementById('detCustomVal').innerText = `${c.propVacMonths}/12 avos`;
+        document.getElementById('detCustomLabel').innerText = 'Meses de férias acumulados:';
+        document.getElementById('detCustomVal').innerText = `${c.propVacMonths} meses`;
 
         document.getElementById('detFormula').innerHTML = `
-          <strong>1. Regra Constitucional (Art. 7º, XVII da CF/88):</strong><br>
-          Férias Proporcionais + Adicional Constitucional de 1/3 (+33,33%):<br>
-          <span class="math-highlight">Férias = (${formatBRL(c.salary)} ÷ 12) × ${c.propVacMonths} avos = ${formatBRL((c.salary/12)*c.propVacMonths)}</span><br><br>
-          <strong>2. Acréscimo do 1/3 Constitucional:</strong><br>
-          • Terço Constitucional: ${formatBRL((c.salary/12)*c.propVacMonths)} ÷ 3 = <strong>${formatBRL(((c.salary/12)*c.propVacMonths)/3)}</strong><br>
-          • Total a receber: <strong>${formatBRL(c.totalVacationsWithThird)}</strong>
+          <strong>Como funciona o cálculo das férias?</strong><br>
+          Você recebe as férias proporcionais aos meses trabalhados mais um <strong>bônus obrigatório de 33,33% (1/3)</strong> garantido pela Constituição:<br><br>
+          • <strong>Férias acumuladas:</strong> (${formatBRL(c.salary)} ÷ 12) × ${c.propVacMonths} = <strong>${formatBRL((c.salary/12)*c.propVacMonths)}</strong><br>
+          • <strong>Bônus de 1/3 (+33,3%):</strong> ${formatBRL((c.salary/12)*c.propVacMonths)} ÷ 3 = <strong>${formatBRL(((c.salary/12)*c.propVacMonths)/3)}</strong><br>
+          • <strong>Total que vai cair:</strong> <span class="math-highlight">${formatBRL(c.totalVacationsWithThird)}</span>
         `;
 
-        document.getElementById('detLawBadge').innerText = 'Artigo 146 da CLT e Art. 7º, XVII da CF/88';
-        document.getElementById('detLegalText').innerText = 'As férias pagas em rescisão contratual têm natureza 100% indenizatória. Portanto, sobre elas NÃO há incidência de desconto de INSS nem de Imposto de Renda!';
+        document.getElementById('detLawBadge').innerText = 'Artigo 7º da Constituição Federal de 1988';
+        document.getElementById('detLegalText').innerText = 'As férias pagas na rescisão têm natureza indenizatória. Isso significa que o governo NÃO pode descontar nem 1 centavo de INSS ou Imposto de Renda!';
 
       } else if (type === 'fgts') {
         hero.style.background = 'linear-gradient(135deg, #0369A1 0%, #0EA5E9 100%)';
-        document.getElementById('detailCategory').innerText = 'DETALHE: FGTS E MULTA RESCISÓRIA';
+        document.getElementById('detailCategory').innerText = 'FGTS E MULTA DO PATRÃO';
         document.getElementById('detailValue').innerText = formatBRL(c.fgtsWithdrawable);
-        document.getElementById('detailBadge').innerText = `Multa de ${(c.fgtsPenaltyRate*100).toFixed(0)}% Liberada para Saque`;
+        document.getElementById('detailBadge').innerText = c.fgtsWithdrawable > 0 ? `Multa de ${(c.fgtsPenaltyRate*100).toFixed(0)}% incluída` : 'Sem saque no pedido de demissão';
 
-        document.getElementById('detCustomLabel').innerText = 'Saldo Total Base do FGTS:';
+        document.getElementById('detCustomLabel').innerText = 'Saldo acumulado na Caixa:';
         document.getElementById('detCustomVal').innerText = formatBRL(c.totalFgts);
 
-        document.getElementById('detFormula').innerHTML = `
-          <strong>1. Regra da Lei Federal nº 8.036/1990 (Art. 18):</strong><br>
-          O empregador deve depositar a multa rescisória sobre o saldo acumulado de todo o período trabalhado:<br>
-          <span class="math-highlight">Saldo FGTS + Multa (${(c.fgtsPenaltyRate*100).toFixed(0)}%)</span><br><br>
-          <strong>2. Composição dos Valores:</strong><br>
-          • Saldo Base (depósitos do contrato): <strong>${formatBRL(c.totalFgts)}</strong><br>
-          • Multa Rescisória de ${(c.fgtsPenaltyRate*100).toFixed(0)}%: <strong>${formatBRL(c.totalFgts * c.fgtsPenaltyRate)}</strong><br>
-          • Total Liberado para Saque na Caixa: <strong>${formatBRL(c.fgtsWithdrawable)}</strong>
-        `;
-
-        document.getElementById('detLawBadge').innerText = 'Lei 8.036/90 e Art. 484-A da CLT';
-        document.getElementById('detLegalText').innerText = 'Na demissão sem justa causa, a multa é de 40% e o saque é de 100%. No acordo mútuo (Art. 484-A), a multa é de 20% e o saque liberado é de até 80% do saldo.';
+        if (c.fgtsWithdrawable <= 0) {
+          document.getElementById('detFormula').innerHTML = `
+            <strong>Por que você não saca o FGTS agora?</strong><br>
+            Como você pediu demissão, a lei determina que o dinheiro do seu FGTS fica guardado na conta da Caixa. Você poderá sacar no futuro se comprar a casa própria, se ficar 3 anos sem carteira assinada ou na aposentadoria.
+          `;
+          document.getElementById('detLawBadge').innerText = 'Lei 8.036/1990';
+          document.getElementById('detLegalText').innerText = 'No pedido de demissão, o funcionário não perde o saldo do FGTS, mas o dinheiro fica retido na Caixa Econômica Federal.';
+        } else {
+          document.getElementById('detFormula').innerHTML = `
+            <strong>Como a Caixa calcula seu saque?</strong><br>
+            O patrão é obrigado a pagar uma multa em dinheiro sobre tudo o que foi depositado durante o tempo em que você trabalhou:<br><br>
+            • <strong>Saldo total do seu contrato:</strong> ${formatBRL(c.totalFgts)}<br>
+            • <strong>Multa que o patrão paga (${(c.fgtsPenaltyRate*100).toFixed(0)}%):</strong> <strong>${formatBRL(c.totalFgts * c.fgtsPenaltyRate)}</strong><br>
+            • <strong>Total liberado para você sacar:</strong> <span class="math-highlight">${formatBRL(c.fgtsWithdrawable)}</span>
+          `;
+          document.getElementById('detLawBadge').innerText = 'Artigo 18 da Lei nº 8.036/90';
+          document.getElementById('detLegalText').innerText = 'A empresa tem até 10 dias após a demissão para gerar a chave de saque do FGTS na Caixa Econômica Federal para você retirar o dinheiro.';
+        }
 
       } else if (type === 'unemployment') {
         hero.style.background = 'linear-gradient(135deg, #4338CA 0%, #6366F1 100%)';
-        document.getElementById('detailCategory').innerText = 'DETALHE: SEGURO-DESEMPREGO';
-        document.getElementById('detailValue').innerText = c.isEligibleUnemp ? `${c.unempInstallments}x de ${formatBRL(c.unempValue)}` : 'Inapto';
-        document.getElementById('detailBadge').innerText = c.isEligibleUnemp ? `Total Estimado: ${formatBRL(c.totalUnemp)}` : 'Sem direito nesta modalidade';
+        document.getElementById('detailCategory').innerText = 'SEGURO-DESEMPREGO';
+        document.getElementById('detailValue').innerText = c.isEligibleUnemp ? `${c.unempInstallments} parcelas de ${formatBRL(c.unempValue)}` : 'Inapto';
+        document.getElementById('detailBadge').innerText = c.isEligibleUnemp ? `Total do auxílio: ${formatBRL(c.totalUnemp)}` : 'Sem direito nesta saída';
 
-        document.getElementById('detCustomLabel').innerText = 'Carência no Período Aquisitivo:';
-        document.getElementById('detCustomVal').innerText = `${c.totalMonths} meses trabalhados`;
+        document.getElementById('detCustomLabel').innerText = 'Tempo trabalhado:';
+        document.getElementById('detCustomVal').innerText = `${c.totalMonths} meses`;
 
-        document.getElementById('detFormula').innerHTML = `
-          <strong>1. Tabela Oficial CODEFAT / Ministério do Trabalho:</strong><br>
-          Para salários médios acima de R$ 3.402,65, a parcela atinge o teto oficial de <strong>R$ 2.313,74</strong>.<br><br>
-          <strong>2. Quantidade de Parcelas:</strong><br>
-          Com mais de 24 meses de registro em carteira, o trabalhador garante o máximo de <strong>5 parcelas</strong> mensais consecutivas:<br>
-          <span class="math-highlight">${c.unempInstallments} parcelas × ${formatBRL(c.unempValue)} = ${formatBRL(c.totalUnemp)}</span>
-        `;
-
-        document.getElementById('detLawBadge').innerText = 'Lei Federal nº 7.998/1990';
-        document.getElementById('detLegalText').innerText = 'O seguro-desemprego é um benefício de assistência temporária pago pelo Ministério do Trabalho para demissões sem justa causa. O requerimento é feito pelo app Carteira de Trabalho Digital.';
+        if (!c.isEligibleUnemp) {
+          document.getElementById('detFormula').innerHTML = `
+            <strong>Por que você não tem direito ao seguro?</strong><br>
+            O seguro-desemprego só é concedido para quem foi demitido sem justa causa e trabalhou pelo menos 12 meses nos últimos 18 meses. Como você pediu demissão ou saiu por acordo, a lei não libera o benefício.
+          `;
+          document.getElementById('detLawBadge').innerText = 'Lei 7.998/1990';
+          document.getElementById('detLegalText').innerText = 'O auxílio é destinado exclusivamente para proteger o trabalhador que perdeu o emprego contra a própria vontade.';
+        } else {
+          document.getElementById('detFormula').innerHTML = `
+            <strong>Quanto o governo vai te pagar por mês?</strong><br>
+            O valor da parcela é calculado com base no seu salário médio, respeitando o teto do governo:<br><br>
+            • <strong>Valor de cada parcela mensal:</strong> <strong>${formatBRL(c.unempValue)}</strong><br>
+            • <strong>Quantidade de parcelas:</strong> <strong>${c.unempInstallments} meses seguidos</strong><br>
+            • <strong>Total que você vai receber:</strong> <span class="math-highlight">${formatBRL(c.totalUnemp)}</span>
+          `;
+          document.getElementById('detLawBadge').innerText = 'Resoluções CODEFAT / Ministério do Trabalho';
+          document.getElementById('detLegalText').innerText = 'Você pode solicitar o benefício pela internet pelo aplicativo Carteira de Trabalho Digital logo após a homologação da rescisão.';
+        }
 
       } else if (type === 'deductions') {
         hero.style.background = 'linear-gradient(135deg, #BE123C 0%, #F43F5E 100%)';
-        document.getElementById('detailCategory').innerText = 'DETALHE: DESCONTOS DE INSS E IRRF';
+        document.getElementById('detailCategory').innerText = 'DESCONTOS DO GOVERNO (INSS E IR)';
         document.getElementById('detailValue').innerText = `- ${formatBRL(c.totalDeductions)}`;
-        document.getElementById('detailBadge').innerText = 'Tabelas Oficiais com Dedução Progressiva';
+        document.getElementById('detailBadge').innerText = 'Descontos Obrigatórios';
 
-        document.getElementById('detCustomLabel').innerText = 'Total de Deduções Legais:';
+        document.getElementById('detCustomLabel').innerText = 'Total que o governo recolhe:';
         document.getElementById('detCustomVal').innerText = formatBRL(c.totalDeductions);
 
         document.getElementById('detFormula').innerHTML = `
-          <strong>Discriminação dos Descontos Oficiais:</strong><br>
-          • INSS s/ Saldo de Salário: <strong>${formatBRL(c.inssSalary)}</strong><br>
-          • INSS s/ 13º Salário: <strong>${formatBRL(c.inss13th)}</strong><br>
-          • IRRF Retido na Fonte (Saldo): <strong>${formatBRL(c.irrfSalary)}</strong><br>
-          • IRRF Retido na Fonte (13º): <strong>${formatBRL(c.irrf13th)}</strong><br>
-          ${c.noticePenalty > 0 ? `• Desconto Aviso Não Cumprido: <strong>${formatBRL(c.noticePenalty)}</strong><br>` : ''}
-          <span class="math-highlight">Total Descontado: - ${formatBRL(c.totalDeductions)}</span>
+          <strong>Para onde vai esse desconto?</strong><br>
+          A empresa é obrigada por lei a repassar esses valores para a Previdência Social (INSS) e para a Receita Federal:<br><br>
+          • <strong>INSS dos dias trabalhados:</strong> ${formatBRL(c.inssSalary)}<br>
+          • <strong>INSS do seu 13º salário:</strong> ${formatBRL(c.inss13th)}<br>
+          • <strong>Imposto de Renda retido:</strong> ${formatBRL(c.irrfSalary + c.irrf13th)}<br>
+          ${c.noticePenalty > 0 ? `• <strong>Desconto de aviso não cumprido:</strong> ${formatBRL(c.noticePenalty)}<br>` : ''}
+          • <strong>Total descontado do seu acerto:</strong> <span class="math-highlight">- ${formatBRL(c.totalDeductions)}</span>
         `;
 
-        document.getElementById('detLawBadge').innerText = 'Portarias MPS/MF e Receita Federal';
-        document.getElementById('detLegalText').innerText = 'O INSS é calculado em alíquotas progressivas (7,5% a 14%). O IRRF considera a dedução por dependente legal ou o desconto simplificado mensal, adotando automaticamente a opção mais barata para você.';
+        document.getElementById('detLawBadge').innerText = 'Tabelas Oficiais da Receita Federal e INSS';
+        document.getElementById('detLegalText').innerText = 'Nós aplicamos a dedução por dependente ou o desconto simplificado oficial, escolhendo automaticamente o menor desconto de imposto possível para você.';
       }
 
       goToScreen('screen-detail');
