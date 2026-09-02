@@ -1,4 +1,4 @@
-name: Flutter CI
+name: Android Flutter CI
 
 on:
   push:
@@ -6,25 +6,20 @@ on:
   pull_request:
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
-      - name: Recreate Android project from the Flutter template
-        run: |
-          rm -rf android
-          flutter create --platforms=android --project-name calcula_clt --org com.calculaclt .
-          find android -type f -exec sed -i 's/com\.calculaclt\.calcula_clt/com.calculaclt.app/g' {} +
+          cache: true
       - run: flutter pub get
-      - run: dart format --output=none lib test bin
-      - run: flutter analyze --no-fatal-infos --no-fatal-warnings
+      - run: dart format --output=none lib test
+      - run: flutter analyze
       - run: flutter test
       - run: flutter build apk --debug
-      - run: flutter build appbundle --debug
       - uses: actions/upload-artifact@v4
         with:
-          name: calcula-clt-android-debug
+          name: calcula-clt-debug-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
