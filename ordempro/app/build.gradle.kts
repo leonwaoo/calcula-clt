@@ -9,6 +9,15 @@ android {
     namespace = "br.com.ordempro.autonomo"
     compileSdk = 36
 
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
     defaultConfig {
         applicationId = "br.com.ordempro.autonomo"
         minSdk = 24
