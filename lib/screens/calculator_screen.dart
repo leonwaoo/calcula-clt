@@ -121,7 +121,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       appBar: AppBar(
         title: const Row(
           children: [
-            Icon(Icons.calculate_outlined, color: Color(0xFF1E3A8A)),
+            Image.asset(
+              'assets/branding/calculaclt-logo.png',
+              width: 28,
+              height: 28,
+            ),
             SizedBox(width: 8),
             Text(
               'CalculaCLT',
