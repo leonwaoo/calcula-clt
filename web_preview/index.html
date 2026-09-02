@@ -481,6 +481,103 @@
       cursor: pointer;
     }
 
+    /* VALIDADOR DE TRCT */
+    .validator-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .validator-result-box {
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 12px;
+      line-height: 1.4;
+      display: none;
+    }
+
+    .validator-result-box.correct {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #065F46;
+    }
+
+    .validator-result-box.divergent {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+    }
+
+    /* CHECKLIST DO TRABALHADOR */
+    .checklist-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .checklist-progress-wrap {
+      background: #F1F5F9;
+      border-radius: 8px;
+      height: 8px;
+      overflow: hidden;
+      margin-top: 4px;
+    }
+
+    .checklist-progress-bar {
+      background: #10B981;
+      height: 100%;
+      width: 0%;
+      transition: width 0.3s;
+    }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid #F1F5F9;
+      cursor: pointer;
+    }
+
+    .checklist-item:last-child {
+      border-bottom: none;
+    }
+
+    .checklist-cb {
+      margin-top: 3px;
+      width: 17px;
+      height: 17px;
+      cursor: pointer;
+    }
+
+    .checklist-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .checklist-desc {
+      font-size: 11.5px;
+      color: #64748B;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    .checklist-item.done .checklist-title {
+      text-decoration: line-through;
+      color: #94A3B8;
+    }
+
     .stats-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -685,6 +782,12 @@
 
     .btn-letter:hover {
       background: #F3E8FF;
+    }
+
+    .btn-checklist {
+      background: #F0FDF4;
+      color: #065F46;
+      border-color: #A7F3D0;
     }
 
     /* ACCORDION TIRA-DUVIDAS */
@@ -1222,7 +1325,7 @@
           <div class="package-value" id="dashGrandTotal">R$ 0,00</div>
         </div>
 
-        <!-- Ações Principais: Comparar Cenários, Carta e WhatsApp -->
+        <!-- Ações Principais: Comparar Cenários, Carta e Checklist -->
         <div class="action-group">
           <div class="btn-action-row">
             <button class="btn-secondary btn-compare" onclick="openComparison()">
@@ -1235,15 +1338,38 @@
             </button>
           </div>
           <div class="btn-action-row">
+            <button class="btn-secondary btn-checklist" onclick="goToScreen('screen-checklist')">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              Checklist do Demitido
+            </button>
             <button class="btn-secondary btn-whatsapp" onclick="shareWhatsApp()">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-              Enviar no WhatsApp
-            </button>
-            <button class="btn-secondary" onclick="shareCalculationLink()" id="btnShareLink">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-              Copiar Link
+              WhatsApp
             </button>
           </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- MELHORIA 1: VALIDADOR DE TRCT DA EMPRESA      -->
+        <!-- ============================================== -->
+        <div class="validator-card">
+          <div class="card-heading">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Validador de TRCT da Empresa
+          </div>
+          <p style="font-size: 11.5px; color: #64748B;">
+            Digite o valor líquido que o RH da empresa colocou no papel da sua rescisão para conferir se há dinheiro faltando:
+          </p>
+          <div style="display: flex; gap: 8px;">
+            <div class="input-wrapper" style="flex: 1;">
+              <span class="input-prefix">R$</span>
+              <input type="number" id="inputCompanyTrct" class="form-input" placeholder="Ex: 8500,00" step="50">
+            </div>
+            <button class="btn-secondary" onclick="validateCompanyTrct()" style="background: #1E3A8A; color: white; border: none; padding: 0 16px;">
+              Validar
+            </button>
+          </div>
+          <div class="validator-result-box" id="validatorResultBox"></div>
         </div>
 
         <!-- Cards Secundários FGTS e Seguro -->
@@ -1590,7 +1716,83 @@
       </div>
 
       <!-- ============================================== -->
-      <!-- TELA 5: TELA DETALHADA DE CADA CÁLCULO         -->
+      <!-- TELA 5: CHECKLIST DO TRABALHADOR DEMITIDO      -->
+      <!-- ============================================== -->
+      <div class="screen" id="screen-checklist">
+        <div class="banner-badge">
+          <div class="banner-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+          </div>
+          <div class="banner-text">
+            Guia passo a passo com os prazos e procedimentos obrigatórios após o desligamento.
+          </div>
+        </div>
+
+        <div class="checklist-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="card-heading">Progresso do Desligamento</div>
+            <span style="font-size: 11.5px; font-weight: 700; color: #059669;" id="checklistProgressText">0 de 6 concluídos</span>
+          </div>
+          <div class="checklist-progress-wrap">
+            <div class="checklist-progress-bar" id="checklistProgressBar"></div>
+          </div>
+
+          <div class="checklist-item" id="chkItem1" onclick="toggleChecklistItem(1)">
+            <input type="checkbox" class="checklist-cb" id="chk1">
+            <div>
+              <div class="checklist-title">1. Exame Médico Demissional (ASO)</div>
+              <div class="checklist-desc">Deve ser realizado em até 10 dias corridos a contar do término do contrato, arcado integralmente pelo empregador.</div>
+            </div>
+          </div>
+
+          <div class="checklist-item" id="chkItem2" onclick="toggleChecklistItem(2)">
+            <input type="checkbox" class="checklist-cb" id="chk2">
+            <div>
+              <div class="checklist-title">2. Conferência de Depósitos do FGTS</div>
+              <div class="checklist-desc">Acesse o aplicativo FGTS Caixa e confira mês a mês se a empresa depositou os 8% devidos durante todo o contrato.</div>
+            </div>
+          </div>
+
+          <div class="checklist-item" id="chkItem3" onclick="toggleChecklistItem(3)">
+            <input type="checkbox" class="checklist-cb" id="chk3">
+            <div>
+              <div class="checklist-title">3. Chave de Saque da Caixa Econômica</div>
+              <div class="checklist-desc">Solicite ao RH o número da Chave de Conectividade Social para transferir o saldo e a multa de 40% para sua conta.</div>
+            </div>
+          </div>
+
+          <div class="checklist-item" id="chkItem4" onclick="toggleChecklistItem(4)">
+            <input type="checkbox" class="checklist-cb" id="chk4">
+            <div>
+              <div class="checklist-title">4. Pagamento em Conta em até 10 Dias</div>
+              <div class="checklist-desc">Verifique o extrato bancário. Se o acerto não cair em até 10 dias corridos, você tem direito a mais 1 salário integral de multa.</div>
+            </div>
+          </div>
+
+          <div class="checklist-item" id="chkItem5" onclick="toggleChecklistItem(5)">
+            <input type="checkbox" class="checklist-cb" id="chk5">
+            <div>
+              <div class="checklist-title">5. Requerimento do Seguro-Desemprego</div>
+              <div class="checklist-desc">Com o número de Requerimento Web fornecido pela empresa, dê entrada pelo aplicativo Carteira de Trabalho Digital (prazo: 7 a 120 dias).</div>
+            </div>
+          </div>
+
+          <div class="checklist-item" id="chkItem6" onclick="toggleChecklistItem(6)">
+            <input type="checkbox" class="checklist-cb" id="chk6">
+            <div>
+              <div class="checklist-title">6. Guardar TRCT Assinado e Comprovante</div>
+              <div class="checklist-desc">Guarde uma via impressa ou PDF assinada do Termo de Rescisão e o comprovante bancário por pelo menos 5 anos.</div>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-main" onclick="goToScreen('screen-dashboard')" style="margin-bottom: 16px;">
+          VOLTAR AO RESUMO
+        </button>
+      </div>
+
+      <!-- ============================================== -->
+      <!-- TELA 6: TELA DETALHADA DE CADA CÁLCULO         -->
       <!-- ============================================== -->
       <div class="screen" id="screen-detail">
         <div class="detail-hero-card" id="detailHeroCard" style="background: var(--primary-gradient);">
@@ -1723,15 +1925,106 @@
       } else if (screenId === 'screen-letter') {
         backBtn.style.display = 'flex';
         title.innerText = 'Gerador de Carta';
+      } else if (screenId === 'screen-checklist') {
+        backBtn.style.display = 'flex';
+        title.innerText = 'Checklist do Demitido';
       }
     }
 
     function goBack() {
       const activeScreen = document.querySelector('.screen.active').id;
-      if (activeScreen === 'screen-detail' || activeScreen === 'screen-compare' || activeScreen === 'screen-letter') {
+      if (activeScreen === 'screen-detail' || activeScreen === 'screen-compare' || activeScreen === 'screen-letter' || activeScreen === 'screen-checklist') {
         goToScreen('screen-dashboard');
       } else if (activeScreen === 'screen-dashboard') {
         goToScreen('screen-form');
+      }
+    }
+
+    // =========================================================================
+    // MELHORIA 1: VALIDADOR DE TRCT DA EMPRESA
+    // =========================================================================
+    function validateCompanyTrct() {
+      if (!currentCalc) currentCalc = calculateCustom();
+      const c = currentCalc;
+      const valInput = parseFloat(document.getElementById('inputCompanyTrct').value);
+      const resBox = document.getElementById('validatorResultBox');
+
+      if (isNaN(valInput) || valInput <= 0) {
+        alert('Por favor, informe o valor líquido constante no documento da empresa.');
+        return;
+      }
+
+      const legalNet = c.netTotal;
+      const diff = valInput - legalNet;
+
+      resBox.style.display = 'block';
+
+      if (Math.abs(diff) <= 15) {
+        resBox.className = 'validator-result-box correct';
+        resBox.innerHTML = `
+          <strong>Cálculo Regular e Concordante!</strong><br>
+          O valor informado pela empresa (${formatBRL(valInput)}) é perfeitamente compatível com o cálculo da legislação trabalhista (diferença desprezível de ${formatBRL(Math.abs(diff))}).
+        `;
+      } else if (diff < -15) {
+        const missing = Math.abs(diff);
+        resBox.className = 'validator-result-box divergent';
+        resBox.innerHTML = `
+          <strong>Atenção: Diferença de ${formatBRL(missing)} a menos!</strong><br>
+          O valor da empresa (${formatBRL(valInput)}) está <strong>abaixo</strong> do que a lei garante (${formatBRL(legalNet)}).<br><br>
+          • <strong>Possíveis causas:</strong> Não computação dos dias adicionais de aviso prévio (Lei 12.506/11), erro no cálculo de avos de 13º/férias proporcionais ou descontos indevidos no TRCT.
+        `;
+      } else {
+        resBox.className = 'validator-result-box correct';
+        resBox.innerHTML = `
+          <strong>Valor da Empresa Superior (+ ${formatBRL(diff)})!</strong><br>
+          O valor informado pela empresa (${formatBRL(valInput)}) é maior que o cálculo legal base (${formatBRL(legalNet)}). Isso ocorre quando há reflexo de comissões, horas extras habituais ou gratificações adicionais.
+        `;
+      }
+    }
+
+    // =========================================================================
+    // MELHORIA 2: CHECKLIST DO TRABALHADOR DEMITIDO COM LOCALSTORAGE
+    // =========================================================================
+    function toggleChecklistItem(index) {
+      const cb = document.getElementById(`chk${index}`);
+      cb.checked = !cb.checked;
+      updateChecklistUI();
+    }
+
+    function updateChecklistUI() {
+      let count = 0;
+      const states = [];
+      for (let i = 1; i <= 6; i++) {
+        const cb = document.getElementById(`chk${i}`);
+        const item = document.getElementById(`chkItem${i}`);
+        if (cb.checked) {
+          count++;
+          item.classList.add('done');
+          states.push(true);
+        } else {
+          item.classList.remove('done');
+          states.push(false);
+        }
+      }
+
+      const percent = (count / 6) * 100;
+      document.getElementById('checklistProgressBar').style.width = `${percent}%`;
+      document.getElementById('checklistProgressText').innerText = `${count} de 6 concluídos (${percent.toFixed(0)}%)`;
+
+      localStorage.setItem('calcula_clt_checklist', JSON.stringify(states));
+    }
+
+    function loadChecklistData() {
+      const saved = localStorage.getItem('calcula_clt_checklist');
+      if (saved) {
+        try {
+          const states = JSON.parse(saved);
+          states.forEach((val, idx) => {
+            const cb = document.getElementById(`chk${idx + 1}`);
+            if (cb) cb.checked = !!val;
+          });
+          updateChecklistUI();
+        } catch (e) {}
       }
     }
 
@@ -1921,7 +2214,6 @@
       const totalYears = Math.floor(totalDays / 365);
       const totalMonths = Math.floor(totalDays / 30);
 
-      // Data limite para pagamento (10 dias corridos - Art. 477, § 6º)
       const deadlineDateObj = new Date(dis);
       deadlineDateObj.setDate(deadlineDateObj.getDate() + 10);
       const deadlineDateStr = deadlineDateObj.toISOString().split('T')[0];
@@ -1972,7 +2264,6 @@
       let constitutionalThird = totalVacations / 3;
       let totalVacationsWithThird = totalVacations + constitutionalThird;
 
-      // Multa Artigo 477 da CLT (1 salário integral em caso de atraso)
       const latePenaltyVal = hasLatePenalty ? salary : 0;
 
       function calcInss(base) {
@@ -2055,7 +2346,6 @@
       document.getElementById('dashDeductionsTotal').innerText = `Descontos: - ${formatBRL(c.totalDeductions)}`;
       document.getElementById('dashGrandTotal').innerText = formatBRL(c.grandTotal);
 
-      // Atualiza data limite de pagamento dos 10 dias
       document.getElementById('deadlineDate').innerText = formatDate(c.deadlineDateStr);
 
       const today = new Date();
@@ -2118,7 +2408,7 @@
     }
 
     // =========================================================================
-    // MELHORIA 1: GERADOR DE CARTA DE DEMISSAO OU ACORDO
+    // GERADOR DE CARTA DE DEMISSAO OU ACORDO
     // =========================================================================
     function openLetterGenerator() {
       if (!currentCalc) currentCalc = calculateCustom();
@@ -2140,7 +2430,7 @@
       const cpf = document.getElementById('letterCpf').value || '000.000.000-00';
       const role = document.getElementById('letterRole').value || 'Cargo';
       const company = document.getElementById('letterCompany').value || 'Nome da Empresa LTDA';
-      const city = document.getElementById('letterCity').value || 'Cidade - UF';
+      const city = document.getElementById('letterCity').value || 'São Paulo - SP';
       const type = document.getElementById('letterType').value;
       const today = new Date().toLocaleDateString('pt-BR');
 
@@ -2662,6 +2952,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       loadSavedData();
       onReasonChanged();
+      loadChecklistData();
       loadFromUrl();
     });
   </script>
