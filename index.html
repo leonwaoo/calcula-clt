@@ -301,7 +301,6 @@
       gap: 10px;
     }
 
-    /* HERO CARD LIMPO */
     .hero-card {
       background: var(--emerald-gradient);
       border-radius: 20px;
@@ -425,7 +424,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 2px;
+      margin-top: 4px;
     }
 
     .section-title {
@@ -511,6 +510,120 @@
       align-items: center;
       justify-content: flex-end;
       gap: 2px;
+    }
+
+    /* SEÇÃO TIRA-DÚVIDAS (ACCORDION) */
+    .faq-container {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-question {
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1E293B;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      background: #FFFFFF;
+      transition: background 0.2s;
+    }
+
+    .faq-question:hover {
+      background: #F8FAFC;
+    }
+
+    .faq-arrow {
+      font-size: 14px;
+      color: #64748B;
+      transition: transform 0.2s;
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 16px 14px;
+      font-size: 12.5px;
+      line-height: 1.5;
+      color: #475569;
+      background: #F8FAFC;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-item.open .faq-arrow {
+      transform: rotate(180deg);
+    }
+
+    /* SEÇÃO CANAIS GOV.BR */
+    .gov-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 16px;
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .gov-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2px;
+    }
+
+    .gov-badge {
+      background: #1E3A8A;
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .gov-link-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: #F8FAFC;
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      text-decoration: none;
+      color: #0F172A;
+      font-size: 12.5px;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .gov-link-item:hover {
+      background: #EFF6FF;
+      border-color: #93C5FD;
+      color: #1D4ED8;
+    }
+
+    .gov-link-desc {
+      font-size: 11px;
+      color: #64748B;
+      font-weight: 400;
+      margin-top: 1px;
     }
 
     /* TELA DE DETALHES */
@@ -749,11 +862,10 @@
             <span id="reasonHelperText">Demissão sem justa causa: garante salário, aviso prévio, 13º proporcional, férias, multa de 40% do FGTS e seguro-desemprego.</span>
           </div>
 
-          <!-- AVISO PRÉVIO CONDICIONAL (Ocultado em Justa Causa e Término de Experiência) -->
           <div class="form-group" id="noticeGroup">
             <label class="form-label">Aviso Prévio</label>
             <select id="inputNotice" class="form-select" onchange="onNoticeChanged()">
-              <!-- Opções dinâmicas -->
+              <!-- Preenchido via JS -->
             </select>
             <div class="friendly-helper alert" id="noticeHelper" style="margin-top: 4px; display: none;">
               <span id="noticeHelperText"></span>
@@ -778,7 +890,6 @@
             </div>
           </div>
 
-          <!-- FGTS CONDICIONAL (Ocultado em Pedido de Demissão e Justa Causa) -->
           <div class="form-group" id="fgtsInputGroup">
             <label class="form-label">Saldo do FGTS (R$) [Opcional]</label>
             <div class="input-wrapper">
@@ -838,7 +949,7 @@
           <div class="section-hint">Toque para ver a memória</div>
         </div>
 
-        <!-- Lista de Verbas Clicáveis com SVGs limpos -->
+        <!-- Lista de Verbas Clicáveis -->
         <div class="clickable-card" id="cardSalary" onclick="openDetail('salary')">
           <div class="card-left">
             <div class="icon-round" style="background: #EFF6FF; color: #2563EB;">
@@ -934,7 +1045,102 @@
           </div>
         </div>
 
-        <button class="btn-main" onclick="toggleModal(true)" style="margin: 8px 0 16px;">
+        <!-- ============================================== -->
+        <!-- SEÇÃO: TIRA-DÚVIDAS FREQUENTES (ACCORDION)    -->
+        <!-- ============================================== -->
+        <div class="section-title-wrap">
+          <div class="section-title">Tira-Dúvidas da Rescisão</div>
+        </div>
+
+        <div class="faq-container">
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>Qual o prazo legal para a empresa pagar o acerto?</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              Conforme o Artigo 477, § 6º da CLT, a empresa tem até <strong>10 dias corridos</strong> após o término do contrato para pagar todos os valores devidos. Caso atrase, a empresa é obrigada a pagar uma multa no valor de <strong>mais 1 salário integral</strong> em favor do trabalhador.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>Como faço para sacar o FGTS e a multa de 40%?</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              A empresa gera a Chave de Conectividade Social em até 10 dias. Com ela, você pode transferir o saldo diretamente para a sua conta bancária pelo aplicativo oficial <strong>FGTS Caixa</strong>, sem necessidade de ir até uma agência física.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>Como e quando solicitar o Seguro-Desemprego?</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              O pedido pode ser realizado de 7 a 120 dias após a demissão através do aplicativo <strong>Carteira de Trabalho Digital</strong> ou pelo portal oficial <strong>Gov.br</strong>, utilizando o número do Requerimento Web entregue pela empresa.
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <div class="faq-question">
+              <span>A empresa pode descontar impostos sobre férias?</span>
+              <span class="faq-arrow">▼</span>
+            </div>
+            <div class="faq-answer">
+              Não. As férias indenizadas na rescisão possuem natureza indenizatória, portanto são <strong>100% isentas de desconto de INSS e de Imposto de Renda</strong> (Súmula 125 do STJ e pareceres da Receita Federal).
+            </div>
+          </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SEÇÃO: CANAIS OFICIAIS DO GOVERNO (GOV.BR)     -->
+        <!-- ============================================== -->
+        <div class="section-title-wrap">
+          <div class="section-title">Canais Oficiais do Governo</div>
+        </div>
+
+        <div class="gov-card">
+          <div class="gov-header">
+            <span style="font-size: 11.5px; font-weight: 800; color: #1E3A8A;">PORTAL GOV.BR E CAIXA</span>
+            <span class="gov-badge">OFICIAL</span>
+          </div>
+
+          <a href="https://servicos.mte.gov.br/" target="_blank" class="gov-link-item">
+            <div>
+              <div>Carteira de Trabalho Digital</div>
+              <div class="gov-link-desc">Consulte vínculos empregatícios e contratos no MTE</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+
+          <a href="https://www.gov.br/pt-br/servicos/solicitar-o-seguro-desemprego" target="_blank" class="gov-link-item">
+            <div>
+              <div>Solicitar Seguro-Desemprego</div>
+              <div class="gov-link-desc">Acesso direto ao serviço oficial no Gov.br</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+
+          <a href="https://www.caixa.gov.br/beneficios-trabalhador/fgts/" target="_blank" class="gov-link-item">
+            <div>
+              <div>Consulta de Saldo e Saque FGTS</div>
+              <div class="gov-link-desc">Portal oficial da Caixa Econômica Federal</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+
+          <a href="https://www.gov.br/trabalho-e-emprego/pt-br" target="_blank" class="gov-link-item">
+            <div>
+              <div>Ministério do Trabalho e Emprego</div>
+              <div class="gov-link-desc">Notícias e legislação trabalhista atualizada</div>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+        </div>
+
+        <button class="btn-main" onclick="toggleModal(true)" style="margin: 8px 0 24px;">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           EXPORTAR RELATÓRIO EM PDF
         </button>
@@ -1037,6 +1243,10 @@
       document.getElementById('paywallModal').style.display = show ? 'flex' : 'none';
     }
 
+    function toggleFaq(element) {
+      element.classList.toggle('open');
+    }
+
     function goToScreen(screenId) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(screenId).classList.add('active');
@@ -1065,7 +1275,6 @@
       }
     }
 
-    // Regras Condicionais: Oculta campos conflitantes
     function onReasonChanged() {
       const reason = document.getElementById('inputReason').value;
       const noticeGroup = document.getElementById('noticeGroup');
@@ -1085,7 +1294,7 @@
 
       } else if (reason === 'pedidoDemissao') {
         noticeGroup.style.display = 'flex';
-        fgtsGroup.style.display = 'none'; // Sem saque de FGTS
+        fgtsGroup.style.display = 'none';
         reasonHelperText.innerText = 'Pedido de demissão: confere saldo de salário, 13º e férias proporcionais. Não há liberação do FGTS nem direito ao seguro-desemprego.';
 
         noticeSelect.add(new Option('Trabalhado (cumpriu os 30 dias)', 'trabalhado'));
@@ -1101,13 +1310,11 @@
         noticeSelect.add(new Option('Trabalhado pelo empregado', 'trabalhado'));
 
       } else if (reason === 'justaCausa') {
-        // Justa Causa: Sem aviso prévio e sem FGTS
         noticeGroup.style.display = 'none';
         fgtsGroup.style.display = 'none';
         reasonHelperText.innerText = 'Demissão por justa causa: devidos apenas o saldo de salário e férias já vencidas integrais. Não há aviso prévio, 13º, férias proporcionais ou FGTS.';
 
       } else if (reason === 'terminoExperiencia') {
-        // Término de contrato no prazo: Sem aviso prévio
         noticeGroup.style.display = 'none';
         fgtsGroup.style.display = 'flex';
         reasonHelperText.innerText = 'Término de experiência no prazo: saque do FGTS liberado (sem multa de 40%). Devidos salário, 13º e férias proporcionais. Sem aviso prévio.';
@@ -1132,7 +1339,6 @@
 
     window.addEventListener('DOMContentLoaded', onReasonChanged);
 
-    // Motor de Cálculo Jurídico
     function runCalculation() {
       const salary = parseFloat(document.getElementById('inputSalary').value) || 0;
       const admissionStr = document.getElementById('inputAdmission').value;
