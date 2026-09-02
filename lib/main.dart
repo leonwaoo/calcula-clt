@@ -1,4 +1,5 @@
 import 'package:calcula_clt/clt_calculator.dart';
+import 'package:calcula_clt/pro_purchase_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -30,13 +31,21 @@ class _CalculatorPageState extends State<CalculatorPage> {
   final _salary = TextEditingController();
   final _months = TextEditingController(text: '12');
   final _currency = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$');
+  final _purchase = ProPurchaseService();
   CltResult? _result;
   bool _noticePaid = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _purchase.initialize();
+  }
 
   @override
   void dispose() {
     _salary.dispose();
     _months.dispose();
+    _purchase.dispose();
     super.dispose();
   }
 
@@ -67,7 +76,7 @@ class _CalculatorPageState extends State<CalculatorPage> {
   void _showProAccess() => showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
-    builder: (context) => const _ProSheet(),
+    builder: (context) => _ProSheet(purchase: _purchase),
   );
 
   @override
@@ -216,7 +225,8 @@ class _ResultCard extends StatelessWidget {
 }
 
 class _ProSheet extends StatelessWidget {
-  const _ProSheet();
+  const _ProSheet({required this.purchase});
+  final ProPurchaseService purchase;
   @override
   Widget build(BuildContext context) => SafeArea(
     child: Padding(
@@ -234,18 +244,47 @@ class _ProSheet extends StatelessWidget {
             'A análise detalhada e o relatório em PDF são liberados somente após a confirmação da compra pela Google Play.',
           ),
           const SizedBox(height: 20),
-          FilledButton(
-            onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text(
-                  'A compra será habilitada quando o produto estiver configurado no Google Play Console.',
-                ),
-              ),
-            ),
-            style: FilledButton.styleFrom(
-              minimumSize: const Size.fromHeight(52),
-            ),
-            child: const Text('Ver opções na Google Play'),
+          ValueListenableBuilder<ProPurchaseState>(
+            valueListenable: purchase.state,
+            builder: (context, state, _) {
+              final ready = state == ProPurchaseState.ready;
+              final buying = state == ProPurchaseState.purchasing;
+              final active = state == ProPurchaseState.active;
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  FilledButton(
+                    onPressed: ready ? purchase.buy : null,
+                    style: FilledButton.styleFrom(
+                      minimumSize: const Size.fromHeight(52),
+                    ),
+                    child: Text(
+                      buying
+                          ? 'Confirmando compra...'
+                          : active
+                          ? 'Acesso confirmado'
+                          : 'Comprar na Google Play',
+                    ),
+                  ),
+                  if (state == ProPurchaseState.unavailable)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        'As compras ainda não estão disponíveis. Configure o produto e o servidor de validação antes de publicar.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                  if (state == ProPurchaseState.failed)
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10),
+                      child: Text(
+                        'Não foi possível confirmar a compra. O acesso continua bloqueado.',
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ],
       ),
