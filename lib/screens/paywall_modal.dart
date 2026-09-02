@@ -66,7 +66,7 @@ class PaywallModal extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'CalculaCLT Pro',
+                            'CalculaCLT',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w800,
@@ -75,7 +75,7 @@ class PaywallModal extends StatelessWidget {
                           ),
                           SizedBox(height: 2),
                           Text(
-                            'Acesso vitalício pelo Google Play',
+                            'Recursos completos pelo Google Play',
                             style: TextStyle(
                               fontSize: 12,
                               color: Color(0xFF64748B),
@@ -92,7 +92,7 @@ class PaywallModal extends StatelessWidget {
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Entenda sua rescisão com segurança.',
+                  'Acesse o demonstrativo completo.',
                   style: TextStyle(
                     fontSize: 24,
                     height: 1.12,
@@ -102,7 +102,7 @@ class PaywallModal extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 const Text(
-                  'Desbloqueie a memória de cálculo e o documento pronto para compartilhar. O cálculo-resumo continua gratuito.',
+                  'Inclui a memória de cálculo e a exportação em PDF. O resumo do cálculo permanece disponível sem compra.',
                   style: TextStyle(
                     fontSize: 14,
                     height: 1.4,
@@ -112,17 +112,17 @@ class PaywallModal extends StatelessWidget {
                 const SizedBox(height: 20),
                 const _Benefit(
                   icon: Icons.analytics_outlined,
-                  title: 'Análise detalhada',
+                  title: 'Memória de cálculo',
                   description: 'Rubricas, descontos e fundamentos legais em uma leitura simples.',
                 ),
                 const _Benefit(
                   icon: Icons.picture_as_pdf_outlined,
-                  title: 'Relatório PDF profissional',
+                  title: 'Relatório em PDF',
                   description: 'Exporte e compartilhe seu demonstrativo sem marca d’água.',
                 ),
                 const _Benefit(
                   icon: Icons.workspace_premium_outlined,
-                  title: 'Compra única',
+                  title: 'Acesso pela sua conta Google',
                   description: 'Sem assinatura: o acesso é vinculado à sua conta Google.',
                 ),
                 const SizedBox(height: 20),
@@ -144,7 +144,7 @@ class PaywallModal extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
-                              'Acesso vitalício',
+                              'Compra única',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.w800,
@@ -182,8 +182,8 @@ class PaywallModal extends StatelessWidget {
                     loading
                         ? 'VALIDANDO COMPRA...'
                         : proAccess.isPro
-                        ? 'ACESSO PRO ATIVO'
-                        : 'DESBLOQUEAR COM GOOGLE PLAY',
+                        ? 'ACESSO ATIVO'
+                        : 'CONTINUAR NA GOOGLE PLAY',
                   ),
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(54),

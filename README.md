@@ -1,4 +1,4 @@
-# CalculaCLT 📱⚖️
+# CalculaCLT
 ### Calculadora de Rescisão e Direitos Trabalhistas CLT com Relatórios em PDF
 
 > Aplicativo exclusivamente Android. O cálculo-resumo é gratuito; análise detalhada e exportação de PDF exigem o acesso vitalício Pro, comprado e validado pela Google Play. Veja [a operação do Pro](docs/GOOGLE_PLAY_PRO.md).
@@ -7,15 +7,15 @@ Aplicativo Android de alta precisão para cálculo de verbas rescisórias da CLT
 
 ---
 
-## 🎯 Por que esse app gera lucro orgânico (Zero Gasto com Anúncios)?
+## Modelo de acesso
 
 1. **Alta Intenção de Busca (ASO - App Store Optimization):**
    * O usuário entra na App Store / Play Store buscando diretamente termos como: *"calcular rescisão"*, *"calculadora clt"*, *"seguro desemprego demissão"*, *"aviso prévio proporcional"*.
    * Você não precisa gastar com marketing; o tráfego vem da busca orgânica das lojas.
 
 2. **Monetização Justa e de Alta Conversão:**
-   * O cálculo na tela é **100% gratuito**, o que gera downloads, engajamento e avaliações 5 estrelas.
-   * **Recurso Pago (Paywall):** O usuário paga um valor acessível (ex: R$ 19,90 Pagamento Único Vitalício) para exportar o **Relatório Oficial em PDF** sem marcas d'água, pronto para enviar no WhatsApp ao advogado ou contestar erros no RH.
+   * O resumo do cálculo permanece gratuito.
+   * A compra única pelo Google Play libera a análise detalhada e a exportação em PDF.
 
 3. **Custo de Servidor Zero (100% Offline):**
    * O motor de cálculo e o gerador de PDF rodam no próprio aparelho do usuário. Margem de lucro praticamente pura após a taxa das lojas (Apple/Google).
@@ -37,7 +37,7 @@ Aplicativo Android de alta precisão para cálculo de verbas rescisórias da CLT
 
 ---
 
-## 🚀 Como Executar
+## Como executar
 
 ### 1. Testar o motor de cálculo no terminal (Instantâneo)
 Para simular um cálculo completo no terminal:
@@ -58,7 +58,7 @@ flutter run
 
 ---
 
-## 📂 Estrutura do Projeto
+## Estrutura do projeto
 
 ```
 calcula_clt/

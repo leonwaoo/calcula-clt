@@ -580,7 +580,7 @@ class _ResultScreenState extends State<ResultScreen> {
                   SizedBox(width: 10),
                   Expanded(
                     child: Text(
-                      'O CalculaCLT te ajudou a entender seus direitos? Avalie nosso app com 5 estrelas na loja!',
+                      'Esta é uma simulação. Antes de tomar uma decisão, confira os dados do contrato e os documentos da empresa.',
                       style: TextStyle(fontSize: 11, color: Color(0xFF92400E)),
                     ),
                   ),
@@ -665,7 +665,7 @@ class _ResultScreenState extends State<ResultScreen> {
               Icon(Icons.auto_awesome, color: Color(0xFF7E22CE)),
               SizedBox(width: 8),
               Text(
-                'Análise detalhada é Pro',
+                'Análise detalhada',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Color(0xFF581C87),
@@ -682,7 +682,7 @@ class _ResultScreenState extends State<ResultScreen> {
           OutlinedButton.icon(
             onPressed: () => PaywallModal.show(context, _proAccess),
             icon: const Icon(Icons.lock_open),
-            label: const Text('DESBLOQUEAR ANÁLISE PRO'),
+            label: const Text('VER RECURSOS COMPLETOS'),
           ),
         ],
       ),

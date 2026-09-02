@@ -17,4 +17,9 @@ jobs:
       - run: dart format --output=none --set-exit-if-changed lib test bin
       - run: flutter analyze
       - run: flutter test
+      - run: flutter build apk --debug
       - run: flutter build appbundle --debug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: calcula-clt-android-debug
+          path: build/app/outputs/flutter-apk/app-debug.apk
